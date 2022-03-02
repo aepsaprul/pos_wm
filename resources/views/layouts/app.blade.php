@@ -145,7 +145,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ route('user.index') }}" class="nav-link {{ request()->is('master/user') ? 'active' : '' }}">
+                                        <a href="{{ route('user.index') }}" class="nav-link {{ request()->is(['master/user', 'master/user/*']) ? 'active' : '' }}">
                                             <i class="fas fa-angle-right nav-icon"></i><p>User</p>
                                         </a>
                                     </li>
