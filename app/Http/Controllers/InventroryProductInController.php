@@ -76,7 +76,7 @@ class InventroryProductInController extends Controller
         $quantity = $request->quantity;
         $quantityNow = $productIn->quantity;
 
-        $stock = InventoryStock::where('product_id', $request->product_id)->first();
+        $stock = Product::find($request->product_id);
 
         if ($quantity > $quantityNow) {
             $diff = $quantity - $quantityNow;
@@ -99,6 +99,7 @@ class InventroryProductInController extends Controller
         $productIn->quantity = $request->quantity;
         $productIn->sub_total = $request->price * $request->quantity;
         $productIn->user_id = Auth::user()->id;
+        $productIn->stock = $request->quantity;
         $productIn->save();
 
 
@@ -122,7 +123,7 @@ class InventroryProductInController extends Controller
         $productIn = InventoryProductIn::find($request->id);
 
         // update stock
-        $stock = InventoryStock::where('product_id', $productIn->product_id)->first();
+        $stock = Product::find($productIn->product_id);
         $stock->stock = $stock->stock - $productIn->quantity;
         $stock->save();
 
