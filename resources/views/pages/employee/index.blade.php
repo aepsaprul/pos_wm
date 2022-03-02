@@ -185,11 +185,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary btn-create-spinner" disabled style="width: 120px; display: none;">
+                    <button class="btn btn-primary btn-create-spinner" disabled style="width: 130px; display: none;">
                         <span class="spinner-grow spinner-grow-sm"></span>
                         Loading..
                     </button>
-                    <button type="submit" class="btn btn-primary btn-create-save" style="width: 120px;"><i class="fa fa-save"></i> Simpan</button>
+                    <button type="submit" class="btn btn-primary btn-create-save" style="width: 130px;"><i class="fa fa-save"></i> Simpan</button>
                 </div>
             </form>
         </div>
@@ -390,12 +390,12 @@
                     <h5 class="modal-title">Yakin akan dihapus <span class="delete_title text-decoration-underline"></span> ?</h5>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 120px;"><span aria-hidden="true">Tidak</span></button>
-                    <button class="btn btn-primary btn-delete-spinner" disabled style="width: 120px; display: none;">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 130px;"><span aria-hidden="true">Tidak</span></button>
+                    <button class="btn btn-primary btn-delete-spinner" disabled style="width: 130px; display: none;">
                         <span class="spinner-grow spinner-grow-sm"></span>
                         Loading..
                     </button>
-                    <button type="submit" class="btn btn-primary btn-delete-yes text-center" style="width: 120px;">Ya</button>
+                    <button type="submit" class="btn btn-primary btn-delete-yes text-center" style="width: 130px;">Ya</button>
                 </div>
             </form>
         </div>
