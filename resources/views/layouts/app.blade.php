@@ -326,6 +326,81 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('themes/dist/js/adminlte.js') }}"></script>
 
+    <script>
+        function format_rupiah(bilangan) {
+            var	number_string = bilangan.toString(),
+                split	= number_string.split(','),
+                sisa 	= split[0].length % 3,
+                rupiah 	= split[0].substr(0, sisa),
+                ribuan 	= split[0].substr(sisa).match(/\d{1,3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+
+            return rupiah;
+        }
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.replace(/[^,\d]/g, "").toString(),
+                split = number_string.split(","),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? "." : "";
+                rupiah += separator + ribuan.join(".");
+            }
+
+            rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+            return prefix == undefined ? rupiah : rupiah ? "" + rupiah : "";
+        }
+
+        function tanggal(date) {
+            var date = new Date(date);
+            var tahun = date.getFullYear();
+            var nomorbulan = date.getMonth() + 1;
+            var bulan = date.getMonth();
+            var tanggal = date.getDate();
+            var hari = date.getDay();
+            var jam = date.getHours();
+            var menit = date.getMinutes();
+            var detik = date.getSeconds();
+            switch(hari) {
+            case 0: hari = "Minggu"; break;
+            case 1: hari = "Senin"; break;
+            case 2: hari = "Selasa"; break;
+            case 3: hari = "Rabu"; break;
+            case 4: hari = "Kamis"; break;
+            case 5: hari = "Jum'at"; break;
+            case 6: hari = "Sabtu"; break;
+            }
+            switch(bulan) {
+            case 0: bulan = "Januari"; break;
+            case 1: bulan = "Februari"; break;
+            case 2: bulan = "Maret"; break;
+            case 3: bulan = "April"; break;
+            case 4: bulan = "Mei"; break;
+            case 5: bulan = "Juni"; break;
+            case 6: bulan = "Juli"; break;
+            case 7: bulan = "Agustus"; break;
+            case 8: bulan = "September"; break;
+            case 9: bulan = "Oktober"; break;
+            case 10: bulan = "November"; break;
+            case 11: bulan = "Desember"; break;
+            }
+
+            return tampilTanggal = tanggal + "-" + nomorbulan + "-" + tahun;
+            // var tampilWaktu = "Jam: " + jam + ":" + menit + ":" + detik;
+            // console.log(tampilTanggal);
+            // console.log(tampilWaktu);
+        }
+    </script>
+
     @yield('script')
 </body>
 </html>
