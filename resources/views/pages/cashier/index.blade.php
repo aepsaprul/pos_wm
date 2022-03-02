@@ -430,7 +430,7 @@
                     }
 
                     $.ajax({
-                        url: '{{ URL::route('cashier.sales_save') }}',
+                        url: "{{ URL::route('cashier.sales_save') }}",
                         type: 'POST',
                         data: formData,
                         success: function(response) {
@@ -455,7 +455,7 @@
                 }
 
                 $.ajax({
-                    url: '{{ URL::route('cashier.product') }}',
+                    url: "{{ URL::route('cashier.product') }}",
                     type: 'POST',
                     data: formData,
                     success: function(response) {
@@ -501,7 +501,7 @@
                     }
 
                     $.ajax({
-                        url: '{{ URL::route('cashier.sales_save') }}',
+                        url: "{{ URL::route('cashier.sales_save') }}",
                         type: 'POST',
                         data: formData,
                         success: function(response) {
@@ -542,7 +542,7 @@
                 }
 
                 $.ajax({
-                    url: '{{ URL::route('cashier.promo') }}',
+                    url: "{{ URL::route('cashier.promo') }}",
                     type: 'POST',
                     data: formData,
                     success: function(response) {
@@ -652,7 +652,7 @@
                     }
 
                     $.ajax({
-                        url: '{{ URL::route('cashier.print') }}',
+                        url: "{{ URL::route('cashier.print') }}",
                         type: 'POST',
                         data: formData,
                         success: function(response) {
