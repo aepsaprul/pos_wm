@@ -86,7 +86,7 @@
                     <span class="text-info text-uppercase font-weight-bold">Aplikasi POS</span>
                 </div>
                 <hr>
-                <div class="text-center mb-2 text-secondary" style="font-size: 14px;">©2022 All Rights Reserved - AdminLTE</div>
+                <div class="text-center mb-2 text-secondary" style="font-size: 14px;">©2022 All Rights Reserved - Warung Mitra</div>
             </div>
         </div>
     </div>
