@@ -269,7 +269,7 @@
                                 @if ($item->link == '#')
                                     <li class="nav-item {{ request()->is(''.$item->request.'/*') ? 'menu-open' : '' }}">
                                         <a href="#" class="nav-link {{ request()->is(''.$item->request.'/*') ? 'active' : '' }}">
-                                            <i class="{{ $item->icon }}"></i> <p>{{ $item->title }}<i class="right fas fa-angle-left"></i></p>
+                                            <i class="nav-icon {{ $item->icon }}"></i> <p>{{ $item->title }}<i class="right fas fa-angle-left"></i></p>
                                         </a>
                                         <ul class="nav nav-treeview">
                                             @foreach ($current_menus as $item_menu)
@@ -286,7 +286,7 @@
                                 @else
                                     <li class="nav-item">
                                         <a href="{{ url($item->link) }}" class="nav-link {{ request()->is([''.$item->request.'', ''.$item->request.'/*']) ? 'active' : '' }}">
-                                            <i class="{{ $item->icon }}"></i> <p>{{ $item->title }}</p>
+                                            <i class="nav-icon {{ $item->icon }}"></i> <p>{{ $item->title }}</p>
                                         </a>
                                     </li>
                                 @endif
