@@ -2,86 +2,83 @@
 
 @section('style')
 
-<!-- Datatables -->
-<link href="{{ asset('theme/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('theme/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('theme/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('theme/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('theme/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css') }}" rel="stylesheet">
-
-{{-- select2 --}}
-<link rel="stylesheet" href="{{ asset('theme/vendors/select2/dist/css/select2.min.css') }}">
+<!-- DataTables -->
+<link rel="stylesheet" href="{{ asset('themes/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('themes/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('themes/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+<!-- Select2 -->
+<link rel="stylesheet" href="{{ asset('themes/plugins/select2/css/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('themes/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 
 @endsection
 
 @section('content')
-<!-- page content -->
-<div class="right_col" role="main">
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h3>Data Laporan Penjualan</h3>
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Laporan Produk</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Laporan Produk</li>
+                    </ol>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="clearfix"></div>
-
-        <div class="row">
-            <div class="col-md-12 col-sm-12 ">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <div class="row mb-2 mt-1">
-                            <div class="col-md-2">
-                                <select name="opsi" id="opsi" class="form-control form-control-sm">
-                                    <option value="">--Pilih Opsi--</option>
-                                    @foreach ($product_shops as $item)
-                                        <option value="{{ $item->product->id }}">{{ $item->product->product_name }}</option>
-                                    @endforeach
-                                </select>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row mb-2 mt-1">
+                                <div class="col-md-2">
+                                    <select name="opsi" id="opsi" class="form-control form-control-sm">
+                                        <option value="">--Pilih Opsi--</option>
+                                        @foreach ($product_shops as $item)
+                                            <option value="{{ $item->product->id }}">{{ $item->product->product_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="card-box table-responsive">
-                                    <div class="data-table">
-                                    </div>
-                                </div>
+                        <div class="card-body">
+                            <div class="data-table">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </div>
-<!-- /page content -->
 
 @endsection
 
 @section('script')
 
-<!-- Datatables -->
-<script src="{{ asset('theme/vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-scroller/js/dataTables.scroller.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/jszip/dist/jszip.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/pdfmake/build/pdfmake.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/pdfmake/build/vfs_fonts.js') }}"></script>
-
-{{-- select2 --}}
-<script src="{{ asset('theme/vendors/select2/dist/js/select2.min.js') }}"></script>
+<!-- DataTables  & Plugins -->
+<script src="{{ asset('themes/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/jszip/jszip.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/pdfmake/vfs_fonts.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+<!-- Select2 -->
+<script src="{{ asset('themes/plugins/select2/js/select2.full.min.js') }}"></script>
 
 <script>
     $(document).ready(function() {
@@ -93,12 +90,12 @@
         function salesAll() {
             $('.data-table').empty();
             $.ajax({
-                url: '{{ URL::route('report.product_get_data') }}',
+                url: "{{ URL::route('report.product_get_data') }}",
                 type: 'GET',
                 success: function(response) {
                     var invoice_val = "" +
                     "<table id=\"datatable\" class=\"table table-striped table-bordered\" style=\"width:100%\">" +
-                        "<thead style=\"background-color: #2A3F54;\">" +
+                        "<thead class=\"bg-info\">" +
                             "<tr>" +
                                 "<th class=\"text-center text-light\">No</th>" +
                                 "<th class=\"text-center text-light\">Nama Produk</th>" +
@@ -156,7 +153,7 @@
                     success: function(response) {
                         var sales_val = "" +
                         "<table id=\"datatable\" class=\"table table-striped table-bordered\" style=\"width:100%\">" +
-                            "<thead style=\"background-color: #2A3F54;\">" +
+                            "<thead class=\"bg-info\">" +
                                 "<tr>" +
                                     "<th class=\"text-center text-light\">No</th>" +
                                     "<th class=\"text-center text-light\">Nama Produk</th>" +

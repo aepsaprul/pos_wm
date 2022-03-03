@@ -394,7 +394,22 @@
             case 11: bulan = "Desember"; break;
             }
 
-            return tampilTanggal = tanggal + "-" + nomorbulan + "-" + tahun;
+            let no_bln;
+            if (nomorbulan < 10) {
+                no_bln = "0" + nomorbulan;
+            } else {
+                no_bln = nomorbulan;
+            }
+
+            let no_tgl;
+
+            if (tanggal < 10) {
+                no_tgl = "0" + tanggal;
+            } else {
+                no_tgl = tanggal;
+            }
+
+            return tampilTanggal = no_tgl + "-" + no_bln + "-" + tahun;
             // var tampilWaktu = "Jam: " + jam + ":" + menit + ":" + detik;
             // console.log(tampilTanggal);
             // console.log(tampilWaktu);
