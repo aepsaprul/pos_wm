@@ -52,7 +52,6 @@ class PromoController extends Controller
         $promo->discount_value = $request->discount_value;
         $promo->coupon_code = $request->coupon_code;
         $promo->minimum_order = $request->minimum_order;
-        $promo->publish = $request->publish;
         $promo->save();
 
         return response()->json([
