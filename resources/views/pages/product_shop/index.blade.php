@@ -274,7 +274,7 @@
             }
 
             $.ajax({
-                url: '{{ URL::route('product_shop.create') }}',
+                url: "{{ URL::route('product_shop.create') }}",
                 type: 'GET',
                 data: formData,
                 success: function(response) {
@@ -309,7 +309,7 @@
             }
 
             $.ajax({
-                url: '{{ URL::route('product_shop.store') }} ',
+                url: "{{ URL::route('product_shop.store') }} ",
                 type: 'POST',
                 data: formData,
                 success: function(response) {
@@ -383,7 +383,7 @@
             }
 
             $.ajax({
-                url: '{{ URL::route('product_shop.update') }}',
+                url: "{{ URL::route('product_shop.update') }}",
                 type: 'POST',
                 data: formData,
                 success: function(response) {
@@ -450,7 +450,7 @@
             }
 
             $.ajax({
-                url: '{{ URL::route('product_shop.delete') }}',
+                url: "{{ URL::route('product_shop.delete') }}",
                 type: 'POST',
                 data: formData,
                 success: function(response) {

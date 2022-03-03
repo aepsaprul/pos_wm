@@ -24,6 +24,8 @@ class NavController extends Controller
         $nav_main = new NavMain;
         $nav_main->title = $request->title;
         $nav_main->link = $request->link;
+        $nav_main->icon = $request->icon;
+        $nav_main->request = $request->data_request;
         $nav_main->save();
 
         return response()->json([
@@ -60,7 +62,9 @@ class NavController extends Controller
         return response()->json([
             'id' => $nav_main->id,
             'title' => $nav_main->title,
-            'link' => $nav_main->link
+            'link' => $nav_main->link,
+            'icon' => $nav_main->icon,
+            'data_request' => $nav_main->request
         ]);
     }
 
@@ -83,13 +87,17 @@ class NavController extends Controller
         $nav_main = NavMain::find($request->id);
         $nav_main->title = $request->title;
         $nav_main->link = $request->link;
+        $nav_main->icon = $request->icon;
+        $nav_main->request = $request->data_request;
         $nav_main->save();
 
         return response()->json([
-            'id' => $request->id,
+            'id' => $nav_main->id,
             'status' => 'Data menu utama berhasil diperbaharui',
-            'title' => $request->title,
-            'link' => $request->link
+            'title' => $nav_main->title,
+            'link' => $nav_main->link,
+            'icon' => $nav_main->icon,
+            'data_request' => $nav_main->request
         ]);
     }
 

@@ -119,6 +119,8 @@
                                                 <th class="text-center text-light">No</th>
                                                 <th class="text-center text-light">Title</th>
                                                 <th class="text-center text-light">Link</th>
+                                                <th class="text-center text-light">Icon</th>
+                                                <th class="text-center text-light">Request</th>
                                                 <th class="text-center text-light">Aksi</th>
                                             </tr>
                                         </thead>
@@ -128,6 +130,8 @@
                                                 <td class="text-center">{{ $key + 1 }}</td>
                                                 <td class="main_title_{{ $item->id }}">{{ $item->title }}</td>
                                                 <td class="main_link_{{ $item->id }}">{{ $item->link }}</td>
+                                                <td class="main_icon_{{ $item->id }}">{{ $item->icon }}</td>
+                                                <td class="main_request_{{ $item->id }}">{{ $item->request }}</td>
                                                 <td class="text-center">
                                                     <div class="btn-group">
                                                         <a
@@ -199,6 +203,24 @@
                             id="main_create_link"
                             name="main_create_link"
                             maxlength="100" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="main_create_icon" class="form-label">Icon</label>
+                        <input
+                            type="text"
+                            class="form-control form-control-sm"
+                            id="main_create_icon"
+                            name="main_create_icon"
+                            maxlength="30" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="main_create_request" class="form-label">Request</label>
+                        <input
+                            type="text"
+                            class="form-control form-control-sm"
+                            id="main_create_request"
+                            name="main_create_request"
+                            maxlength="30" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -305,6 +327,26 @@
                             id="main_edit_link"
                             name="main_edit_link"
                             maxlength="100"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="main_edit_icon" class="form-label">Icon</label>
+                        <input
+                            type="text"
+                            class="form-control form-control-sm"
+                            id="main_edit_icon"
+                            name="main_edit_icon"
+                            maxlength="30"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="main_edit_request" class="form-label">Request</label>
+                        <input
+                            type="text"
+                            class="form-control form-control-sm"
+                            id="main_edit_request"
+                            name="main_edit_request"
+                            maxlength="30"
                             required>
                     </div>
                 </div>
@@ -483,6 +525,8 @@
             var formData = {
                 title: $('#main_create_title').val(),
                 link: $('#main_create_link').val(),
+                icon: $('#main_create_icon').val(),
+                data_request: $('#main_create_request').val(),
                 _token: CSRF_TOKEN
             }
 
@@ -589,6 +633,8 @@
                     $('#main_edit_id').val(response.id);
                     $('#main_edit_title').val(response.title);
                     $('#main_edit_link').val(response.link);
+                    $('#main_edit_icon').val(response.icon);
+                    $('#main_edit_request').val(response.data_request);
 
                     $('.main-modal-edit').modal('show');
                 }
@@ -600,11 +646,15 @@
 
             $('.main_title_' + $('#main_edit_id').val()).empty();
             $('.main_link_' + $('#main_edit_id').val()).empty();
+            $('.main_icon_' + $('#main_edit_id').val()).empty();
+            $('.main_request_' + $('#main_edit_id').val()).empty();
 
             var formData = {
                 id: $('#main_edit_id').val(),
                 title: $('#main_edit_title').val(),
                 link: $('#main_edit_link').val(),
+                icon: $('#main_edit_icon').val(),
+                data_request: $('#main_edit_request').val(),
                 _token: CSRF_TOKEN
             }
 
@@ -624,6 +674,8 @@
 
                     $('.main_title_' + response.id).append(response.title);
                     $('.main_link_' + response.id).append(response.link);
+                    $('.main_icon_' + response.id).append(response.icon);
+                    $('.main_request_' + response.id).append(response.data_request);
 
                     setTimeout(() => {
                         $('.btn-main-edit-spinner').css("display", "none");

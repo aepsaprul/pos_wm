@@ -264,8 +264,6 @@
                                     </li>
                                 </ul>
                             </li>
-                        @elseif (Auth::user()->roles == "admin")
-
                         @else
                             @foreach ($current_nav_mains as $item)
                                 @if ($item->link == '#')
