@@ -2,136 +2,132 @@
 
 @section('style')
 
-<!-- Datatables -->
-<link href="{{ asset('theme/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('theme/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('theme/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('theme/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('theme/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css') }}" rel="stylesheet">
-
-{{-- select2 --}}
-<link rel="stylesheet" href="{{ asset('theme/vendors/select2/dist/css/select2.min.css') }}">
+<!-- DataTables -->
+<link rel="stylesheet" href="{{ asset('themes/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('themes/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('themes/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+<!-- Select2 -->
+<link rel="stylesheet" href="{{ asset('themes/plugins/select2/css/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('themes/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 
 @endsection
 
 @section('content')
 
-<!-- page content -->
-<div class="right_col" role="main">
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h3>Data Produk Masuk</h3>
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Produk Toko</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Produk Toko</li>
+                    </ol>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="clearfix"></div>
-
-        <div class="row">
-            <div class="col-md-12 col-sm-12 ">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <button
-                            id="button-create"
-                            type="button"
-                            class="btn btn-primary btn-sm text-white pl-3 pr-3"
-                            title="Tambah">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <button id="button-create" type="button" class="btn bg-gradient-primary btn-sm pl-3 pr-3">
                                 <i class="fa fa-plus"></i> Tambah
-                        </button>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="card-box table-responsive">
-                                    <table id="datatable" class="table table-striped table-bordered" style="width:100%">
-                                        <thead style="background-color: #2A3F54;">
-                                            <tr>
-                                                <th class="text-center text-light">No</th>
-                                                <th class="text-center text-light">User</th>
-                                                <th class="text-center text-light">Nama Produk</th>
-                                                <th class="text-center text-light">Harga Produk</th>
-                                                <th class="text-center text-light">Qty</th>
-                                                <th class="text-center text-light">Sub Total</th>
-                                                <th class="text-center text-light">Stok</th>
-                                                <th class="text-center text-light">Saldo</th>
-                                                <th class="text-center text-light">Tanggal</th>
-                                                <th class="text-center text-light">Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($receive_products as $key => $item)
-                                                <tr>
-                                                    <td class="text-center">{{ $key + 1 }}</td>
-                                                    <td>
-                                                        @if ($item->user)
-                                                            {{ $item->user->name }}
-                                                        @else
-                                                            <span class="text-danger">User Tidak Ada</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if ($item->product)
-                                                            {{ $item->product->product_name }}
-                                                        @else
-                                                            <span class="text-danger">Product Tidak Ada</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="text-end">
-                                                        @if ($item->product)
-                                                            {{ rupiah($item->price) }}
-                                                        @else
-                                                            <span class="text-danger">Product Tidak Ada</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="text-center">{{ $item->quantity }}</td>
-                                                    <td class="text-right">{{ rupiah($item->sub_total) }}</td>
-                                                    <td class="text-center">{{ $item->stock }}</td>
-                                                    @php
-                                                        $stock_sold = $item->quantity - $item->stock;
-                                                        $saldo = $stock_sold * $item->price;
-                                                    @endphp
-                                                    <td class="text-center">{{ rupiah($saldo) }}</td>
-                                                    <td class="text-center">{{ date('d-m-Y', strtotime($item->date)) }}</td>
-                                                    <td class="text-center">
-                                                        <div class="btn-group">
-                                                            <a
-                                                                class="dropdown-toggle"
-                                                                data-toggle="dropdown"
-                                                                aria-haspopup="true"
-                                                                aria-expanded="false">
-                                                                    <i class="fa fa-cog"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <a
-                                                                    class="dropdown-item btn-edit"
-                                                                    href="#"
-                                                                    data-id="{{ $item->id }}">
-                                                                        <i class="fa fa-pencil px-2"></i> Ubah
-                                                                </a>
-                                                                <a
-                                                                    class="dropdown-item btn-delete"
-                                                                    href="#"
-                                                                    data-id="{{ $item->id }}">
-                                                                        <i class="fa fa-trash px-2"></i> Hapus
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+                                <thead class="bg-info">
+                                    <tr>
+                                        <th class="text-center text-light">No</th>
+                                        <th class="text-center text-light">User</th>
+                                        <th class="text-center text-light">Nama Produk</th>
+                                        <th class="text-center text-light">Harga Produk</th>
+                                        <th class="text-center text-light">Qty</th>
+                                        <th class="text-center text-light">Sub Total</th>
+                                        <th class="text-center text-light">Stok</th>
+                                        <th class="text-center text-light">Saldo</th>
+                                        <th class="text-center text-light">Tanggal</th>
+                                        <th class="text-center text-light">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($receive_products as $key => $item)
+                                        <tr>
+                                            <td class="text-center">{{ $key + 1 }}</td>
+                                            <td>
+                                                @if ($item->user)
+                                                    {{ $item->user->name }}
+                                                @else
+                                                    <span class="text-danger">User Tidak Ada</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($item->product)
+                                                    {{ $item->product->product_name }}
+                                                @else
+                                                    <span class="text-danger">Product Tidak Ada</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-end">
+                                                @if ($item->product)
+                                                    {{ rupiah($item->price) }}
+                                                @else
+                                                    <span class="text-danger">Product Tidak Ada</span>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">{{ $item->quantity }}</td>
+                                            <td class="text-right">{{ rupiah($item->sub_total) }}</td>
+                                            <td class="text-center">{{ $item->stock }}</td>
+                                            @php
+                                                $stock_sold = $item->quantity - $item->stock;
+                                                $saldo = $stock_sold * $item->price;
+                                            @endphp
+                                            <td class="text-center">{{ rupiah($saldo) }}</td>
+                                            <td class="text-center">{{ date('d-m-Y', strtotime($item->date)) }}</td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    <a
+                                                        class="dropdown-toggle"
+                                                        data-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                            <i class="fa fa-cog"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a
+                                                            class="dropdown-item btn-edit"
+                                                            href="#"
+                                                            data-id="{{ $item->id }}">
+                                                                <i class="fa fa-pencil-alt px-2"></i> Ubah
+                                                        </a>
+                                                        <a
+                                                            class="dropdown-item btn-delete"
+                                                            href="#"
+                                                            data-id="{{ $item->id }}">
+                                                                <i class="fa fa-trash px-2"></i> Hapus
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </div>
-<!-- /page content -->
 
 {{-- modal create  --}}
 <div class="modal fade modal-create" tabindex="-1">
@@ -150,7 +146,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="create_product_id" class="form-label">Nama Produk</label>
-                        <select name="create_product_id" id="create_product_id" class="form-control" name="create_product_id" required>
+                        <select name="create_product_id" id="create_product_id" class="form-control form-control-sm" name="create_product_id" required>
 
                         </select>
                     </div>
@@ -180,8 +176,8 @@
                 {{-- id  --}}
                 <input type="hidden" id="edit_id" name="edit_id">
 
-                <div class="modal-header" style="background-color: #32a893;">
-                    <h5 class="modal-title text-white">Ubah Produk Masuk</h5>
+                <div class="modal-header">
+                    <h5 class="modal-title">Ubah Produk Masuk</h5>
                     <button
                         type="button"
                         class="close"
@@ -192,7 +188,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="edit_product_id" class="form-label">Nama Produk</label>
-                        <select name="edit_product_id" id="edit_product_id" class="form-control" name="edit_product_id" required>
+                        <select name="edit_product_id" id="edit_product_id" class="form-control form-control-sm" name="edit_product_id" required disabled>
 
                         </select>
                     </div>
@@ -202,7 +198,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="border-0 text-white" style="background-color: #32a893; padding: 5px 10px;"><i class="fa fa-save"></i> Perbaharui</button>
+                    <button class="btn btn-primary btn-edit-spinner" disabled style="width: 130px; display: none;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading..
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-edit-save" style="width: 130px;"><i class="fa fa-save"></i> Perbaharui</button>
                 </div>
             </form>
         </div>
@@ -238,29 +238,36 @@
 
 @section('script')
 
-<!-- Datatables -->
-<script src="{{ asset('theme/vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-scroller/js/dataTables.scroller.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/jszip/dist/jszip.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/pdfmake/build/pdfmake.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/pdfmake/build/vfs_fonts.js') }}"></script>
-
-{{-- select2 --}}
-<script src="{{ asset('theme/vendors/select2/dist/js/select2.min.js') }}"></script>
+<!-- DataTables  & Plugins -->
+<script src="{{ asset('themes/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/jszip/jszip.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/pdfmake/vfs_fonts.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+<!-- Select2 -->
+<script src="{{ asset('themes/plugins/select2/js/select2.full.min.js') }}"></script>
 
 <script>
     $(document).ready(function() {
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+        $("#datatable").DataTable({
+            'responsive': true
+        });
 
         $('#button-create').on('click', function() {
             $('#create_product_id').empty();
@@ -270,7 +277,7 @@
             }
 
             $.ajax({
-                url: '{{ URL::route('received_product.create') }}',
+                url: "{{ URL::route('received_product.create') }}",
                 type: 'GET',
                 data: formData,
                 success: function(response) {
@@ -305,7 +312,7 @@
             }
 
             $.ajax({
-                url: '{{ URL::route('received_product.store') }} ',
+                url: "{{ URL::route('received_product.store') }} ",
                 type: 'POST',
                 data: formData,
                 beforeSend: function() {
@@ -313,11 +320,9 @@
                     $('.btn-create-save').css("display", "none");
                 },
                 success: function(response) {
-                    var a = new PNotify({
-                        title: 'Success',
-                        text: 'Data berhasil ditambah',
-                        type: 'success',
-                        styling: 'bootstrap3'
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Data berhasil ditambah.'
                     });
 
                     setTimeout(() => {
@@ -350,18 +355,18 @@
                 type: 'GET',
                 data: formData,
                 success: function(response) {
+                    console.log(response);
                     $('#edit_id').val(response.id);
-                    $('#edit_product_id').val(response.product_id);
                     $('#edit_quantity').val(response.quantity);
 
                     // product query
                     var value = "<option value=\"\">--Pilih Produk--</option>";
                     $.each(response.products, function(index, item) {
-                        value += "<option value=\"" + item.id + "\"";
-                            if (item.id == response.product_id) {
-                                value += "selected";
+                        value += "<option value=\"" + item.product_id + "\"";
+                            if (item.product_id == response.product_id) {
+                                value += " selected";
                             }
-                        value += ">" + item.product_name + "</option>";
+                        value += ">" + item.product.product_name + "</option>";
                     });
                     $('#edit_product_id').append(value);
 
@@ -389,7 +394,7 @@
             }
 
             $.ajax({
-                url: '{{ URL::route('received_product.update') }}',
+                url: "{{ URL::route('received_product.update') }}",
                 type: 'POST',
                 data: formData,
                 beforeSend: function() {
@@ -397,11 +402,9 @@
                     $('.btn-edit-save').css("display", "none");
                 },
                 success: function(response) {
-                    var a = new PNotify({
-                        title: 'Success',
-                        text: 'Data berhasil ditambah',
-                        type: 'success',
-                        styling: 'bootstrap3'
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Data berhasil diperbaharui.'
                     });
 
                     setTimeout(() => {
@@ -449,7 +452,7 @@
             }
 
             $.ajax({
-                url: '{{ URL::route('received_product.delete') }}',
+                url: "{{ URL::route('received_product.delete') }}",
                 type: 'POST',
                 data: formData,
                 beforeSend: function() {
@@ -457,11 +460,9 @@
                     $('.btn-delete-yes').css("display", "none");
                 },
                 success: function(response) {
-                    var a = new PNotify({
-                        title: 'Success',
-                        text: 'Data berhasil ditambah',
-                        type: 'success',
-                        styling: 'bootstrap3'
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Data berhasil dihapus.'
                     });
 
                     setTimeout(() => {

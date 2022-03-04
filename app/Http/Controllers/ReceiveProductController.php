@@ -73,7 +73,7 @@ class ReceiveProductController extends Controller
     public function edit($id)
     {
         $received_product = ReceiveProduct::find($id);
-        $product = Product::get();
+        $product = ProductShop::with('product')->where('shop_id', Auth::user()->employee->shop_id)->get();
 
         return response()->json([
             'id' => $received_product->id,
@@ -94,7 +94,9 @@ class ReceiveProductController extends Controller
         $quantityNow = $receive_product->quantity;
 
         // $stock = ShopStock::where('product_id', $request->product_id)->first();
-        $stock = ProductShop::where('product_id', $request->product_id)->first();
+        $stock = ProductShop::where('product_id', $request->product_id)
+            ->where('shop_id', Auth::user()->employee->shop_id)
+            ->first();
 
         if ($quantity > $quantityNow) {
             $diff = $quantity - $quantityNow;
@@ -111,7 +113,7 @@ class ReceiveProductController extends Controller
         $stock->save();
 
         // update query
-        $receive_product->user_id = Auth::user()->id;
+        $receive_product->user_id = Auth::user()->employee_id;
         $receive_product->product_id = $request->product_id;
         $receive_product->price = $product->product_price_selling;
         $receive_product->quantity = $request->quantity;
@@ -140,7 +142,7 @@ class ReceiveProductController extends Controller
         $received_product = ReceiveProduct::find($request->id);
 
         // update stock
-        $stock = ShopStock::where('product_id', $received_product->product_id)->first();
+        $stock = ProductShop::where('product_id', $received_product->product_id)->first();
         $stock->stock = $stock->stock - $received_product->quantity;
         $stock->save();
 

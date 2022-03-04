@@ -2,99 +2,100 @@
 
 @section('style')
 
-<!-- Datatables -->
-<link href="{{ asset('theme/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('theme/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('theme/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('theme/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('theme/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css') }}" rel="stylesheet">
+<!-- DataTables -->
+<link rel="stylesheet" href="{{ asset('themes/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('themes/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('themes/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 
 @endsection
 
 @section('content')
 
-<!-- page content -->
-<div class="right_col" role="main">
-    <div class="">
-        <div class="page-title">
-            <div class="title_left">
-                <h3>Data Penjualan</h3>
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Data Penjualan</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Data Penjualan</li>
+                    </ol>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="clearfix"></div>
-
-        <div class="row">
-            <div class="col-md-12 col-sm-12 ">
-                <div class="x_panel">
-                    <div class="x_content">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="card-box table-responsive">
-                                    <table id="datatable" class="table table-striped table-bordered" style="width:100%">
-                                        <thead style="background-color: #2A3F54;">
-                                            <tr>
-                                                <th class="text-center text-light">No</th>
-                                                <th class="text-center text-light">Tanggal</th>
-                                                <th class="text-center text-light">Nama Kasir</th>
-                                                <th class="text-center text-light">Kode Nota</th>
-                                                <th class="text-center text-light">Total</th>
-                                                <th class="text-center text-light">Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($invoices as $key => $item)
-                                                <tr>
-                                                    <td class="text-center">{{ $key + 1 }}</td>
-                                                    <td>{{ date('d-m-Y', strtotime($item->date_recorded)) }}</td>
-                                                    <td>
-                                                        @if ($item->user)
-                                                            {{ $item->user->name }}
-                                                        @else
-                                                            User Tidak Ada
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $item->code }}</td>
-                                                    <td class="text-end">{{ rupiah($item->total_amount) }}</td>
-                                                    <td class="text-center">
-                                                        <div class="btn-group">
-                                                            <a
-                                                                class="dropdown-toggle"
-                                                                data-toggle="dropdown"
-                                                                aria-haspopup="true"
-                                                                aria-expanded="false">
-                                                                    <i class="fa fa-cog"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu dropdown-menu-right">
-                                                                <a
-                                                                    class="dropdown-item btn-detail"
-                                                                    href="#"
-                                                                    data-id="{{ $item->id }}">
-                                                                        <i class="fa fa-eye px-2"></i> Detail
-                                                                </a>
-                                                                <a
-                                                                    class="dropdown-item btn-delete"
-                                                                    href="#"
-                                                                    data-id="{{ $item->id }}">
-                                                                        <i class="fa fa-trash px-2"></i> Hapus
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+                                <thead class="bg-info">
+                                    <tr>
+                                        <th class="text-center text-light">No</th>
+                                        <th class="text-center text-light">Tanggal</th>
+                                        <th class="text-center text-light">Nama Kasir</th>
+                                        <th class="text-center text-light">Kode Nota</th>
+                                        <th class="text-center text-light">Total</th>
+                                        <th class="text-center text-light">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($invoices as $key => $item)
+                                        <tr>
+                                            <td class="text-center">{{ $key + 1 }}</td>
+                                            <td class="text-center">{{ date('d-m-Y', strtotime($item->date_recorded)) }}</td>
+                                            <td>
+                                                @if ($item->user)
+                                                    {{ $item->user->name }}
+                                                @else
+                                                    User Tidak Ada
+                                                @endif
+                                            </td>
+                                            <td>{{ $item->code }}</td>
+                                            <td class="text-right">{{ rupiah($item->total_amount) }}</td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    <a
+                                                        class="dropdown-toggle"
+                                                        data-toggle="dropdown"
+                                                        aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                            <i class="fa fa-cog"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a
+                                                            class="dropdown-item btn-detail"
+                                                            href="#"
+                                                            data-id="{{ $item->id }}">
+                                                                <i class="fa fa-eye px-2"></i> Detail
+                                                        </a>
+                                                        <a
+                                                            class="dropdown-item btn-delete"
+                                                            href="#"
+                                                            data-id="{{ $item->id }}">
+                                                                <i class="fa fa-trash px-2"></i> Hapus
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </div>
-<!-- /page content -->
 
 {{-- modal delete  --}}
 <div class="modal fade modal-delete" tabindex="-1">
@@ -109,8 +110,12 @@
                     <h5 class="modal-title">Yakin akan dihapus <span class="delete_title text-decoration-underline"></span> ?</h5>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><span aria-hidden="true">Tidak</span></button>
-                    <button type="submit" class="btn btn-primary text-center" style="width: 100px;">Ya</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 130px;"><span aria-hidden="true">Tidak</span></button>
+                    <button class="btn btn-primary btn-delete-spinner" disabled style="width: 130px; display: none;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading..
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-delete-yes text-center" style="width: 130px;">Ya</button>
                 </div>
             </form>
         </div>
@@ -119,12 +124,17 @@
 
 {{-- modal detail  --}}
 <div class="modal fade modal-detail" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <form id="form_detail">
-                <div class="modal-header" style="background-color: #32a893;">
-                    <h5 class="modal-title text-white">Detail Penjualan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Penjualan</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal">
+                            <span aria-hidden="true">x</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-1 row">
@@ -148,12 +158,12 @@
                     <div class="mb-1 row">
                         <div class="col-md-12">
                             <table id="table_two" class="table table-bordered">
-                                <thead style="background-color: #32a893;">
+                                <thead>
                                     <tr>
-                                        <th class="text-white text-center fw-bold">No</th>
-                                        <th class="text-white text-center fw-bold">Nama Produk</th>
-                                        <th class="text-white text-center fw-bold">Quantity</th>
-                                        <th class="text-white text-center fw-bold">Sub Total</th>
+                                        <th class="text-center fw-bold">No</th>
+                                        <th class="text-center fw-bold">Nama Produk</th>
+                                        <th class="text-center fw-bold">Quantity</th>
+                                        <th class="text-center fw-bold">Sub Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -170,41 +180,38 @@
     </div>
 </div>
 
-{{-- modal proses berhasil  --}}
-<div class="modal fade modal-proses" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                Proses sukses.... <i class="fa fa-check" style="color: #32a893;"></i>
-            </div>
-        </div>
-    </div>
-</div>
-
 @endsection
 
 @section('script')
 
-<!-- Datatables -->
-<script src="{{ asset('theme/vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js') }}"></script>
-<script src="{{ asset('theme/vendors/datatables.net-scroller/js/dataTables.scroller.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/jszip/dist/jszip.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/pdfmake/build/pdfmake.min.js') }}"></script>
-<script src="{{ asset('theme/vendors/pdfmake/build/vfs_fonts.js') }}"></script>
+<!-- DataTables  & Plugins -->
+<script src="{{ asset('themes/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/jszip/jszip.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/pdfmake/vfs_fonts.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('themes/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
 <script>
     $(document).ready(function() {
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+        $("#datatable").DataTable({
+            'responsive': true
+        });
 
         $('body').on('click', '.btn-detail', function(e) {
             e.preventDefault();
@@ -263,7 +270,7 @@
                 data: formData,
                 success: function(response) {
                     $('.delete_title').append(response.code);
-                    $('#delete_invoice_id').val(response.id);
+                    $('#delete_id').val(response.id);
                     $('.modal-delete').modal('show');
                 }
             });
@@ -272,22 +279,31 @@
         $('#form_delete').submit(function(e) {
             e.preventDefault();
 
-            $('.modal-delete').modal('hide');
-
             var formData = {
-                id: $('#delete_invoice_id').val(),
+                id: $('#delete_id').val(),
                 _token: CSRF_TOKEN
             }
 
             $.ajax({
-                url: '{{ URL::route('sales.delete') }}',
+                url: "{{ URL::route('sales.delete') }}",
                 type: 'POST',
                 data: formData,
+                beforeSend: function() {
+                    $('.btn-delete-spinner').css("display", "block");
+                    $('.btn-delete-yes').css("display", "none");
+                },
                 success: function(response) {
-                    $('.modal-proses').modal('show');
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Data berhasil dihapus.'
+                    });
                     setTimeout(() => {
                         window.location.reload(1);
                     }, 1000);
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + xhr.error
+                    alert('Error - ' + errorMessage);
                 }
             });
         });
