@@ -81,6 +81,7 @@ class CashierController extends Controller
 
         // update stock
         $received_product_stock = ReceiveProduct::where('product_id', $request->product_id)
+            ->where('shop_id', Auth::user()->employee->shop_id)
             ->whereNotNull('stock')
             ->where('stock', '>', 0)
             ->select(DB::raw('sum(stock) as total_stock'))
@@ -119,7 +120,7 @@ class CashierController extends Controller
         }
 
 
-        $stock = ProductShop::where('product_id', $request->product_id)->first();
+        $stock = ProductShop::where('product_id', $request->product_id)->where('shop_id', Auth::user()->employee->shop_id)->first();
         $stock->stock = $stock->stock - $request->quantity;
         $stock->save();
 
@@ -133,7 +134,7 @@ class CashierController extends Controller
         $sales = Sales::find($id);
 
         // update stock
-        $stock = ShopStock::where('product_id', $sales->product_id)->first();
+        $stock = ProductShop::where('product_id', $sales->product_id)->where('shop_id', Auth::user()->employee->shop_id)->first();
         $stock->stock = $stock->stock + $sales->quantity;
         $stock->save();
 

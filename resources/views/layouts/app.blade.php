@@ -28,7 +28,7 @@
 
     @yield('style')
 </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed {{ request()->is('cashier') ? 'sidebar-collapse' : '' }}">
     <div class="wrapper">
 
         <!-- Preloader -->
