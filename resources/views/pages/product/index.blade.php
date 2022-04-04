@@ -105,7 +105,7 @@
 
 {{-- modal create  --}}
 <div class="modal fade modal-create" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <form id="form_create">
                 <div class="modal-header">
