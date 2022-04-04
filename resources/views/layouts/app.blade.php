@@ -225,6 +225,11 @@
                                     <i class="nav-icon fas fa-box-open"></i><p>Produk</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('shop_buy.index') }}" class="nav-link {{ request()->is(['shop_buy', 'shop_buy/*']) ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-shopping-cart"></i><p>Belanja</p>
+                                </a>
+                            </li>
                             <li class="nav-item {{ request()->is('shop_transaction/*') ? 'menu-open' : '' }}">
                                 <a href="#" class="nav-link {{ request()->is('shop_transaction/*') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-arrows-alt-h"></i><p>Transaksi Toko<i class="right fas fa-angle-left"></i></p>

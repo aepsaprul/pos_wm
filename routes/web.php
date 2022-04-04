@@ -18,6 +18,7 @@ use App\Http\Controllers\ReceiveProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\ShopBuyController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -218,6 +219,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('product_shop/{id}/edit', [ProductShopController::class, 'edit'])->name('product_shop.edit');
     Route::get('product_shop/{id}/delete_btn', [ProductShopController::class, 'deleteBtn'])->name('product_shop.delete_btn');
     Route::post('product_shop/delete', [ProductShopController::class, 'delete'])->name('product_shop.delete');
+
+    // Buy
+    Route::get('shop_buy', [ShopBuyController::class, 'index'])->name('shop_buy.index');
+    Route::post('shop_buy/store', [ShopBuyController::class, 'store'])->name('shop_buy.store');
 
     // transaction shop
 
