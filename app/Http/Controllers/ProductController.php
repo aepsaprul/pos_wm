@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -30,18 +32,66 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $product = new Product;
-        $product->product_code = $request->product_code;
-        $product->product_name = $request->product_name;
-        $product->product_category_id = $request->product_category_id;
-        $product->product_price = $request->product_price;
-        $product->product_price_selling = $request->product_price_selling;
-        $product->stock = $request->stock;
-        $product->save();
+        $messages = [
+            'product_code.required' => 'Kode produk harus diisi',
+            'product_name.required' => 'Nama produk harus diisi',
+            'category_id.required' => 'Kategori harus diisi',
+            'product_price.required' => 'HPP harus diisi',
+            'weight.required' => 'HPP harus diisi',
+            'unit.required' => 'HPP harus diisi',
+            'description.required' => 'HPP harus diisi',
+            'gambar.required' => 'Gambar harus diisi',
+            'gambar.image' => 'Gambar harus diisi dengan tipe gambar',
+            'gambar.mimes' => 'Gambar harus diisi dengan format jpg/jpeg/png',
+            'gambar.max' => 'Gambar maksimal 2 Mb'
+        ];
 
-        return response()->json([
-            'status' => 'Data berhasil di simpan'
-        ]);
+        $validator = Validator::make($request->all(), [
+            'product_code' => 'required',
+            'product_name' => 'required',
+            'category_id' => 'required',
+            'product_price' => 'required',
+            'product_price_selling' => 'required',
+            'weight' => 'required',
+            'unit' => 'required',
+            'description' => 'required',
+            'image' => 'required|image|mimes:jpg,png,jpeg|max:2048'
+        ], $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->errors()
+            ]);
+        } else {
+            $price = str_replace(".", "", $request->product_price);
+            $price_selling = str_replace(".", "", $request->product_price_selling);
+
+            $product = new Product;
+            $product->product_code = $request->product_code;
+            $product->product_name = $request->product_name;
+            $product->product_category_id = $request->category_id;
+            $product->product_price = $price;
+            $product->product_price_selling = $price_selling;
+            $product->weight = $request->weight;
+            $product->unit = $request->unit;
+            $product->description = $request->description;
+            $product->video = $request->video;
+
+            if($request->hasFile('image')) {
+                $file = $request->file('image');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time() . "." . $extension;
+                $file->move('image/', $filename);
+                $product->image = $filename;
+            }
+
+            $product->save();
+
+            return response()->json([
+                'status' => 'Data berhasil di simpan'
+            ]);
+        }
     }
 
     public function edit($id)
@@ -49,39 +99,39 @@ class ProductController extends Controller
         $product = Product::find($id);
         $category = ProductCategory::get();
 
-        if ($product->product_price == null) {
-            $product_price = 0;
-        } else {
-            $product_price = $product->product_price;
-        }
-
-        if ($product->product_price_selling == null) {
-            $product_price_selling = 0;
-        } else {
-            $product_price_selling = $product->product_price_selling;
-        }
-
         return response()->json([
-            'product_id' => $product->id,
-            'product_code' => $product->product_code,
-            'product_name' => $product->product_name,
-            'product_category_id' => $product->product_category_id,
-            'product_price' => $product_price,
-            'product_price_selling' => $product_price_selling,
-            'stock' => $product->stock,
+            'product' => $product,
             'categories' => $category
         ]);
     }
 
     public function update(Request $request)
     {
+        $price = str_replace(".", "", $request->product_price);
+        $price_selling = str_replace(".", "", $request->product_price_selling);
+
         $product = Product::find($request->id);
         $product->product_code = $request->product_code;
         $product->product_name = $request->product_name;
-        $product->product_category_id = $request->product_category_id;
-        $product->product_price = $request->product_price;
-        $product->product_price_selling = $request->product_price_selling;
-        $product->stock = $request->stock;
+        $product->product_category_id = $request->category_id;
+        $product->product_price = $price;
+        $product->product_price_selling = $price_selling;
+        $product->weight = $request->weight;
+        $product->unit = $request->unit;
+        $product->description = $request->description;
+        $product->video = $request->video;
+
+        if($request->hasFile('image')) {
+            if (file_exists(public_path("image/" . $product->image))) {
+                File::delete(public_path("image/" . $product->image));
+            }
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . "." . $extension;
+            $file->move('image/', $filename);
+            $product->image = $filename;
+        }
+
         $product->save();
 
         return response()->json([

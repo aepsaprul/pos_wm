@@ -62,7 +62,11 @@
                                         <td class="text-center">{{ $key + 1 }}</td>
                                         <td>{{ $item->product_code }}</td>
                                         <td>{{ $item->product_name }}</td>
-                                        <td>{{ $item->category->category_name }}</td>
+                                        <td>
+                                            @if ($item->category)
+                                                {{ $item->category->category_name }}
+                                            @endif
+                                        </td>
                                         <td class="text-right">{{ rupiah($item->product_price) }}</td>
                                         <td class="text-right">{{ rupiah($item->product_price_selling) }}</td>
                                         <td class="text-center">{{ $item->stock }}</td>
@@ -103,129 +107,140 @@
     </section>
 </div>
 
-{{-- modal create  --}}
-<div class="modal fade modal-create" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+<!-- Modal -->
+<div class="modal fade modal-form" id="modal-default" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <form id="form_create">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Produk</h5>
-                    <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal">
-                            <span aria-hidden="true">x</span>
-                    </button>
-                </div>
+            <form id="form" method="post" enctype="multipart/form-data" class="form-create">
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="create_product_code" class="form-label">Kode Produk</label>
-                        <input type="text" class="form-control form-control-sm" id="create_product_code" name="create_product_code" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="create_product_name" class="form-label">Nama Produk</label>
-                        <input type="text" class="form-control form-control-sm" id="create_product_name" name="create_product_name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="create_product_category_id" class="form-label">Kategori</label>
-                        <select name="create_product_category_id" id="create_product_category_id" class="form-control form-control-sm select_category_create">
 
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="create_product_price" class="form-label">HPP</label>
-                        <input type="text" class="form-control form-control-sm" id="create_product_price" name="create_product_price">
-                    </div>
-                    <div class="mb-3">
-                        <label for="create_product_price_selling" class="form-label">Harga Jual</label>
-                        <input type="text" class="form-control form-control-sm" id="create_product_price_selling" name="create_product_price_selling">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary btn-create-spinner" disabled style="width: 130px; display: none;">
-                        <span class="spinner-grow spinner-grow-sm"></span>
-                        Loading..
-                    </button>
-                    <button type="submit" class="btn btn-primary btn-create-save" style="width: 130px;"><i class="fa fa-save"></i> Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                    {{-- id --}}
+                    <input type="hidden" id="id" name="id">
 
-{{-- modal edit  --}}
-<div class="modal fade modal-edit" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form id="form_edit">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card card-primary card-outline">
+                                <div class="card-body box-profile pb-3">
+                                    <div class="text-center profile_img">
+                                        <img
+                                            class="profile-user-img img-fluid img-circle"
+                                            src="{{ asset('assets/image_not_found.jpg') }}"
+                                            alt="User profile picture">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="image">Gambar</label>
+                                        <input type="file" id="image" name="image" class="form-control" >
+                                        <small id="error_image" class="form-text text-danger"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="product_code">Kode Produk</label>
+                                        <input type="text" id="product_code" name="product_code" class="form-control" readonly>
+                                        <small id="error_product_code" class="form-text text-danger"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="video">Video</label>
+                                        <input type="text" id="video" name="video" class="form-control" maxlength="30" >
+                                        <small id="error_video" class="form-text text-danger"></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card card-primary card-outline pb-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="product_name">Nama Produk</label>
+                                                <input type="text" id="product_name" name="product_name" class="form-control" maxlength="30">
+                                                <small id="error_product_name" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="category_id">Kategori Produk</label>
+                                                <select name="category_id" id="category_id" class="form-control select_category">
 
-                {{-- id  --}}
-                <input type="hidden" id="edit_product_id" name="edit_product_id">
-
-                <div class="modal-header">
-                    <h5 class="modal-title">Ubah Produk</h5>
-                    <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal">
-                            <span aria-hidden="true">x</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="edit_product_code" class="form-label">Kode Produk</label>
-                        <input type="text" class="form-control form-control-sm" id="edit_product_code" name="edit_product_code" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_product_name" class="form-label">Nama Produk</label>
-                        <input type="text" class="form-control form-control-sm" id="edit_product_name" name="edit_product_name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_product_category_id" class="form-label">Kategori</label>
-                        <div class="edit_product_category_id">
-                            {{-- value in jquery  --}}
+                                                </select>
+                                                <small id="error_category_id" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="product_price">HPP</label>
+                                                <input type="text" id="product_price" name="product_price" class="form-control" maxlength="16" >
+                                                <small id="error_product_price" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="product_price_selling">Harga Jual</label>
+                                                <input type="text" id="product_price_selling" name="product_price_selling" class="form-control">
+                                                <small id="error_product_price_selling" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="weight">Bobot</label>
+                                                <input type="text" id="weight" name="weight" class="form-control" maxlength="16" >
+                                                <small id="error_weight" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="unit">Satuan</label>
+                                                <input type="text" id="unit" name="unit" class="form-control" maxlength="30" >
+                                                <small id="error_unit" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="description">Deskripsi</label>
+                                                <textarea name="description" id="description" cols="30" rows="4" class="form-control"></textarea>
+                                                <small id="error_description" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="edit_product_price" class="form-label">HPP</label>
-                        <input type="text" class="form-control form-control-sm" id="edit_product_price" name="edit_product_price">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_product_price_selling" class="form-label">Harga Jual</label>
-                        <input type="text" class="form-control form-control-sm" id="edit_product_price_selling" name="edit_product_price_selling">
-                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary btn-edit-spinner" disabled style="width: 130px; display: none;">
-                        <span class="spinner-grow spinner-grow-sm"></span>
-                        Loading..
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 130px;">
+                        <i class="fas fa-times"></i> Tutup
                     </button>
-                    <button type="submit" class="btn btn-primary btn-edit-save" style="width: 130px;"><i class="fa fa-save"></i> Perbaharui</button>
+                    <button class="btn btn-primary btn-spinner d-none" disabled style="width: 130px;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading...
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-save" style="width: 130px;">
+                        <i class="fas fa-save"></i> <span class="modal-btn">Simpan</span>
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-{{-- modal delete  --}}
-<div class="modal fade modal-delete" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+{{-- modal delete --}}
+<div class="modal fade modal-delete" id="modal-default">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <form id="form_delete">
-
-                {{-- id  --}}
-                <input type="hidden" id="delete_id" name="delete_id">
-
+            <form id="form-delete">
+                <input type="hidden" id="delete_id" name="id">
                 <div class="modal-header">
-                    <h5 class="modal-title">Yakin akan dihapus <span class="delete_title text-decoration-underline"></span> ?</h5>
+                    <h5 class="modal-title">Yakin akan dihapus?</h5>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 130px;"><span aria-hidden="true">Tidak</span></button>
-                    <button class="btn btn-primary btn-delete-spinner" disabled style="width: 130px; display: none;">
+                    <button class="btn btn-danger" type="button" data-dismiss="modal" style="width: 130px;"><span aria-hidden="true">Tidak</span></button>
+                    <button class="btn btn-primary btn-delete-spinner d-none" disabled style="width: 130px;">
                         <span class="spinner-grow spinner-grow-sm"></span>
-                        Loading..
+                        Loading...
                     </button>
-                    <button type="submit" class="btn btn-primary btn-delete-yes text-center" style="width: 130px;">Ya</button>
+                    <button type="submit" class="btn btn-primary btn-delete-save text-center" style="width: 130px;">
+                        Ya
+                    </button>
                 </div>
             </form>
         </div>
@@ -254,13 +269,39 @@
 
 <script>
     $(document).ready(function() {
-        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         var Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 3000
+            timer: 2000
+        });
+
+        $('input[type="file"][name="image"]').on('change', function() {
+            var img_path = $(this)[0].value;
+            var img_holder = $('.profile_img');
+            var currentImagePath = $(this).data('value');
+            var extension = img_path.substring(img_path.lastIndexOf('.')+1).toLowerCase();
+            if (extension == 'jpg' || extension == 'jpeg' || extension == 'png') {
+                if (typeof(FileReader) != 'undefind') {
+                    img_holder.empty();
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('<img/>', {'src':e.target.result, 'class':'profile-user-img img-fluid img-circle'}).appendTo(img_holder);
+                    }
+                    img_holder.show();
+                    reader.readAsDataURL($(this)[0].files[0]);
+                } else {
+                    $(img_holder).html('Browser tidak support FileReader');
+                }
+            } else {
+                $(img_holder).html(currentImagePath);
+            }
         });
 
         $("#datatable").DataTable({
@@ -268,79 +309,100 @@
         });
 
         $('#button-create').on('click', function() {
-            $('.create_product_category_id').empty();
-
-            var formData = {
-                _token: CSRF_TOKEN
-            }
+            $('#category_id').empty();
 
             $.ajax({
                 url: "{{ URL::route('product.create') }}",
                 type: 'GET',
-                data: formData,
                 success: function(response) {
-                    $('#create_product_code').val(response.product_code);
+                    $('#product_code').val(response.product_code);
 
                     var value = "<option value=\"\">--Pilih Kategori--</option>";
                     $.each(response.categories, function(index, item) {
                         value += "<option value=\"" + item.id + "\">" + item.category_name + "</option>";
                     });
-                    $('#create_product_category_id').append(value);
-                    $('.modal-create').modal('show');
+                    $('#category_id').append(value);
+                    $('.modal-form').modal('show');
                 }
             });
         });
 
-        $(document).on('shown.bs.modal', '.modal-create', function() {
-            $('#create_product_name').focus();
+        $(document).on('shown.bs.modal', '.modal-form', function() {
+            $('#product_name').focus();
 
-            $('.select_category_create').select2({
-                dropdownParent: $('.modal-create')
+            $('.select_category').select2({
+                theme: 'bootstrap4',
+                dropdownParent: $('.modal-form')
             });
 
-            var price = document.getElementById("create_product_price");
+            var price = document.getElementById("product_price");
             price.addEventListener("keyup", function(e) {
                 price.value = formatRupiah(this.value, "");
             });
 
-            var price_selling = document.getElementById("create_product_price_selling");
+            var price_selling = document.getElementById("product_price_selling");
             price_selling.addEventListener("keyup", function(e) {
                 price_selling.value = formatRupiah(this.value, "");
             });
         });
 
 
-        $('#form_create').submit(function(e) {
+        $(document).on('submit', '.form-create', function (e) {
             e.preventDefault();
 
-            var formData = {
-                product_code: $('#create_product_code').val(),
-                product_name: $('#create_product_name').val(),
-                product_category_id: $('#create_product_category_id').val(),
-                product_price: $('#create_product_price').val().replace(/\./g,''),
-                product_price_selling: $('#create_product_price_selling').val().replace(/\./g,''),
-                _token: CSRF_TOKEN
-            }
+            $('#error_product_code').empty();
+            $('#error_product_name').empty();
+            $('#error_category_id').empty();
+            $('#error_product_price').empty();
+            $('#error_product_price_selling').empty();
+            $('#error_weight').empty();
+            $('#error_description').empty();
+            $('#error_unit').empty();
+            $('#error_video').empty();
+            $('#error_image').empty();
+
+            let formData = new FormData($('#form')[0]);
 
             $.ajax({
                 url: "{{ URL::route('product.store') }} ",
                 type: 'POST',
                 data: formData,
+                contentType: false,
+                processData: false,
                 beforeSend: function() {
-                    $('.btn-create-spinner').css("display", "block");
-                    $('.btn-create-save').css("display", "none");
+                    $('.btn-spinner').removeClass('d-none');
+                    $('.btn-save').addClass('d-none');
                 },
                 success: function(response) {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Data berhasil ditambah.'
-                    });
-                    setTimeout(() => {
-                        window.location.reload(1);
-                    }, 1000);
+                    if (response.status == 400) {
+                        $('#error_product_code').append(response.errors.product_code);
+                        $('#error_product_name').append(response.errors.product_name);
+                        $('#error_category_id').append(response.errors.product_category_id);
+                        $('#error_product_price').append(response.errors.product_price);
+                        $('#error_product_price_selling').append(response.errors.product_price_selling);
+                        $('#error_weight').append(response.errors.weight);
+                        $('#error_description').append(response.errors.description);
+                        $('#error_unit').append(response.errors.unit);
+                        $('#error_video').append(response.errors.video);
+                        $('#error_image').append(response.errors.image);
+
+                        setTimeout(() => {
+                            $('.btn-spinner').addClass('d-none');
+                            $('.btn-save').removeClass('d-none');
+                        }, 1000);
+                    } else {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Data behasil ditambah'
+                        });
+
+                        setTimeout(() => {
+                            window.location.reload(1);
+                        }, 1000);
+                    }
                 },
                 error: function(xhr, status, error){
-                    var errorMessage = xhr.status + ': ' + xhr.error
+                    var errorMessage = xhr.status + ': ' + error
                     alert('Error - ' + errorMessage);
                 }
             });
@@ -348,15 +410,15 @@
 
         $('body').on('click', '.btn-edit', function(e) {
             e.preventDefault();
-            $('.edit_product_category_id').empty();
+            $('.modal-title').empty();
+            $('.modal-btn').empty();
 
             var id = $(this).attr('data-id');
             var url = '{{ route("product.edit", ":id") }}';
             url = url.replace(':id', id );
 
             var formData = {
-                id: id,
-                _token: CSRF_TOKEN
+                id: id
             }
 
             $.ajax({
@@ -364,68 +426,73 @@
                 type: 'GET',
                 data: formData,
                 success: function(response) {
-                    $('#edit_product_id').val(response.product_id);
-                    $('#edit_product_code').val(response.product_code);
-                    $('#edit_product_name').val(response.product_name);
-                    $('#edit_product_category_id').val(response.product_category_id);
-                    $('#edit_product_price').val(format_rupiah(response.product_price));
-                    $('#edit_product_price_selling').val(format_rupiah(response.product_price_selling));
+                    $('#form').removeClass('form-create');
+                    $('#form').addClass('form-edit');
+                    $('.modal-title').append("Ubah Data Role")
+                    $('.modal-btn').append("Perbaharui");
 
-                    var value = "<select name=\"edit_product_category_id\" id=\"edit_product_category_id\" class=\"form-control form-control-sm select_category_edit\">";
+                    $('#id').val(response.product.id);
+                    $('#product_code').val(response.product.product_code);
+                    $('#product_name').val(response.product.product_name);
+                    $('#product_price').val(format_rupiah(response.product.product_price));
+                    $('#product_price_selling').val(format_rupiah(response.product.product_price_selling));
+                    $('#weight').val(response.product.weight);
+                    $('#unit').val(response.product.unit);
+                    $('#description').val(response.product.description);
+                    $('#video').val(response.product.video);
+
+                    $('.profile_img img').prop("src", "{{ URL::to('') }}" + "/image/" + response.product.image);
+
+                    var value = "<option value=\"\">-- Pilih Kategori --</option>";
                     $.each(response.categories, function(index, item) {
                         value += "<option value=\"" + item.id + "\"";
                         // sesuai kategori yg terpilih
-                        if (item.id === response.product_category_id) {
+                        if (item.id === response.product.product_category_id) {
                             value += "selected";
                         }
                         value += ">" + item.category_name + "</option>";
                     });
                     value += "</select>";
-                    $('.edit_product_category_id').append(value);
+                    $('#category_id').append(value);
 
-                    $('.modal-edit').modal('show');
+                    $('.modal-form').modal('show');
                 }
             })
         });
 
-        $(document).on('shown.bs.modal', '.modal-edit', function() {
+        $(document).on('shown.bs.modal', '.modal-form', function() {
             $('#edit_product_name').focus();
 
-            $('.select_category_edit').select2({
-                dropdownParent: $('.modal-edit')
+            $('.select_category').select2({
+                theme: 'bootstrap4',
+                dropdownParent: $('.modal-form')
             });
 
-            var price = document.getElementById("edit_product_price");
+            var price = document.getElementById("product_price");
             price.addEventListener("keyup", function(e) {
                 price.value = formatRupiah(this.value, "");
             });
 
-            var price_selling = document.getElementById("edit_product_price_selling");
+            var price_selling = document.getElementById("product_price_selling");
             price_selling.addEventListener("keyup", function(e) {
                 price_selling.value = formatRupiah(this.value, "");
             });
         });
 
-        $('#form_edit').submit(function(e) {
+        $(document).on('submit', '.form-edit', function (e) {
             e.preventDefault();
 
-            var formData = {
-                id: $('#edit_product_id').val(),
-                product_code: $('#edit_product_code').val(),
-                product_name: $('#edit_product_name').val(),
-                product_category_id: $('#edit_product_category_id').val(),
-                product_price: $('#edit_product_price').val().replace(/\./g,''),
-                product_price_selling: $('#edit_product_price_selling').val().replace(/\./g,''),
-                _token: CSRF_TOKEN
-            }
+            let formData = new FormData($('#form')[0]);
 
             $.ajax({
                 url: "{{ URL::route('product.update') }}",
                 type: 'POST',
                 data: formData,
+                contentType: false,
+                processData: false,
                 beforeSend: function() {
-                    $('.btn-edit-spinner').css("display", "block");
-                    $('.btn-edit-save').css("display", "none");
+                    $('.btn-spinner').removeClass('d-none');
+                    $('.btn-save').addClass('d-none');
                 },
                 success: function(response) {
                     Toast.fire({
@@ -437,7 +504,7 @@
                     }, 1000);
                 },
                 error: function(xhr, status, error){
-                    var errorMessage = xhr.status + ': ' + xhr.error
+                    var errorMessage = xhr.status + ': ' + error
                     alert('Error - ' + errorMessage);
                 }
             });
