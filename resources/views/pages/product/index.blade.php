@@ -61,7 +61,9 @@
                                     <tr>
                                         <td class="text-center">{{ $key + 1 }}</td>
                                         <td>{{ $item->product_code }}</td>
-                                        <td>{{ $item->product_name }}</td>
+                                        <td>
+                                            <a href="#" class="btn-detail" data-id="{{ $item->id }}">{{ $item->product_name }}</a>
+                                        </td>
                                         <td>
                                             @if ($item->category)
                                                 {{ $item->category->category_name }}
@@ -112,6 +114,15 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <form id="form" method="post" enctype="multipart/form-data" class="form-create">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Data Produk</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal">
+                            <span aria-hidden="true">x</span>
+                    </button>
+                </div>
                 <div class="modal-body">
 
                     {{-- id --}}
@@ -124,7 +135,7 @@
                                     <div class="text-center profile_img">
                                         <img
                                             class="profile-user-img img-fluid img-circle"
-                                            src="{{ asset('assets/image_not_found.jpg') }}"
+                                            src="{{ asset('public/assets/image_not_found.jpg') }}"
                                             alt="User profile picture">
                                     </div>
                                     <div class="form-group">
@@ -206,10 +217,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 130px;">
-                        <i class="fas fa-times"></i> Tutup
-                    </button>
+                <div class="modal-footer">
                     <button class="btn btn-primary btn-spinner d-none" disabled style="width: 130px;">
                         <span class="spinner-grow spinner-grow-sm"></span>
                         Loading...
@@ -308,14 +316,43 @@
             'responsive': true
         });
 
+        // create
         $('#button-create').on('click', function() {
             $('#category_id').empty();
+            $('.modal-title').empty();
+            $('.modal-btn').empty();
 
             $.ajax({
                 url: "{{ URL::route('product.create') }}",
                 type: 'GET',
                 success: function(response) {
+                    $('#form').removeClass('form-edit');
+                    $('#form').addClass('form-create');
+                    $('.modal-title').append("Tambah Data Produk");
+                    $('.modal-btn').append("Simpan");
+                    $('.modal-footer').removeClass("d-none");
+
                     $('#product_code').val(response.product_code);
+                    $('#id').val("");
+                    $('#product_name').val("");
+                    $('#product_price').val("");
+                    $('#product_price_selling').val("");
+                    $('#weight').val("");
+                    $('#unit').val("");
+                    $('#description').val("");
+                    $('#video').val("");
+                    $('#image').val("");
+
+                    $('#id').prop('readonly', false);
+                    $('#product_name').prop('readonly', false);
+                    $('#product_price').prop('readonly', false);
+                    $('#product_price_selling').prop('readonly', false);
+                    $('#weight').prop('readonly', false);
+                    $('#unit').prop('readonly', false);
+                    $('#description').prop('readonly', false);
+                    $('#video').prop('readonly', false);
+                    $('#category_id').prop('disabled', false);
+                    $('#image').prop('disabled', false);
 
                     var value = "<option value=\"\">--Pilih Kategori--</option>";
                     $.each(response.categories, function(index, item) {
@@ -408,6 +445,7 @@
             });
         });
 
+        // edit
         $('body').on('click', '.btn-edit', function(e) {
             e.preventDefault();
             $('.modal-title').empty();
@@ -428,8 +466,9 @@
                 success: function(response) {
                     $('#form').removeClass('form-create');
                     $('#form').addClass('form-edit');
-                    $('.modal-title').append("Ubah Data Role")
+                    $('.modal-title').append("Ubah Data Produk");
                     $('.modal-btn').append("Perbaharui");
+                    $('.modal-footer').removeClass("d-none");
 
                     $('#id').val(response.product.id);
                     $('#product_code').val(response.product.product_code);
@@ -441,7 +480,18 @@
                     $('#description').val(response.product.description);
                     $('#video').val(response.product.video);
 
-                    $('.profile_img img').prop("src", "{{ URL::to('') }}" + "/image/" + response.product.image);
+                    $('#id').prop('readonly', false);
+                    $('#product_name').prop('readonly', false);
+                    $('#product_price').prop('readonly', false);
+                    $('#product_price_selling').prop('readonly', false);
+                    $('#weight').prop('readonly', false);
+                    $('#unit').prop('readonly', false);
+                    $('#description').prop('readonly', false);
+                    $('#video').prop('readonly', false);
+                    $('#category_id').prop('disabled', false);
+                    $('#image').prop('disabled', false);
+
+                    $('.profile_img img').prop("src", "{{ URL::to('') }}" + "/public/image/" + response.product.image);
 
                     var value = "<option value=\"\">-- Pilih Kategori --</option>";
                     $.each(response.categories, function(index, item) {
@@ -510,6 +560,72 @@
             });
         });
 
+        // detail
+        $('body').on('click', '.btn-detail', function(e) {
+            e.preventDefault();
+            $('.modal-title').empty();
+            $('.modal-btn').empty();
+
+            var id = $(this).attr('data-id');
+            var url = '{{ route("product.show", ":id") }}';
+            url = url.replace(':id', id );
+
+            var formData = {
+                id: id
+            }
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: formData,
+                success: function(response) {
+                    $('#form').removeClass('form-create');
+                    $('#form').addClass('form-edit');
+                    $('.modal-title').append("Detail Data Produk");
+                    $('.modal-footer').addClass("d-none");
+
+                    $('#id').val(response.product.id);
+                    $('#product_code').val(response.product.product_code);
+                    $('#product_name').val(response.product.product_name);
+                    $('#product_price').val(format_rupiah(response.product.product_price));
+                    $('#product_price_selling').val(format_rupiah(response.product.product_price_selling));
+                    $('#weight').val(response.product.weight);
+                    $('#unit').val(response.product.unit);
+                    $('#description').val(response.product.description);
+                    $('#video').val(response.product.video);
+
+                    $('#id').prop('readonly', true);
+                    $('#product_code').prop('readonly', true);
+                    $('#product_name').prop('readonly', true);
+                    $('#product_price').prop('readonly', true);
+                    $('#product_price_selling').prop('readonly', true);
+                    $('#weight').prop('readonly', true);
+                    $('#unit').prop('readonly', true);
+                    $('#description').prop('readonly', true);
+                    $('#video').prop('readonly', true);
+                    $('#category_id').prop('disabled', true);
+                    $('#image').prop('disabled', true);
+
+                    $('.profile_img img').prop("src", "{{ URL::to('') }}" + "/public/image/" + response.product.image);
+
+                    var value = "<option value=\"\">-- Pilih Kategori --</option>";
+                    $.each(response.categories, function(index, item) {
+                        value += "<option value=\"" + item.id + "\"";
+                        // sesuai kategori yg terpilih
+                        if (item.id === response.product.product_category_id) {
+                            value += "selected";
+                        }
+                        value += ">" + item.category_name + "</option>";
+                    });
+                    value += "</select>";
+                    $('#category_id').append(value);
+
+                    $('.modal-form').modal('show');
+                }
+            })
+        });
+
+        // delete
         $('body').on('click', '.btn-delete', function(e) {
             e.preventDefault();
 
@@ -520,8 +636,7 @@
             url = url.replace(':id', id );
 
             var formData = {
-                id: id,
-                _token: CSRF_TOKEN
+                id: id
             }
 
             $.ajax({
@@ -540,8 +655,7 @@
             e.preventDefault();
 
             var formData = {
-                id: $('#delete_id').val(),
-                _token: CSRF_TOKEN
+                id: $('#delete_id').val()
             }
 
             $.ajax({
@@ -562,7 +676,7 @@
                     }, 1000);
                 },
                 error: function(xhr, status, error){
-                    var errorMessage = xhr.status + ': ' + xhr.error
+                    var errorMessage = xhr.status + ': ' + error
                     alert('Error - ' + errorMessage);
                 }
             });

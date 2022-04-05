@@ -82,7 +82,7 @@ class ProductController extends Controller
                 $file = $request->file('image');
                 $extension = $file->getClientOriginalExtension();
                 $filename = time() . "." . $extension;
-                $file->move('image/', $filename);
+                $file->move('public/image/', $filename);
                 $product->image = $filename;
             }
 
@@ -92,6 +92,17 @@ class ProductController extends Controller
                 'status' => 'Data berhasil di simpan'
             ]);
         }
+    }
+
+    public function show($id)
+    {
+        $product = Product::find($id);
+        $category = ProductCategory::get();
+
+        return response()->json([
+            'product' => $product,
+            'categories' => $category
+        ]);
     }
 
     public function edit($id)
@@ -122,13 +133,13 @@ class ProductController extends Controller
         $product->video = $request->video;
 
         if($request->hasFile('image')) {
-            if (file_exists(public_path("image/" . $product->image))) {
-                File::delete(public_path("image/" . $product->image));
+            if (file_exists("public/image/" . $product->image)) {
+                File::delete("public/image/" . $product->image);
             }
             $file = $request->file('image');
             $extension = $file->getClientOriginalExtension();
             $filename = time() . "." . $extension;
-            $file->move('image/', $filename);
+            $file->move('public/image/', $filename);
             $product->image = $filename;
         }
 
@@ -152,6 +163,11 @@ class ProductController extends Controller
     public function delete(Request $request)
     {
         $product = Product::find($request->id);
+
+        if (file_exists("public/image/" . $product->image)) {
+            File::delete("public/image/" . $product->image);
+        }
+
         $product->delete();
 
         return response()->json([

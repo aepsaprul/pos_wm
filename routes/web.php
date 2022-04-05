@@ -123,6 +123,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('master/product', [ProductController::class, 'index'])->name('product.index');
         Route::get('master/product/create', [ProductController::class, 'create'])->name('product.create');
         Route::post('master/product/store', [ProductController::class, 'store'])->name('product.store');
+        Route::get('master/product/{id}/show', [ProductController::class, 'show'])->name('product.show');
         Route::post('master/product/update', [ProductController::class, 'update'])->name('product.update');
         Route::get('master/product/{id}/edit', [ProductController::class, 'edit'])->name('product.edit');
         Route::get('master/product/{id}/delete_btn', [ProductController::class, 'deleteBtn'])->name('product.delete_btn');
