@@ -7,7 +7,7 @@
     <title>Faktur</title>
 
     <!-- Styles -->
-    <link href="{{ asset('lib/bootstrap-5/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/lib/bootstrap-5/bootstrap.min.css') }}" rel="stylesheet">
 
     <style>
         .invoice_code,
@@ -74,9 +74,9 @@
     </div>
 
 
-    <script src="{{ asset('lib/bootstrap-5/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('lib/datatables/js/jquery-3.5.1.js') }}"></script>
-    <script src="{{ asset('lib/fontawesome-5/js/fontawesome.min.js') }}"></script>
+    <script src="{{ asset('public/lib/bootstrap-5/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('public/lib/datatables/js/jquery-3.5.1.js') }}"></script>
+    <script src="{{ asset('public/lib/fontawesome-5/js/fontawesome.min.js') }}"></script>
 
     <script>
         window.print();

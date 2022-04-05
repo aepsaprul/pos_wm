@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('style')
+
 <link href="{{ asset('lib/datatables/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('lib/select2/css/select2.min.css') }}">
 
@@ -17,6 +18,7 @@
         padding: .2rem .6rem;
     }
 </style>
+
 @endsection
 
 @section('content')

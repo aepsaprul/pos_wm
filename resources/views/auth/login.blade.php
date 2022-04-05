@@ -3,17 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{{ asset('themes/dist/img/logo-daun.png') }}" rel="icon" type="image/x-icon">
+    <link href="{{ asset('public/themes/dist/img/logo-daun.png') }}" rel="icon" type="image/x-icon">
     <title>{{ config('app.name', 'Abata') }}</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="{{ asset('themes/plugins/font-google/font-google.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/plugins/font-google/font-google.css') }}">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ asset('themes/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="{{ asset('themes/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('themes/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/dist/css/adminlte.min.css') }}">
     <style>
         .login-page {
             background-image: url('https://bing.biturl.top/?resolution=1920&format=image&index=0&mkt=zh-CN');
@@ -38,7 +38,7 @@
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <img src="{{ asset('assets/store.png') }}" alt="Logo">
+                <img src="{{ asset('public/assets/store.png') }}" alt="Logo">
             </div>
             <div class="card-body">
                 <form action="{{ route('login') }}" method="post">
@@ -92,10 +92,10 @@
     </div>
 
     <!-- jQuery -->
-    <script src="{{ asset('themes/plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('public/themes/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->
-    <script src="{{ asset('themes/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('public/themes/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
-    <script src="{{ asset('themes/dist/js/adminlte.min.js') }}"></script>
+    <script src="{{ asset('public/themes/dist/js/adminlte.min.js') }}"></script>
 </body>
 </html>

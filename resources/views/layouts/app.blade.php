@@ -9,22 +9,22 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{{ asset('assets/store.png') }}" rel="icon" type="image/x-icon">
+    <link href="{{ asset('public/assets/store.png') }}" rel="icon" type="image/x-icon">
     <title>{{ config('app.name', 'E - SPK') }}</title>
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="{{ asset('themes/plugins/font-google/font-google.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/plugins/font-google/font-google.css') }}">
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="{{ asset('themes/plugins/fontawesome-free/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{ asset('themes/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="{{ asset('themes/plugins/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/plugins/sweetalert2/sweetalert2.min.css') }}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('themes/dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/themes/dist/css/adminlte.min.css') }}">
 
     @yield('style')
 </head>
@@ -33,7 +33,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__wobble" src="{{ asset('assets/store.png') }}" alt="AdminLTELogo" height="60" width="60">
+            <img class="animation__wobble" src="{{ asset('public/assets/store.png') }}" alt="AdminLTELogo" height="60" width="60">
         </div>
 
         <!-- Navbar -->
@@ -87,7 +87,7 @@
         <aside class="main-sidebar sidebar-light-primary elevation-2">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
-                <img src="{{ asset('assets/store.png') }}" alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
+                <img src="{{ asset('public/assets/store.png') }}" alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
                 <span class="brand-text font-weight-light">Aplikasi POS</span>
             </a>
 
@@ -96,7 +96,7 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ asset('assets/user.png') }}" class="img-circle" alt="User Image">
+                        <img src="{{ asset('public/assets/user.png') }}" class="img-circle" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">{{ Auth::user()->name }}</a>
@@ -319,15 +319,15 @@
 
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->
-    <script src="{{ asset('themes/plugins/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('public/themes/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap -->
-    <script src="{{ asset('themes/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('public/themes/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- overlayScrollbars -->
-    <script src="{{ asset('themes/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+    <script src="{{ asset('public/themes/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- SweetAlert2 -->
-    <script src="{{ asset('themes/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('public/themes/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <!-- AdminLTE App -->
-    <script src="{{ asset('themes/dist/js/adminlte.js') }}"></script>
+    <script src="{{ asset('public/themes/dist/js/adminlte.js') }}"></script>
 
     <script>
         function format_rupiah(bilangan) {

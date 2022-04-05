@@ -3,7 +3,7 @@
 @section('style')
 
 {{-- select2 --}}
-<link rel="stylesheet" href="{{ asset('theme/vendors/select2/dist/css/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('public/themes/vendors/select2/dist/css/select2.min.css') }}">
 
 @endsection
 
@@ -229,7 +229,7 @@
 @section('script')
 
 {{-- select2 --}}
-<script src="{{ asset('theme/vendors/select2/dist/js/select2.min.js') }}"></script>
+<script src="{{ asset('public/themes/vendors/select2/dist/js/select2.min.js') }}"></script>
 
 <script>
     $(document).ready(function() {
