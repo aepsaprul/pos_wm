@@ -30,7 +30,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('shop_buy.search')  }}" method="POST">
+                            <form action="{{ route('shop_buy.search') }}" method="POST">
                                 <div class="row mb-3 d-flex justify-content-center">
                                     @csrf
                                     <div class="col-lg-4 col-md-4">
@@ -49,7 +49,7 @@
                                 @foreach ($products as $item)
                                     <div class="col-lg-2 col-md-3 col-sm-4 col-12 mt-3">
                                         <div class="elevation-1">
-                                            <a href="#" class="text-secondary">
+                                            <a href="#" class="text-secondary product">
                                                 @if (file_exists("public/image/" . $item->image))
                                                     <img src="{{ asset('public/image/' . $item->image) }}" alt="" style="width: 100%;">
                                                 @else
@@ -71,14 +71,127 @@
                         </div>
                     </div>
                     {{ $products->links() }}
-                </div>
+                </div>>
             </div>
         </div>
     </div>
 </section>
 
+<!-- Modal -->
+<div class="modal fade modal-form" id="modal-default" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form id="form" method="post" enctype="multipart/form-data" class="form-create">
+                <div class="modal-body">
+
+                    {{-- id --}}
+                    <input type="hidden" id="id" name="id">
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="text-center profile_img">
+                                <img
+                                    class=""
+                                    src="{{ asset('public/assets/image_not_found.jpg') }}"
+                                    alt="User profile picture">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <h3>Minyak Goreg Bimoli</h3>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <small>Terjual</small>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <h3>Rp. 130.000 / kg</h3>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <h6>Detail</h6>
+                                    <textarea name="detail" id="detail" class="form-control rounded-0" cols="30" rows="12"></textarea>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-3">
+                                    <medium>Quantity</medium>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 mt-3">
+                                    <div class="d-flex justify-content-between">
+                                        <div style="width: 150px;">
+                                            <div class="d-flex justify-content-between quantity buttons_added">
+                                                <button type="button" class="minus btn btn-outline-primary rounded-0" style="font-size: 10px;"><i class="fas fa-minus"></i></button>
+                                                <input type="text" step="1" min="0" max="30" name="quantity" value="8" title="Qty" class="form-control rounded-0 text-center qty text" size="4" pattern="" inputmode="" />
+                                                <button type="button" class="plus btn btn-outline-primary rounded-0" style="font-size: 10px;"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="d-flex justify-content-between">
+                                                <button type="button" class="btn bg-gradient-primary rounded-0 mr-3"><i class="fas fa-shopping-cart"></i> Keranjang</button>
+                                                <button type="button" class="btn btn-outline-primary rounded-0">Beli Langsung</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('script')
+
+<script>
+    $(document).ready(function () {
+        // detail produk
+        $('.product').on('click', function (e) {
+            e.preventDefault();
+
+            $('.modal-form').modal('show');
+        })
+
+        // quantity
+        $(document).on('click', '#btn_plus_product', function (e) {
+            e.preventDefault();
+            $('#qty').empty();
+
+            let qty_val = $('#qty').val();
+            let count_plus = qty_val + 1;
+
+            $('#qty').val(count_plus);
+        })
+
+        $(document).on('click', '#btn_minus_product', function (e) {
+            e.preventDefault();
+            alert('minus')
+        })
+
+        function wcqib_refresh_quantity_increments() {
+            jQuery("div.quantity:not(.buttons_added), td.quantity:not(.buttons_added)").each(function(a, b) {
+                var c = jQuery(b);
+                c.addClass("buttons_added"), c.children().first().before('<input type="button" value="-" class="minus" />'), c.children().last().after('<input type="button" value="+" class="plus" />')
+            })
+        }
+        String.prototype.getDecimals || (String.prototype.getDecimals = function() {
+            var a = this,
+                b = ("" + a).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
+            return b ? Math.max(0, (b[1] ? b[1].length : 0) - (b[2] ? +b[2] : 0)) : 0
+        }), jQuery(document).ready(function() {
+            wcqib_refresh_quantity_increments()
+        }), jQuery(document).on("updated_wc_div", function() {
+            wcqib_refresh_quantity_increments()
+        }), jQuery(document).on("click", ".plus, .minus", function() {
+            var a = jQuery(this).closest(".quantity").find(".qty"),
+                b = parseFloat(a.val()),
+                c = parseFloat(a.attr("max")),
+                d = parseFloat(a.attr("min")),
+                e = a.attr("step");
+            b && "" !== b && "NaN" !== b || (b = 0), "" !== c && "NaN" !== c || (c = ""), "" !== d && "NaN" !== d || (d = 0), "any" !== e && "" !== e && void 0 !== e && "NaN" !== parseFloat(e) || (e = 1), jQuery(this).is(".plus") ? c && b >= c ? a.val(c) : a.val((b + parseFloat(e)).toFixed(e.getDecimals())) : d && b <= d ? a.val(d) : b > 0 && a.val((b - parseFloat(e)).toFixed(e.getDecimals())), a.trigger("change")
+        });
+    });
+</script>
 
 @endsection
