@@ -30,49 +30,55 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row mb-3">
-                                <div class="col">
-                                    <div class="input-group">
-                                        <input type="search" class="form-control" placeholder="Caru produk disini">
-                                        <div class="input-group-append">
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fa fa-search"></i>
-                                            </button>
+                            <form action="{{ route('shop_buy.search')  }}" method="POST">
+                                <div class="row mb-3 d-flex justify-content-center">
+                                    @csrf
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="input-group">
+                                            <input type="text" id="search" name="search" class="form-control" placeholder="Cari produk disini">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-2 col-md-3 col-sm-4 col-12 mt-3">
-                                    <div class="elevation-1">
-                                        <a href="#" class="text-secondary">
-                                            <img src="{{ asset('assets/image_not_found.jpg') }}" alt="" style="width: 100%;">
-                                            <div class="py-1 px-3">
-                                                <h6 class="mb-0 text-center">
-                                                    <small class="brand-text font-weight-bold">Nama Produk</small>
-                                                </h6>
-                                                <h6 class="mt-0 text-center">
-                                                    <small>Rp. 140.000</small>
-                                                </h6>
-                                            </div>
-                                        </a>
+                            </form>
+                            <div class="row product_data">
+                                @foreach ($products as $item)
+                                    <div class="col-lg-2 col-md-3 col-sm-4 col-12 mt-3">
+                                        <div class="elevation-1">
+                                            <a href="#" class="text-secondary">
+                                                @if (file_exists("public/image/" . $item->image))
+                                                    <img src="{{ asset('public/image/' . $item->image) }}" alt="" style="width: 100%;">
+                                                @else
+                                                    <img src="{{ asset('public/assets/image_not_found.jpg') }}" alt="" style="width: 100%;">
+                                                @endif
+                                                <div class="py-1 px-3">
+                                                    <h6 class="mb-0 text-center">
+                                                        <small class="brand-text font-weight-bold">{{ substr($item->product_name, 0, 20) }}</small>
+                                                    </h6>
+                                                    <h6 class="mt-0 text-center">
+                                                        <small>Rp. {{ rupiah($item->product_price_selling) }}</small>
+                                                    </h6>
+                                                </div>
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
+                    {{ $products->links() }}
                 </div>
             </div>
         </div>
-    </section>
-</div>
+    </div>
+</section>
+
 @endsection
 
 @section('script')
 
-<script>
-    $(document).ready(function() {
-
-    });
-</script>
 @endsection

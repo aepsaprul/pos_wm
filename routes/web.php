@@ -224,6 +224,7 @@ Route::middleware(['auth'])->group(function () {
     // Buy
     Route::get('shop_buy', [ShopBuyController::class, 'index'])->name('shop_buy.index');
     Route::post('shop_buy/store', [ShopBuyController::class, 'store'])->name('shop_buy.store');
+    Route::post('shop_buy/search', [ShopBuyController::class, 'search'])->name('shop_buy.search');
 
     // transaction shop
 

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\NavAccess;
 use App\Models\NavMain;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::useBootstrap();
+
         view()->composer('*', function ($view)
         {
             if (Auth::check()) {
