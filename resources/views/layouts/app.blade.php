@@ -49,12 +49,25 @@
             <ul class="navbar-nav ml-auto">
                 <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
+                    <a class="nav-link" data-toggle="dropdown" href="#" style="font-size: 20px;">
+                        <i class="fas fa-shopping-cart"></i>
+                        @if ($current_carts != null)
+                            <span
+                                id="badge"
+                                class="badge badge-danger navbar-badge rounded-circle px-1 font-weight-bold"
+                                style="border: 2px solid #fff; margin-top: -10px; font-size: 10px; font-family:Arial, Helvetica, sans-serif">
+                                    {{ $current_carts }}
+                            </span>
+                        @endif
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#" style="font-size: 20px;">
                         <i class="far fa-bell"></i>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button" style="font-size: 20px;">
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
@@ -63,7 +76,8 @@
                         class="nav-link dropdown-toggle"
                         data-toggle="dropdown"
                         aria-haspopup="true"
-                        aria-expanded="false">
+                        aria-expanded="false"
+                        style="font-size: 20px;">
                             <i class="fa fa-user-circle"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
