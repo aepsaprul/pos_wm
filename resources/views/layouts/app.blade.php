@@ -49,17 +49,45 @@
             <ul class="navbar-nav ml-auto">
                 <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#" style="font-size: 20px;">
-                        <i class="fas fa-shopping-cart"></i>
-                        @if ($current_carts != null)
-                            <span
-                                id="badge"
-                                class="badge badge-danger navbar-badge rounded-circle px-1 font-weight-bold"
-                                style="border: 2px solid #fff; margin-top: -10px; font-size: 10px; font-family:Arial, Helvetica, sans-serif">
-                                    {{ $current_carts }}
-                            </span>
-                        @endif
+                    <a
+                        class="nav-link"
+                        data-toggle="dropdown"
+                        style="font-size: 20px;">
+                            <i class="fas fa-shopping-cart"></i>
+                            @if ($current_carts != null)
+                                @if ($current_count_carts != 0)
+                                    <span
+                                        id="badge"
+                                        class="badge badge-danger navbar-badge rounded-circle px-1 font-weight-bold"
+                                        style="border: 2px solid #fff; margin-top: -10px; font-size: 10px; font-family:Arial, Helvetica, sans-serif">
+                                            {{ $current_count_carts }}
+                                    </span>
+                                @endif
+                            @endif
                     </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        @if ($current_carts != null)
+                            @if ($current_count_carts != 0)
+                                <a href="{{ route('shop_buy.cart') }}" class="dropdown-item dropdown-header p-0">Lihat Semuanya</a>
+                                @foreach ($current_carts as $item)
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item py-0">
+                                        <div class="media">
+                                            <img src="{{ asset('public/image/' . $item->product->image) }}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                            <div class="media-body">
+                                                <h3 class="dropdown-item-title">{{ $item->product->product_name }}</h3>
+                                                <small>Rp. {{ rupiah($item->product->product_price_selling) }} / {{ $item->product->unit }}</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            @else
+                                <a class="dropdown-item dropdown-header p-0">Kosong</a>
+                            @endif
+                        @else
+                            <a class="dropdown-item dropdown-header p-0">Kosong</a>
+                        @endif
+                    </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#" style="font-size: 20px;">
@@ -241,7 +269,7 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('shop_buy.index') }}" class="nav-link {{ request()->is(['shop_buy', 'shop_buy/*']) ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-shopping-cart"></i><p>Belanja</p>
+                                    <i class="nav-icon fas fa-shopping-bag"></i><p>Belanja</p>
                                 </a>
                             </li>
                             <li class="nav-item {{ request()->is('shop_transaction/*') ? 'menu-open' : '' }}">

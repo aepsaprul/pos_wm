@@ -74,7 +74,7 @@
                         </div>
                     </div>
                     {{ $products->links() }}
-                </div>>
+                </div>
             </div>
         </div>
     </div>
@@ -223,21 +223,6 @@
         })
 
         // quantity
-        $(document).on('click', '#btn_plus_product', function (e) {
-            e.preventDefault();
-            $('#qty').empty();
-
-            let qty_val = $('#qty').val();
-            let count_plus = qty_val + 1;
-
-            $('#qty').val(count_plus);
-        })
-
-        $(document).on('click', '#btn_minus_product', function (e) {
-            e.preventDefault();
-            alert('minus')
-        })
-
         function wcqib_refresh_quantity_increments() {
             jQuery("div.quantity:not(.buttons_added), td.quantity:not(.buttons_added)").each(function(a, b) {
                 var c = jQuery(b);
@@ -293,6 +278,7 @@
                         $('.btn-spinner').addClass('d-none');
                         $('#btn_cart').removeClass('d-none');
                         $('.badge').append(response.count_cart);
+                        window.location.reload(1);
                     }, 1000);
                 },
                 error: function(xhr, status, error){
@@ -304,8 +290,41 @@
 
         // btn buy
         $(document).on('click', '#btn_buy', function (e) {
-            $('.btn-spinner').removeClass('d-none');
-            $('#btn_buy').addClass('d-none');
+            var shop_id = "{{ Auth::user()->employee->shop_id }}";
+
+            let formData = {
+                product_id: $('#id').val(),
+                qty: $('#qty').val(),
+                price: $('#product_price_selling').text().replace(/\./g,''),
+                shop_id: shop_id,
+            }
+
+            $.ajax({
+                url: "{{ URL::route('shop_buy.cart.store') }}",
+                type: "POST",
+                data: formData,
+                beforeSend: function () {
+                    $('.btn-spinner').removeClass('d-none');
+                    $('#btn_buy').addClass('d-none');
+                },
+                success: function (response) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Berhasil'
+                    });
+
+                    setTimeout(() => {
+                        $('.btn-spinner').addClass('d-none');
+                        $('#btn_buy').removeClass('d-none');
+                        $('.badge').append(response.count_cart);
+                        window.location.href = "shop_buy/cart";
+                    }, 1000);
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + error
+                    alert('Error - ' + errorMessage);
+                }
+            })
         })
     });
 </script>

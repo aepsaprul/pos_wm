@@ -227,6 +227,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('shop_buy/search', [ShopBuyController::class, 'search'])->name('shop_buy.search');
     Route::get('shop_buy/cart', [ShopBuyController::class, 'cart'])->name('shop_buy.cart');
     Route::post('shop_buy/cart/store', [ShopBuyController::class, 'cartStore'])->name('shop_buy.cart.store');
+    Route::post('shop_buy/cart/qty', [ShopBuyController::class, 'cartQty'])->name('shop_buy.cart.qty');
+    Route::post('shop_buy/cart/delete_all', [ShopBuyController::class, 'cartDeleteAll'])->name('shop_buy.cart.delete_all');
+    Route::post('shop_buy/cart/delete', [ShopBuyController::class, 'cartDelete'])->name('shop_buy.cart.delete');
 
     // transaction shop
 
