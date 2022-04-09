@@ -56,7 +56,7 @@ class InventoryCashierController extends Controller
             $product_out_qty->sub_total = $product_out_qty->sub_total + $request->sub_total;
             $product_out_qty->save();
         } else {
-            $product_out = new InventoryProductOut();
+            $product_out = new InventoryProductOut;
             $product_out->user_id = Auth::user()->id;
             $product_out->shop_id = $request->shop_id;
             $product_out->product_id = $request->product_id;

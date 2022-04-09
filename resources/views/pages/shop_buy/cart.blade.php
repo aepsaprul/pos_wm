@@ -26,7 +26,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Keranjang</h3>
                             <div class="card-tools">
-                                <a href="#" class="btn bg-gradient-danger btn-sm mr-2 btn_delete_all" data-id="{{ $product_id }}"><i class="fas fa-trash-alt"></i> Hapus Semua</a>
+                                <a href="#" class="btn bg-gradient-danger btn-sm mr-2 btn_delete_all" data-id="{{ $shop_id }}"><i class="fas fa-trash-alt"></i> Hapus Semua</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -62,9 +62,9 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <p>Total Belanja</p>
-                                <p id="total_price" class="font-weight-bold text-lg">Rp. {{ rupiah($total_price) }}</p>
+                                <p id="total_price" class="font-weight-bold text-lg">Rp. <span class="total_price_text">{{ rupiah($total_price) }}</span></p>
                             </div>
-                            <button type="button" id="btn_metode_bayar" class="btn btn-primary btn-block elevation-1">Pilih Metode Pembayaran</button>
+                            <button type="button" id="btn_metode_bayar" data-id="{{ $shop_id }}" class="btn btn-primary btn-block elevation-1">Pilih Metode Pembayaran</button>
                         </div>
                     </div>
                 </div>
@@ -117,6 +117,44 @@
                         Loading..
                     </button>
                     <button type="submit" class="btn btn-primary btn-delete text-center" style="width: 120px;">Ya</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- modal metode bayar  --}}
+<div class="modal fade modal-metode-bayar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form_metode_bayar">
+                <div class="modal-header">
+                    <h5 class="modal-title">Metode Pembayaran</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal">
+                            <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    {{-- id --}}
+                    <input type="hidden" name="id" id="id">
+
+                    <div class="mb-3">
+                        <select name="metode_bayar" id="metode_bayar" class="form-control">
+                            <option value="1">Transfer Bank BCA</option>
+                            <option value="2">Transfer Bank Mandiri</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-metode-bayar-spinner d-none" disabled style="width: 130px;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading..
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-metode-bayar" style="width: 130px;"><i class="fas fa-angle-double-right"></i> Selesai</button>
                 </div>
             </form>
         </div>
@@ -314,6 +352,42 @@
                 }
             });
         });
-    } );
+
+        $('#btn_metode_bayar').on('click', function (e) {
+            e.preventDefault();
+            let id = $(this).attr('data-id');
+
+            $('#id').val(id);
+            $('.modal-metode-bayar').modal('show');
+        })
+
+        $('#form_metode_bayar').on('submit', function (e) {
+            e.preventDefault();
+
+            let formData = {
+                shop_id: $('#id').val(),
+                total_price: $('.total_price_text').text().replace(/\./g,''),
+                payment_methods: $("#metode_bayar").val()
+            }
+
+            $.ajax({
+                url: "{{ URL::route('shop_buy.cart.finish') }}",
+                type: "post",
+                data: formData,
+                beforeSend: function() {
+                    $('.btn-metode-bayar-spinner').removeClass("d-none");
+                    $('.btn-metode-bayar').addClass("d-none");
+                },
+                success: function (response) {
+                    console.log(response)
+                    window.location.href = "cart/" + response.code + "/invoice";
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + error
+                    alert('Error - ' + errorMessage);
+                }
+            })
+        })
+    });
 </script>
 @endsection

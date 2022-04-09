@@ -230,6 +230,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('shop_buy/cart/qty', [ShopBuyController::class, 'cartQty'])->name('shop_buy.cart.qty');
     Route::post('shop_buy/cart/delete_all', [ShopBuyController::class, 'cartDeleteAll'])->name('shop_buy.cart.delete_all');
     Route::post('shop_buy/cart/delete', [ShopBuyController::class, 'cartDelete'])->name('shop_buy.cart.delete');
+    Route::post('shop_buy/cart/finish', [ShopBuyController::class, 'cartFinish'])->name('shop_buy.cart.finish');
+    Route::get('shop_buy/cart/{kode}/invoice', [ShopBuyController::class, 'cartInvoice'])->name('shop_buy.cart.invoice');
 
     // transaction shop
 

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\InventoryInvoice;
+use App\Models\InventoryProductOut;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ShopBuyController extends Controller
 {
@@ -41,9 +44,9 @@ class ShopBuyController extends Controller
         $cart = Cart::where('shop_id', Auth::user()->employee->shop_id)->get();
         $cart_first = Cart::where('shop_id', Auth::user()->employee->shop_id)->first();
         if ($cart_first != null) {
-            $product_id = $cart_first->shop_id;
+            $shop_id = $cart_first->shop_id;
         } else {
-            $product_id = 0;
+            $shop_id = 0;
         }
 
         $count_price = Cart::where('shop_id', Auth::user()->employee->shop_id)
@@ -55,7 +58,7 @@ class ShopBuyController extends Controller
             $total_price = $value->total_sales;
         }
 
-        return view('pages.shop_buy.cart', ['carts' => $cart, 'product_id' => $product_id, 'total_price' => $total_price]);
+        return view('pages.shop_buy.cart', ['carts' => $cart, 'shop_id' => $shop_id, 'total_price' => $total_price]);
     }
 
     public function cartStore(Request $request)
@@ -150,5 +153,47 @@ class ShopBuyController extends Controller
         return response()->json([
             'status' => 200
         ]);
+    }
+
+    public function cartFinish(Request $request)
+    {
+        $invoice_code = Str::random(10);
+
+        $invoice = new InventoryInvoice;
+        $invoice->total_amount = $request->total_price;
+        $invoice->date_recorded = date('Y-m-d H:i:s');
+        $invoice->user_id = Auth::user()->id;
+        $invoice->shop_id = $request->shop_id;
+        $invoice->code = $invoice_code;
+        $invoice->payment_methods = $request->payment_methods;
+        $invoice->save();
+
+        $cart = Cart::where('shop_id', $request->shop_id)->get();
+
+        foreach ($cart as $key => $value) {
+            $product_out = new InventoryProductOut;
+            $product_out->user_id = Auth::user()->id;
+            $product_out->shop_id = $request->shop_id;
+            $product_out->product_id = $value->product_id;
+            $product_out->quantity = $value->qty;
+            $product_out->sub_total = $value->price;
+            $product_out->invoice_id = $invoice->id;
+            $product_out->save();
+        }
+
+        $cart_delete = Cart::where('shop_id', $request->shop_id);
+        $cart_delete->delete();
+
+        return response()->json([
+            'status' => 200,
+            'code' => $invoice_code
+        ]);
+    }
+
+    public function cartInvoice($code)
+    {
+        $invoice = InventoryInvoice::where('code', $code)->first();
+
+        return view('pages.shop_buy.invoice', ['invoices' => $invoice]);
     }
 }
