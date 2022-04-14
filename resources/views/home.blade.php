@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <h3 class="text-center"><img src="{{ asset('public/assets/img_home.png') }}" alt=""></h3>
+                    <h3 class="text-center"><img src="{{ asset('public/assets/icon.png') }}" alt="logo" style="width: 300px;"></h3>
                 </div>
             </div>
         </div>

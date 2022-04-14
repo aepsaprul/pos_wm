@@ -144,6 +144,7 @@
 
                     <div class="mb-3">
                         <select name="metode_bayar" id="metode_bayar" class="form-control">
+                            <option value="1">COD (Cash On Delivery)</option>
                             <option value="1">Transfer Bank BCA</option>
                             <option value="2">Transfer Bank Mandiri</option>
                         </select>

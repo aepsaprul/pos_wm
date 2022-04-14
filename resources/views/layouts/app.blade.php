@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{{ asset('public/assets/store.png') }}" rel="icon" type="image/x-icon">
+    <link href="{{ asset('public/assets/icon.png') }}" rel="icon" type="image/x-icon">
     <title>{{ config('app.name', 'E - SPK') }}</title>
 
     <!-- CSRF Token -->
@@ -28,12 +28,21 @@
 
     @yield('style')
 </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed {{ request()->is('cashier') ? 'sidebar-collapse' : '' }}">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed
+        @php
+            if (request()->is('cashier')) {
+                echo "sidebar-collapse";
+            }
+            if (request()->is('inventory_cashier')) {
+                echo "sidebar-collapse";
+            }
+        @endphp
+    ">
     <div class="wrapper">
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__wobble" src="{{ asset('public/assets/store.png') }}" alt="AdminLTELogo" height="60" width="60">
+            <img class="animation__wobble" src="{{ asset('public/assets/icon.png') }}" alt="AdminLTELogo" height="60" width="60">
         </div>
 
         <!-- Navbar -->
@@ -129,7 +138,7 @@
         <aside class="main-sidebar sidebar-light-primary elevation-2">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
-                <img src="{{ asset('public/assets/store.png') }}" alt="AdminLTE Logo" class="brand-image" style="opacity: .8">
+                <img src="{{ asset('public/assets/icon.png') }}" alt="WM Logo" class="brand-image" style="opacity: .8">
                 <span class="brand-text font-weight-light">Aplikasi POS</span>
             </a>
 

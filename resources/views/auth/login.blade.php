@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{{ asset('public/assets/store.png') }}" rel="icon" type="image/x-icon">
+    <link href="{{ asset('public/assets/icon.png') }}" rel="icon" type="image/x-icon">
     <title>{{ config('app.name', 'Abata') }}</title>
 
     <!-- Google Font: Source Sans Pro -->
@@ -38,7 +38,7 @@
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <img src="{{ asset('public/assets/store.png') }}" alt="Logo">
+                <img src="{{ asset('public/assets/icon.png') }}" alt="Logo">
             </div>
             <div class="card-body">
                 <form action="{{ route('login') }}" method="post">

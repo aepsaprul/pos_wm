@@ -157,11 +157,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('inventory_transaction/product_out/{id}/delete_btn', [InventroryProductOutController::class, 'deleteBtn'])->name('product_out.delete_btn');
         Route::post('inventory_transaction/product_out/delete', [InventroryProductOutController::class, 'delete'])->name('product_out.delete');
 
-        // inventory product out
+        // inventory invoice
         Route::get('inventory_transaction/inventory_invoice', [InventoryInvoiceController::class, 'index'])->name('inventory_invoice.index');
         Route::get('inventory_transaction/inventory_invoice/{id}/show', [InventoryInvoiceController::class, 'show'])->name('inventory_invoice.show');
         Route::get('inventory_transaction/inventory_invoice/{id}/delete_btn', [InventoryInvoiceController::class, 'deleteBtn'])->name('inventory_invoice.delete_btn');
         Route::post('inventory_transaction/inventory_invoice/delete', [InventoryInvoiceController::class, 'delete'])->name('inventory_invoice.delete');
+        Route::get('inventory_transaction/inventory_invoice/{id}/print', [InventoryInvoiceController::class, 'print'])->name('inventory_invoice.print');
 
         // inventory cashier
         Route::get('inventory_cashier', [InventoryCashierController::class, 'index'])->name('inventory_cashier.index');

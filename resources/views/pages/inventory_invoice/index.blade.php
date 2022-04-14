@@ -16,12 +16,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Toko</h1>
+                    <h1 class="m-0">Produk Keluar</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Toko</li>
+                        <li class="breadcrumb-item active">Produk Keluar</li>
                     </ol>
                 </div>
             </div>
@@ -84,6 +84,12 @@
                                                                 <i class="fa fa-cog"></i>
                                                     </a>
                                                     <div class="dropdown-menu dropdown-menu-right">
+                                                        <a
+                                                            class="dropdown-item btn-print"
+                                                            href="{{ route('inventory_invoice.print', [$item->id]) }}"
+                                                            target="_blank">
+                                                                <i class="fa fa-print px-2"></i> Print
+                                                        </a>
                                                         <a
                                                             class="dropdown-item btn-detail"
                                                             href="#"

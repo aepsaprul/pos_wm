@@ -55,4 +55,15 @@ class InventoryInvoiceController extends Controller
             'status' => 'Data berhasil dihapus'
         ]);
     }
+
+    public function print($id)
+    {
+        $invoice = InventoryInvoice::find($id);
+        $product_outs = InventoryProductOut::where('invoice_id', $id)->get();
+
+        return view('pages.inventory_invoice.print', [
+            'invoice' => $invoice,
+            'product_outs' => $product_outs
+        ]);
+    }
 }

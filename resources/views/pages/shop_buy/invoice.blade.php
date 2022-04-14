@@ -102,26 +102,55 @@
                 <div class="col-6">
                     <p class="lead">Metode Pembayaran:</p>
 
-                    <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                        <ul>
-                            <li>Transfer Via Bank BCA, 434-0071-439 a.n Endro prasetyo,se</li>
-                        </ul>
-                    </p>
+                    @if ($invoices->payment_methods == 1)
+                        <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                            <ul>
+                                <li>Pembayaran COD, silahkan membayar ketika barang sudah sampai</li>
+                            </ul>
+                        </p>
+                    @elseif ($invoices->payment_methods == 2)
+                        <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                            <ul>
+                                <li>Transfer Via Bank BCA, 434-0071-439 a.n Endro prasetyo,se</li>
+                            </ul>
+                        </p>
 
-                    <p class="lead">Setelah Pembayaran:</p>
+                        <p class="lead">Setelah Pembayaran:</p>
 
-                    <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                        <ol>
-                            <li>Buka Aplikasi Whatsapp</li>
-                            <li>Kirim pesan dengan format seperti di bawah, ke nomor 08123567788</li>
-                        </ol>
-                    </p>
+                        <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                            <ol>
+                                <li>Buka Aplikasi Whatsapp</li>
+                                <li>Kirim pesan dengan format seperti di bawah, ke nomor 08123567788</li>
+                            </ol>
+                        </p>
 
-                    <p class="lead">Format Pesan:</p>
+                        <p class="lead">Format Pesan:</p>
 
-                    Nama: _____<br>
-                    Kode Invoice: _____<br>
-                    Nominal Transfer: _____
+                        Nama: _____<br>
+                        Kode Invoice: _____<br>
+                        Nominal Transfer: _____
+                    @else
+                        <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                            <ul>
+                                <li>Transfer Via Bank BCA, 434-0071-439 a.n Endro prasetyo,se</li>
+                            </ul>
+                        </p>
+
+                        <p class="lead">Setelah Pembayaran:</p>
+
+                        <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
+                            <ol>
+                                <li>Buka Aplikasi Whatsapp</li>
+                                <li>Kirim pesan dengan format seperti di bawah, ke nomor 08123567788</li>
+                            </ol>
+                        </p>
+
+                        <p class="lead">Format Pesan:</p>
+
+                        Nama: _____<br>
+                        Kode Invoice: _____<br>
+                        Nominal Transfer: _____
+                    @endif
                 </div>
                 <!-- /.col -->
                 <div class="col-6">
