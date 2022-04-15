@@ -356,7 +356,7 @@
             }
 
             $.ajax({
-                url: '{{ URL::route('cashier.sales_save') }}',
+                url: "{{ URL::route('cashier.sales_save') }}",
                 type: 'POST',
                 data: formData,
                 beforeSend: function() {

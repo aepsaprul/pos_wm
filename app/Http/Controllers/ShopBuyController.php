@@ -6,6 +6,8 @@ use App\Models\Cart;
 use App\Models\InventoryInvoice;
 use App\Models\InventoryProductOut;
 use App\Models\Product;
+use App\Models\ProductShop;
+use App\Models\ReceiveProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -193,6 +195,36 @@ class ShopBuyController extends Controller
     public function cartInvoice($code)
     {
         $invoice = InventoryInvoice::where('code', $code)->first();
+
+        $product_out = InventoryProductOut::where('invoice_id', $invoice->id)->get();
+
+        foreach ($product_out as $key => $value) {
+            $product_shop = ProductShop::where('product_id', $value->product_id)->first();
+            if ($product_shop) {
+                $product_shop->product_id = $value->product_id;
+                $product_shop->shop_id = Auth::user()->employee->shop_id;
+                $product_shop->stock = $product_shop->stock + $value->quantity;
+            } else {
+                # code...
+                $product_shop = new ProductShop;
+                $product_shop->product_id = $value->product_id;
+                $product_shop->shop_id = Auth::user()->employee->shop_id;
+                $product_shop->stock = $value->quantity;
+            }
+            $product_shop->save();
+
+            $receive_product = new ReceiveProduct;
+            $receive_product->user_id = Auth::user()->id;
+            $receive_product->shop_id = Auth::user()->employee->shop_id;
+            $receive_product->product_id = $value->product_id;
+            $receive_product->price = $value->product->product_price_selling;
+            $receive_product->quantity = $value->quantity;
+            $receive_product->sub_total = $value->sub_total;
+            $receive_product->stock = $value->quantity;
+            $receive_product->date = date('Y-m-d H:i:s');
+            $receive_product->save();
+        }
+
 
         return view('pages.shop_buy.invoice', ['invoices' => $invoice]);
     }
