@@ -17,7 +17,7 @@ class InventoryCashierController extends Controller
     public function index()
     {
         $pruduct = Product::get();
-        $shop = Shop::where('id', '!=', 1)->get();
+        $shop = Shop::where('id', '!=', Auth::user()->employee->shop_id)->get();
 
         $product_out = InventoryProductOut::where('invoice_id', null)->get();
         $total_price = $product_out->sum('sub_total');
@@ -146,10 +146,24 @@ class InventoryCashierController extends Controller
         $inventory_product_out_query = InventoryProductOut::where('invoice_id', $invoice->id)->get();
 
         return response()->json([
+            'invoice_id' => $invoice->id,
             'invoice_code' => $invoice_code,
             'invoice_date' => date('d-m-Y', strtotime($invoice->date_recorded)),
             'invoice_time' => date('H:i:s', strtotime($invoice->date_recorded)),
             'inventory_product_outs' => $inventory_product_out_query
+        ]);
+    }
+
+    public function printResult($id)
+    {
+        $shop = Shop::find(Auth::user()->employee->shop_id);
+        $invoice = InventoryInvoice::find($id);
+        $product_outs = InventoryProductOut::where('invoice_id', $id)->get();
+
+        return view('pages.inventory_cashier.print', [
+            'shop' => $shop,
+            'invoice' => $invoice,
+            'product_outs' => $product_outs
         ]);
     }
 }

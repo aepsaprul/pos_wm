@@ -87,9 +87,9 @@
 
         <div id="mid">
             <div class="info">
-                <h2 style="text-align: center;">Warung Mitra</h2>
+                <h2 style="text-align: center;">{{ $shop->name }}</h2>
                 <p>
-                    Alamat : -</br>
+                    Alamat : {{ $shop->address }}</br>
                     Kode : {{ $invoice->code }}
                 </p>
             </div>

@@ -34,14 +34,16 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">
-                            <a
-                                href="{{ url('inventory_cashier') }}"
-                                class="btn btn-primary btn-sm text-white pl-3 pr-3"
-                                title="Tambah">
-                                    <i class="fa fa-plus"></i> Tambah Transaksi
-                            </a>
-                        </div>
+                        @if (Auth::user()->employee_id != null)
+                            <div class="card-header">
+                                <a
+                                    href="{{ url('inventory_cashier') }}"
+                                    class="btn btn-primary btn-sm text-white pl-3 pr-3"
+                                    title="Tambah">
+                                        <i class="fa fa-plus"></i> Tambah Transaksi
+                                </a>
+                            </div>
+                        @endif
                         <div class="card-body">
                             <table id="datatable" class="table table-striped table-bordered" style="width:100%">
                                 <thead class="bg-info">
@@ -52,7 +54,9 @@
                                         <th class="text-center text-light">Kode Nota</th>
                                         <th class="text-center text-light">Toko</th>
                                         <th class="text-center text-light">Qty</th>
-                                        <th class="text-center text-light">Aksi</th>
+                                        @if (Auth::user()->employee_id != null)
+                                            <th class="text-center text-light">Aksi</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -74,37 +78,39 @@
                                                     {{ $item_product_out->qty }}
                                                 @endforeach
                                             </td>
-                                            <td class="text-center">
-                                                <div class="btn-group">
-                                                    <a
-                                                        class="dropdown-toggle"
-                                                        data-toggle="dropdown"
-                                                        aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                                <i class="fa fa-cog"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
+                                            @if (Auth::user()->employee_id != null)
+                                                <td class="text-center">
+                                                    <div class="btn-group">
                                                         <a
-                                                            class="dropdown-item btn-print"
-                                                            href="{{ route('inventory_invoice.print', [$item->id]) }}"
-                                                            target="_blank">
-                                                                <i class="fa fa-print px-2"></i> Print
+                                                            class="dropdown-toggle"
+                                                            data-toggle="dropdown"
+                                                            aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                                    <i class="fa fa-cog"></i>
                                                         </a>
-                                                        <a
-                                                            class="dropdown-item btn-detail"
-                                                            href="#"
-                                                            data-id="{{ $item->id }}">
-                                                                <i class="fa fa-eye px-2"></i> Detail
-                                                        </a>
-                                                        <a
-                                                            class="dropdown-item btn-delete"
-                                                            href="#"
-                                                            data-id="{{ $item->id }}">
-                                                                <i class="fa fa-trash px-2"></i> Hapus
-                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-right">
+                                                            <a
+                                                                class="dropdown-item btn-print"
+                                                                href="{{ route('inventory_invoice.print', [$item->id]) }}"
+                                                                target="_blank">
+                                                                    <i class="fa fa-print px-2"></i> Print
+                                                            </a>
+                                                            <a
+                                                                class="dropdown-item btn-detail"
+                                                                href="#"
+                                                                data-id="{{ $item->id }}">
+                                                                    <i class="fa fa-eye px-2"></i> Detail
+                                                            </a>
+                                                            <a
+                                                                class="dropdown-item btn-delete"
+                                                                href="#"
+                                                                data-id="{{ $item->id }}">
+                                                                    <i class="fa fa-trash px-2"></i> Hapus
+                                                            </a>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

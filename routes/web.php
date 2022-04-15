@@ -170,6 +170,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('inventory_cashier/product-out-save', [InventoryCashierController::class, 'productOutSave'])->name('inventory_cashier.product_out_save');
         Route::delete('inventory_cashier/{id}/delete', [InventoryCashierController::class, 'delete'])->name('inventory_cashier.delete');
         Route::post('inventory_cashier/print', [InventoryCashierController::class, 'print'])->name('inventory_cashier.print');
+        Route::get('inventory_cashier/{id}/print_result', [InventoryCashierController::class, 'printResult'])->name('inventory_cashier.print_result');
 
     // supplier
     Route::get('supplier', [SupplierController::class, 'index'])->name('supplier.index');
@@ -273,6 +274,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('cashier/print', [CashierController::class, 'print'])->name('cashier.print');
         Route::delete('cashier/{id}/delete', [CashierController::class, 'delete'])->name('cashier.delete');
         Route::post('cashier/promo', [CashierController::class, 'promo'])->name('cashier.promo');
+        Route::get('cashier/{id}/print_result', [CashierController::class, 'printResult'])->name('cashier.print_result');
 
         // credit
         Route::get('cashier/credit', [CashierController::class, 'credit'])->name('cashier.credit');

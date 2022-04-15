@@ -43,17 +43,6 @@
                                                 <input type="number" min="0" class="form-control form-control-sm" id="quantity" name="quantity">
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <label for="shop_id">Toko</label>
-                                                <select name="shop_id" id="shop_id" class="form-control form-control-sm select_customer" style="width: 100%;" autofocus>
-                                                    <option value="">--Pilih Toko--</option>
-                                                    @foreach ($shops as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <input type="hidden" class="form-control" id="product_id" name="product_id">
@@ -125,7 +114,15 @@
                                         id="total_price"
                                         value="{{ $total_price }}">
                                     <div class="card-title">
-
+                                        <div class="form-group">
+                                            <label for="shop_id">Toko</label>
+                                            <select name="shop_id" id="shop_id" class="form-control form-control-sm select_customer" style="width: 100%;" autofocus>
+                                                <option value="">--Pilih Toko--</option>
+                                                @foreach ($shops as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="card-tools">
                                         Rp. <span class="total_price_show font-weight-bold" style="font-size: 30px">{{ rupiah($total_price) }}</span>
@@ -405,14 +402,13 @@
         $('.btn-print').on('click', function() {
             if ($('#total_price').val() == 0) {
                 alert('Data Pembelian Kosong');
+            } else if ($('#shop_id').val() == "") {
+                alert('Toko harus diisi');
             } else {
 
                 var formData = {
-                    bid: $('#bid').val().replace(/\./g,''),
                     total_amount: $('#total_price').val(),
-                    customer_id: $('#customer_id').val(),
                     promo: $('#promo').val(),
-                    coupon_code: $('#coupon_code').val(),
                     discount: $('#discount').val(),
                     _token: CSRF_TOKEN
                 }
@@ -426,18 +422,18 @@
                         $('.invoice_date').append(response.invoice_date);
                         $('.invoice_time').append(response.invoice_time);
 
-                        $('.page-content').hide();
-                        $('.main-footer').hide();
-                        $('nav').hide();
-                        $('.invoice').show();
-                        window.print();
-                        window.onafterprint = window.location.reload(1);
+                        var id = response.invoice_id;
+                        var url = '{{ route("inventory_cashier.print_result", ":id") }}';
+                        url = url.replace(':id', id );
+
+                        window.open(url);
+                        window.location.reload(1);
                     }
                 });
             }
         });
 
-        $('.btn-reset').on('click', function() {
+        $('#btn-reset').on('click', function() {
             window.location.reload(1);
         });
     });

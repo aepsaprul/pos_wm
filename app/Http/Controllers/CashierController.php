@@ -9,6 +9,7 @@ use App\Models\ProductShop;
 use App\Models\Promo;
 use App\Models\ReceiveProduct;
 use App\Models\Sales;
+use App\Models\Shop;
 use App\Models\ShopStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -172,10 +173,24 @@ class CashierController extends Controller
         $sales_query = Sales::where('invoice_id', $invoice->id)->get();
 
         return response()->json([
+            'invoice_id' => $invoice->id,
             'invoice_code' => $invoice_code,
             'invoice_date' => date('d-m-Y', strtotime($invoice->date_recorded)),
             'invoice_time' => date('H:i:s', strtotime($invoice->date_recorded)),
             'sales' => $sales_query
+        ]);
+    }
+
+    public function printResult($id)
+    {
+        $shop = Shop::find(Auth::user()->employee->shop_id);
+        $invoice = Invoice::find($id);
+        $product_outs = Sales::where('invoice_id', $id)->get();
+
+        return view('pages.inventory_cashier.print', [
+            'shop' => $shop,
+            'invoice' => $invoice,
+            'product_outs' => $product_outs
         ]);
     }
 

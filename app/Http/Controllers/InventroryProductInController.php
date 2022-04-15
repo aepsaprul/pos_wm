@@ -13,7 +13,7 @@ class InventroryProductInController extends Controller
 {
     public function index()
     {
-        $productIn = InventoryProductIn::get();
+        $productIn = InventoryProductIn::orderBy('id', 'desc')->get();
 
         return view('pages.inventory_product_in.index', ['product_ins' => $productIn]);
     }
@@ -44,6 +44,7 @@ class InventroryProductInController extends Controller
 
         $stock = Product::where('id', $request->product_id)->first();
         $stock->stock = $stock->stock + $request->quantity;
+        $stock->product_price = $request->price;
         $stock->save();
 
         return response()->json([
@@ -90,6 +91,7 @@ class InventroryProductInController extends Controller
             $stock->stock = $stock->stock - 0;
         }
 
+        $stock->product_price = $request->price;
         $stock->save();
 
         // update query

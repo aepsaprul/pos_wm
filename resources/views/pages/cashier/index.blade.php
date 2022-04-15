@@ -55,17 +55,6 @@
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                             <div class="form-group">
-                                                <label for="product_code">Customer</label>
-                                                <select name="customer_id" id="customer_id" class="form-control form-control-sm select_customer" style="width: 100%;" autofocus>
-                                                    <option value="">--Pilih Customer--</option>
-                                                    @foreach ($customers as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->customer_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                                            <div class="form-group">
                                                 <label for="bid">Nego</label>
                                                 <input type="text" class="form-control form-control-sm" id="bid" name="bid">
                                             </div>
@@ -137,7 +126,15 @@
                                         id="total_price"
                                         value="{{ $total_price }}">
                                     <div class="card-title">
-
+                                        <div class="form-group">
+                                            <label for="product_code">Customer</label>
+                                            <select name="customer_id" id="customer_id" class="form-control form-control-sm select_customer" style="width: 100%;" autofocus>
+                                                <option value="">--Pilih Customer--</option>
+                                                @foreach ($customers as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->customer_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="card-tools">
                                         Rp. <span class="total_price_show font-weight-bold" style="font-size: 30px">{{ rupiah($total_price) }}</span>
@@ -372,7 +369,7 @@
                     }, 100);
                 },
                 error: function(xhr, status, error){
-                    var errorMessage = xhr.status + ': ' + xhr.statusText
+                    var errorMessage = xhr.status + ': ' + error
                     alert('Error - ' + errorMessage);
                 }
             });
@@ -559,16 +556,13 @@
                     type: 'POST',
                     data: formData,
                     success: function(response) {
-                        $('.invoice_code').append(response.invoice_code);
-                        $('.invoice_date').append(response.invoice_date);
-                        $('.invoice_time').append(response.invoice_time);
 
-                        $('.page-content').hide();
-                        $('.main-footer').hide();
-                        $('nav').hide();
-                        $('.invoice').show();
-                        window.print();
-                        window.onafterprint = window.location.reload(1);
+                        var id = response.invoice_id;
+                        var url = '{{ route("cashier.print_result", ":id") }}';
+                        url = url.replace(':id', id );
+
+                        window.open(url);
+                        window.location.reload(1);
                     }
                 });
             }
