@@ -21,6 +21,7 @@ class ShopController extends Controller
         $shop->contact = $request->contact;
         $shop->email = $request->email;
         $shop->address = $request->address;
+        $shop->category = $request->category;
         $shop->save();
 
         return response()->json([
@@ -37,7 +38,8 @@ class ShopController extends Controller
             'name' => $shop->name,
             'contact' => $shop->contact,
             'email' => $shop->email,
-            'address' => $shop->address
+            'address' => $shop->address,
+            'category' => $shop->category
         ]);
     }
 
@@ -48,6 +50,7 @@ class ShopController extends Controller
         $shop->contact = $request->contact;
         $shop->email = $request->email;
         $shop->address = $request->address;
+        $shop->category = $request->category;
         $shop->save();
 
         return response()->json([

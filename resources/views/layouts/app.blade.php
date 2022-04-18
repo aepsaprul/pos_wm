@@ -59,9 +59,8 @@
                 <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a
-                        class="nav-link"
-                        data-toggle="dropdown"
-                        style="font-size: 20px;">
+                        class="nav-link text-lg"
+                        data-toggle="dropdown">
                             <i class="fas fa-shopping-cart"></i>
                             @if ($current_carts != null)
                                 @if ($current_count_carts != 0)
@@ -74,9 +73,9 @@
                                 @endif
                             @endif
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        @if ($current_carts != null)
-                            @if ($current_count_carts != 0)
+                    @if ($current_carts != null)
+                        @if ($current_count_carts != 0)
+                            <div class="dropdown-menu dropdown-menu-right">
                                 <a href="{{ route('shop_buy.cart') }}" class="dropdown-item dropdown-header p-0">Lihat Semuanya</a>
                                 @foreach ($current_carts as $item)
                                     <div class="dropdown-divider"></div>
@@ -90,31 +89,59 @@
                                         </div>
                                     </a>
                                 @endforeach
-                            @else
-                                <a class="dropdown-item dropdown-header p-0">Kosong</a>
-                            @endif
-                        @else
-                            <a class="dropdown-item dropdown-header p-0">Kosong</a>
+                            </div>
                         @endif
-                    </div>
+                    @endif
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#" style="font-size: 20px;">
+                    <a class="nav-link text-lg" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
+                        @if ($current_notifs != null)
+                            @if ($current_count_notifs != 0)
+                            <span
+                                id="badge"
+                                class="badge badge-danger navbar-badge rounded-circle px-1 font-weight-bold"
+                                style="border: 2px solid #fff; margin-top: -5px; font-size: 10px; font-family:Arial, Helvetica, sans-serif">
+                                    {{ $current_count_notifs }}
+                            </span>
+                            @endif
+                        @endif
                     </a>
+                    @if (Auth::user()->employee->shop->category == "gudang")
+                        @if (count($current_notif_transactions) > 0)
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <a href="{{ route('inventory_invoice.index') }}" class="dropdown-item">
+                                Transaksi
+                                @if ($current_count_notif_transactions != 0)
+                                    <span class="float-right text-sm rounded-circle bg-danger px-2">{{ $current_count_notif_transactions }}</span>
+                                @endif
+                                </a>
+                            </div>
+                        @endif
+                    @else
+                        @if (count($current_notif_transactions) > 0)
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <a href="{{ route('transaction.index') }}" class="dropdown-item">
+                                Transaksi
+                                @if ($current_count_notif_transactions != 0)
+                                    <span class="float-right text-sm rounded-circle bg-danger px-2">{{ $current_count_notif_transactions }}</span>
+                                @endif
+                                </a>
+                            </div>
+                        @endif
+                    @endif
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button" style="font-size: 20px;">
+                    <a class="nav-link text-lg" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
                 <li class="nav-item dropdown">
                     <a
-                        class="nav-link dropdown-toggle"
+                        class="nav-link dropdown-toggle text-lg"
                         data-toggle="dropdown"
                         aria-haspopup="true"
-                        aria-expanded="false"
-                        style="font-size: 20px;">
+                        aria-expanded="false">
                             <i class="fa fa-user-circle"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">

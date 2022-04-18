@@ -50,10 +50,13 @@
                                     <tr>
                                         <th class="text-center text-light">No</th>
                                         <th class="text-center text-light">Tanggal</th>
+                                        <th class="text-center text-light">Toko</th>
                                         <th class="text-center text-light">Nama Kasir</th>
                                         <th class="text-center text-light">Kode Nota</th>
-                                        <th class="text-center text-light">Toko</th>
+                                        <th class="text-center text-light">Total</th>
                                         <th class="text-center text-light">Qty</th>
+                                        <th class="text-center text-light">Metode Bayar</th>
+                                        <th class="text-center text-light">Status</th>
                                         @if (Auth::user()->employee_id != null)
                                             <th class="text-center text-light">Aksi</th>
                                         @endif
@@ -65,18 +68,35 @@
                                             <td class="text-center">{{ $key + 1 }}</td>
                                             <td class="text-center">{{ date('d-m-Y', strtotime($item->date_recorded)) }}</td>
                                             <td>
+                                                @if ($item->shop)
+                                                    {{ $item->shop->name }}
+                                                @endif
+                                            </td>
+                                            <td>
                                                 @if ($item->user)
                                                     {{ $item->user->name }}
                                                 @else
                                                     User Tidak Ada
                                                 @endif
                                             </td>
-                                            <td class="text-center">{{ $item->code }}</td>
+                                            <td class="text-center"><a href="#" class="btn-detail" data-id="{{ $item->id }}">{{ $item->code }}</a></td>
                                             <td class="text-right">{{ rupiah($item->total_amount) }}</td>
                                             <td class="text-center">
                                                 @foreach ($item->productOut as $item_product_out)
                                                     {{ $item_product_out->qty }}
                                                 @endforeach
+                                            </td>
+                                            <td class="text-center"><span class="text-uppercase">{{ $item->payment_methods }}</span></td>
+                                            <td class="text-center">
+                                                @if ($item->status == "unpaid")
+                                                    <button class="btn btn-default btn-unpaid-spinner-{{ $item->id }} d-none" disabled style="width: 120px;">
+                                                        <span class="spinner-grow spinner-grow-sm"></span>
+                                                        Loading..
+                                                    </button>
+                                                    <button type="button" id="btn-unpaid-{{ $item->id }}" class="btn text-capitalize rounded bg-gradient-danger px-3 btn-unpaid" data-id="{{ $item->id }}" style="width: 120px;">{{ $item->status }}</button>
+                                                @else
+                                                    <button type="button" class="btn text-capitalize rounded bg-gradient-default px-3 btn-paid" data-id="{{ $item->id }}" style="width: 120px;">{{ $item->status }}</button>
+                                                @endif
                                             </td>
                                             @if (Auth::user()->employee_id != null)
                                                 <td class="text-center">
@@ -94,12 +114,6 @@
                                                                 href="{{ route('inventory_invoice.print', [$item->id]) }}"
                                                                 target="_blank">
                                                                     <i class="fa fa-print px-2"></i> Print
-                                                            </a>
-                                                            <a
-                                                                class="dropdown-item btn-detail"
-                                                                href="#"
-                                                                data-id="{{ $item->id }}">
-                                                                    <i class="fa fa-eye px-2"></i> Detail
                                                             </a>
                                                             <a
                                                                 class="dropdown-item btn-delete"
@@ -333,6 +347,39 @@
                 }
             });
         });
+
+        // btn unpaid
+        $(document).on('click', '.btn-unpaid', function (e) {
+            e.preventDefault();
+
+            var id = $(this).attr('data-id');
+            var url = '{{ route("inventory_invoice.unpaid", ":id") }}';
+            url = url.replace(':id', id );
+
+            var formData = {
+                id: id,
+                _token: CSRF_TOKEN
+            }
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: formData,
+                beforeSend: function () {
+                    $('.btn-unpaid-spinner-' + id).removeClass('d-none');
+                    $('#btn-unpaid-' + id).addClass('d-none');
+                },
+                success: function(response) {
+                    setTimeout(() => {
+                        window.location.reload(1);
+                    }, 1000);
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + error
+                    alert('Error - ' + errorMessage);
+                }
+            });
+        })
     } );
 </script>
 @endsection

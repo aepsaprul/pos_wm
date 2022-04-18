@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\InventoryInvoice;
 use App\Models\InventoryProductOut;
+use App\Models\Notif;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,7 @@ class InventoryInvoiceController extends Controller
             'productOut' => function ($qry) {
                 $qry->select(['invoice_id', app('db')->raw('sum(quantity) AS qty')])->groupBy('invoice_id');
             }])
+            ->orderBy('id', 'desc')
             ->get();
 
         return view('pages.inventory_invoice.index', ['invoices' => $invoice]);
@@ -53,6 +55,9 @@ class InventoryInvoiceController extends Controller
         $inventory_product_out = InventoryProductOut::where('invoice_id', $invoice->id);
         $inventory_product_out->delete();
 
+        $notif = Notif::where('invoice_id', $request->id);
+        $notif->delete();
+
         return response()->json([
             'status' => 'Data berhasil dihapus'
         ]);
@@ -68,6 +73,23 @@ class InventoryInvoiceController extends Controller
             'shop' => $shop,
             'invoice' => $invoice,
             'product_outs' => $product_outs
+        ]);
+    }
+
+    public function unpaid($id)
+    {
+        $invoice = InventoryInvoice::find($id);
+        $invoice->status = "paid";
+        $invoice->save();
+
+        $notif = Notif::where('invoice_id', $id)->first();
+        if ($notif) {
+            $notif->status = "finish";
+            $notif->save();
+        }
+
+        return response()->json([
+            'status' => 200
         ]);
     }
 }

@@ -21,6 +21,7 @@ use App\Http\Controllers\SalesController;
 use App\Http\Controllers\ShopBuyController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -163,6 +164,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('inventory_transaction/inventory_invoice/{id}/delete_btn', [InventoryInvoiceController::class, 'deleteBtn'])->name('inventory_invoice.delete_btn');
         Route::post('inventory_transaction/inventory_invoice/delete', [InventoryInvoiceController::class, 'delete'])->name('inventory_invoice.delete');
         Route::get('inventory_transaction/inventory_invoice/{id}/print', [InventoryInvoiceController::class, 'print'])->name('inventory_invoice.print');
+        Route::get('inventory_transaction/inventory_invoice/{id}/unpaid', [InventoryInvoiceController::class, 'unpaid'])->name('inventory_invoice.unpaid');
 
         // inventory cashier
         Route::get('inventory_cashier', [InventoryCashierController::class, 'index'])->name('inventory_cashier.index');
@@ -234,6 +236,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('shop_buy/cart/delete', [ShopBuyController::class, 'cartDelete'])->name('shop_buy.cart.delete');
     Route::post('shop_buy/cart/finish', [ShopBuyController::class, 'cartFinish'])->name('shop_buy.cart.finish');
     Route::get('shop_buy/cart/{kode}/invoice', [ShopBuyController::class, 'cartInvoice'])->name('shop_buy.cart.invoice');
+
+    // transaction buy
+    Route::get('transaction', [TransactionController::class, 'index'])->name('transaction.index');
 
     // transaction shop
 

@@ -16,4 +16,8 @@ class InventoryInvoice extends Model
     public function productOut() {
         return $this->hasMany(InventoryProductOut::class, 'invoice_id', 'id');
     }
+
+    public function shop() {
+        return $this->belongsTo(Shop::class, 'shop_id', 'id');
+    }
 }

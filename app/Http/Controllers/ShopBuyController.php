@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\InventoryInvoice;
 use App\Models\InventoryProductOut;
+use App\Models\Notif;
 use App\Models\Product;
 use App\Models\ProductShop;
 use App\Models\ReceiveProduct;
@@ -183,6 +184,7 @@ class ShopBuyController extends Controller
             $product_out->save();
         }
 
+
         $cart_delete = Cart::where('shop_id', $request->shop_id);
         $cart_delete->delete();
 
@@ -195,6 +197,8 @@ class ShopBuyController extends Controller
     public function cartInvoice($code)
     {
         $invoice = InventoryInvoice::where('code', $code)->first();
+        $invoice->status = "unpaid";
+        $invoice->save();
 
         $product_out = InventoryProductOut::where('invoice_id', $invoice->id)->get();
 
@@ -205,7 +209,6 @@ class ShopBuyController extends Controller
                 $product_shop->shop_id = Auth::user()->employee->shop_id;
                 $product_shop->stock = $product_shop->stock + $value->quantity;
             } else {
-                # code...
                 $product_shop = new ProductShop;
                 $product_shop->product_id = $value->product_id;
                 $product_shop->shop_id = Auth::user()->employee->shop_id;
@@ -225,6 +228,19 @@ class ShopBuyController extends Controller
             $receive_product->save();
         }
 
+        $notif = Notif::where('invoice_id', $invoice->id)->first();
+
+        if ($notif) {
+            $notif->invoice_id = $invoice->id;
+            $notif->save();
+        } else {
+            $notif = new Notif;
+            $notif->title = "transaction";
+            $notif->shop_id = Auth::user()->employee->shop_id;
+            $notif->status = "start";
+            $notif->invoice_id = $invoice->id;
+            $notif->save();
+        }
 
         return view('pages.shop_buy.invoice', ['invoices' => $invoice]);
     }

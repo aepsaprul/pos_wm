@@ -13,7 +13,7 @@ class InventroryProductOutController extends Controller
 {
     public function index()
     {
-        $productOut = InventoryProductOut::get();
+        $productOut = InventoryProductOut::orderBy('id', 'desc')->get();
 
         return view('pages.inventory_product_out.index', ['product_outs' => $productOut]);
     }

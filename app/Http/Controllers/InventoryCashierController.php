@@ -137,8 +137,10 @@ class InventoryCashierController extends Controller
         $invoice->total_amount = $request->total_amount;
         $invoice->date_recorded = date('Y-m-d H:i:s');
         $invoice->user_id = Auth::user()->id;
-        $invoice->shop_id = $request->shop_id;
+        $invoice->shop_id = Auth::user()->employee->shop_id;
         $invoice->code = $invoice_code;
+        $invoice->payment_methods = "cash";
+        $invoice->status = "paid";
         $invoice->save();
 
         $inventory_product_out = InventoryProductOut::where('user_id', Auth::user()->id)->where('invoice_id', null)->update(['invoice_id' => $invoice->id]);

@@ -48,6 +48,7 @@
                                         <th class="text-center text-light">Kontak</th>
                                         <th class="text-center text-light">Email</th>
                                         <th class="text-center text-light">Alamat</th>
+                                        <th class="text-center text-light">Kategori</th>
                                         <th class="text-center text-light">Aksi</th>
                                     </tr>
                                 </thead>
@@ -59,6 +60,7 @@
                                             <td>{{ $item->contact }}</td>
                                             <td>{{ $item->email }}</td>
                                             <td>{{ $item->address }}</td>
+                                            <td class="text-capitalize">{{ $item->category }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a
@@ -127,6 +129,14 @@
                         <label for="create_address">Alamat</label>
                         <textarea name="create_address" id="create_address" rows="3" class="form-control"></textarea>
                     </div>
+                    <div class="mb-3">
+                        <label for="create_category" class="form-label">Kategori</label>
+                        <select name="create_category" id="create_category" class="form-control">
+                            <option value="">--Pilih Kategori--</option>
+                            <option value="gudang">Gudang</option>
+                            <option value="toko">Toko</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary btn-create-spinner" disabled style="width: 130px; display: none;">
@@ -174,6 +184,11 @@
                     <div class="mb-3">
                         <label for="edit_address">Alamat</label>
                         <textarea name="edit_address" id="edit_address" rows="3" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_category" class="form-label">Kategori</label>
+                        <select name="edit_category" id="edit_category" class="form-control">
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -262,6 +277,7 @@
                 contact: $('#create_contact').val(),
                 email: $('#create_email').val(),
                 address: $('#create_address').val(),
+                category: $('#create_category').val(),
                 _token: CSRF_TOKEN
             }
 
@@ -312,6 +328,19 @@
                     $('#edit_email').val(response.email);
                     $('#edit_address').val(response.address);
 
+                    let val_category = "<option value=\"\">--Pilih Kategori--</option>" +
+                    "<option value=\"gudang\"";
+                    if (response.category == "gudang") {
+                        val_category += " selected";
+                    }
+                    val_category += ">Gudang</option>" +
+                    "<option value=\"toko\"";
+                    if (response.category == "toko") {
+                        val_category += " selected";
+                    }
+                    val_category += ">Toko</option>";
+                    $('#edit_category').append(val_category);
+
                     $('.modal-edit').modal('show');
                 }
             })
@@ -330,6 +359,7 @@
                 contact: $('#edit_contact').val(),
                 email: $('#edit_email').val(),
                 address: $('#edit_address').val(),
+                category: $('#edit_category').val(),
                 _token: CSRF_TOKEN
             }
 

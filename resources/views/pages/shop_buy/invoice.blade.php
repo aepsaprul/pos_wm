@@ -102,13 +102,13 @@
                 <div class="col-6">
                     <p class="lead">Metode Pembayaran:</p>
 
-                    @if ($invoices->payment_methods == 1)
+                    @if ($invoices->payment_methods == "cod")
                         <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
                             <ul>
                                 <li>Pembayaran COD, silahkan membayar ketika barang sudah sampai</li>
                             </ul>
                         </p>
-                    @elseif ($invoices->payment_methods == 2)
+                    @elseif ($invoices->payment_methods == "bca")
                         <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
                             <ul>
                                 <li>Transfer Via Bank BCA, 434-0071-439 a.n Endro prasetyo,se</li>
@@ -132,7 +132,7 @@
                     @else
                         <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
                             <ul>
-                                <li>Transfer Via Bank BCA, 434-0071-439 a.n Endro prasetyo,se</li>
+                                <li>Transfer Via Bank Mandiri, 434-0071-439 a.n Endro prasetyo,se</li>
                             </ul>
                         </p>
 
