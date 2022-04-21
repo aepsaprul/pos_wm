@@ -38,7 +38,7 @@
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <img src="{{ asset('public/assets/icon.png') }}" alt="Logo">
+                <img src="{{ asset('public/assets/logo-text.png') }}" alt="Logo" class="my-3" style="max-width: 60%;">
             </div>
             <div class="card-body">
                 <form action="{{ route('login') }}" method="post">

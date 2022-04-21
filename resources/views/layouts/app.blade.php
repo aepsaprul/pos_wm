@@ -107,27 +107,29 @@
                             @endif
                         @endif
                     </a>
-                    @if (Auth::user()->employee->shop->category == "gudang")
-                        @if (count($current_notif_transactions) > 0)
-                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                <a href="{{ route('inventory_invoice.index') }}" class="dropdown-item">
-                                Transaksi
-                                @if ($current_count_notif_transactions != 0)
-                                    <span class="float-right text-sm rounded-circle bg-danger px-2">{{ $current_count_notif_transactions }}</span>
-                                @endif
-                                </a>
-                            </div>
-                        @endif
-                    @else
-                        @if (count($current_notif_transactions) > 0)
-                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                <a href="{{ route('transaction.index') }}" class="dropdown-item">
-                                Transaksi
-                                @if ($current_count_notif_transactions != 0)
-                                    <span class="float-right text-sm rounded-circle bg-danger px-2">{{ $current_count_notif_transactions }}</span>
-                                @endif
-                                </a>
-                            </div>
+                    @if (Auth::user()->employee_id != null)
+                        @if (Auth::user()->employee->shop->category == "gudang")
+                            @if (count($current_notif_transactions) > 0)
+                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                    <a href="{{ route('inventory_invoice.index') }}" class="dropdown-item">
+                                    Transaksi
+                                    @if ($current_count_notif_transactions != 0)
+                                        <span class="float-right text-sm rounded-circle bg-danger px-2">{{ $current_count_notif_transactions }}</span>
+                                    @endif
+                                    </a>
+                                </div>
+                            @endif
+                        @else
+                            @if (count($current_notif_transactions) > 0)
+                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                    <a href="{{ route('transaction.index') }}" class="dropdown-item">
+                                    Transaksi
+                                    @if ($current_count_notif_transactions != 0)
+                                        <span class="float-right text-sm rounded-circle bg-danger px-2">{{ $current_count_notif_transactions }}</span>
+                                    @endif
+                                    </a>
+                                </div>
+                            @endif
                         @endif
                     @endif
                 </li>
@@ -386,7 +388,7 @@
 
         <!-- Main Footer -->
         <footer class="main-footer">
-          <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+          <strong>Copyright &copy; 2014-2021 <a href="#">Warung Mitra</a>.</strong>
           All rights reserved.
           <div class="float-right d-none d-sm-inline-block">
             <b>Version</b> 3.1.0
