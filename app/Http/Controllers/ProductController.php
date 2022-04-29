@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\ProductMaster;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
@@ -20,12 +21,14 @@ class ProductController extends Controller
     public function create()
     {
         $category = ProductCategory::get();
+        $product_master = ProductMaster::get();
 
         $product = Product::max('id');
         $code = sprintf("%07s", $product + 1);
 
         return response()->json([
             'categories' => $category,
+            'product_masters' => $product_master,
             'product_code' => $code
         ]);
     }
@@ -172,6 +175,17 @@ class ProductController extends Controller
 
         return response()->json([
             'status' => 'Data berhasil dihapus'
+        ]);
+    }
+
+    public function productMasterStore(Request $request)
+    {
+        $product_master = new ProductMaster;
+        $product_master->name = $request->product_master_name;
+        $product_master->save();
+
+        return response()->json([
+            'status' => 200
         ]);
     }
 }

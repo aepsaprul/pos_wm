@@ -162,21 +162,21 @@
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                             <div class="form-group">
-                                                <label for="product_name">Nama Produk</label>
-                                                <input type="text" id="product_name" name="product_name" class="form-control" maxlength="30">
-                                                <small id="error_product_name" class="form-text text-danger"></small>
+                                                <label for="product_master">Nama Produk</label>
+                                                <select name="product_master" id="product_master" class="form-control">
+                                                </select>
+                                                <small id="error_product_master" class="form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                 <label for="category_id">Kategori Produk</label>
                                                 <select name="category_id" id="category_id" class="form-control select_category">
-
                                                 </select>
                                                 <small id="error_category_id" class="form-text text-danger"></small>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        {{-- <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                 <label for="product_price">HPP</label>
                                                 <input type="text" id="product_price" name="product_price" class="form-control" maxlength="16" >
@@ -189,7 +189,7 @@
                                                 <input type="text" id="product_price_selling" name="product_price_selling" class="form-control">
                                                 <small id="error_product_price_selling" class="form-text text-danger"></small>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                 <label for="weight">Bobot</label>
@@ -223,6 +223,43 @@
                         Loading...
                     </button>
                     <button type="submit" class="btn btn-primary btn-save" style="width: 130px;">
+                        <i class="fas fa-save"></i> <span class="modal-btn">Simpan</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade modal-form-product-master" id="modal-default" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form_product_master" method="post" enctype="multipart/form-data" class="form-product-master">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Data Produk</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal">
+                            <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <label for="product_master_name">Nama Produk</label>
+                            <input type="text" name="product_master_name" id="product_master_name" class="form-control">
+                            <small id="error_product_master_name" class="form-text text-danger"></small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-product-master-spinner d-none" disabled style="width: 130px;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading...
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-product-master-save" style="width: 130px;">
                         <i class="fas fa-save"></i> <span class="modal-btn">Simpan</span>
                     </button>
                 </div>
@@ -316,6 +353,54 @@
             'responsive': true
         });
 
+        // create product master
+        $(document).on('change', '#product_master', function() {
+            if ($(this).val() == "add_product_master") {
+                $('.modal-form-product-master').modal('show');
+            }
+        })
+
+        $(document).on('submit', '#form_product_master', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData($('#form_product_master')[0]);
+
+            $.ajax({
+                url: "{{ URL::route('product.product_master_store') }} ",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $('.btn-product-master-spinner').removeClass('d-none');
+                    $('.btn-product-master-save').addClass('d-none');
+                },
+                success: function(response) {
+                    if (response.status == 400) {
+                        $('#error_product_master_name').append(response.errors.product_master_name);
+
+                        setTimeout(() => {
+                            $('.btn-product-master-spinner').addClass('d-none');
+                            $('.btn-product-master-save').removeClass('d-none');
+                        }, 1000);
+                    } else {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Data behasil ditambah'
+                        });
+
+                        setTimeout(() => {
+                            window.location.reload(1);
+                        }, 1000);
+                    }
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + error
+                    alert('Error - ' + errorMessage);
+                }
+            });
+        })
+
         // create
         $('#button-create').on('click', function() {
             $('#category_id').empty();
@@ -354,11 +439,19 @@
                     $('#category_id').prop('disabled', false);
                     $('#image').prop('disabled', false);
 
+                    var value_product_master = "<option value=\"\">--Pilih Produk--</option>";
+                    $.each(response.product_masters, function(index, item) {
+                        value_product_master += "<option value=\"" + item.id + "\">" + item.name + "</option>";
+                    });
+                    value_product_master += "<option value=\"add_product_master\" class=\"font-weight-bold\">Tambah</option>";
+                    $('#product_master').append(value_product_master);
+
                     var value = "<option value=\"\">--Pilih Kategori--</option>";
                     $.each(response.categories, function(index, item) {
                         value += "<option value=\"" + item.id + "\">" + item.category_name + "</option>";
                     });
                     $('#category_id').append(value);
+
                     $('.modal-form').modal('show');
                 }
             });
@@ -370,16 +463,6 @@
             $('.select_category').select2({
                 theme: 'bootstrap4',
                 dropdownParent: $('.modal-form')
-            });
-
-            var price = document.getElementById("product_price");
-            price.addEventListener("keyup", function(e) {
-                price.value = formatRupiah(this.value, "");
-            });
-
-            var price_selling = document.getElementById("product_price_selling");
-            price_selling.addEventListener("keyup", function(e) {
-                price_selling.value = formatRupiah(this.value, "");
             });
         });
 
@@ -516,16 +599,6 @@
             $('.select_category').select2({
                 theme: 'bootstrap4',
                 dropdownParent: $('.modal-form')
-            });
-
-            var price = document.getElementById("product_price");
-            price.addEventListener("keyup", function(e) {
-                price.value = formatRupiah(this.value, "");
-            });
-
-            var price_selling = document.getElementById("product_price_selling");
-            price_selling.addEventListener("keyup", function(e) {
-                price_selling.value = formatRupiah(this.value, "");
             });
         });
 
