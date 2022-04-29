@@ -26,7 +26,7 @@
                             <div class="card card-default">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <label for="product_manual">Nama Produk</label>
                                                 <select name="product_manual" id="product_manual" class="form-control form-control-sm product_manual_select2" style="width: 100%;">
@@ -37,13 +37,13 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <label for="quantity">Quantity</label>
                                                 <input type="number" min="0" class="form-control form-control-sm" id="quantity" name="quantity">
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <label for="pay_method">Metode Bayar</label>
                                                 <select name="pay_method" id="pay_method" class="form-control form-control-sm">
@@ -53,7 +53,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <label for="bid">Nego</label>
                                                 <input type="text" class="form-control form-control-sm" id="bid" name="bid">
