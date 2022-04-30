@@ -35,66 +35,137 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $messages = [
-            'product_code.required' => 'Kode produk harus diisi',
-            'product_name.required' => 'Nama produk harus diisi',
-            'category_id.required' => 'Kategori harus diisi',
-            'product_price.required' => 'HPP harus diisi',
-            'weight.required' => 'HPP harus diisi',
-            'unit.required' => 'HPP harus diisi',
-            'description.required' => 'HPP harus diisi',
-            'gambar.required' => 'Gambar harus diisi',
-            'gambar.image' => 'Gambar harus diisi dengan tipe gambar',
-            'gambar.mimes' => 'Gambar harus diisi dengan format jpg/jpeg/png',
-            'gambar.max' => 'Gambar maksimal 2 Mb'
-        ];
+        // $messages = [
+        //     'product_code.required' => 'Kode produk harus diisi',
+        //     'category_id.required' => 'Kategori harus diisi',
+        //     'description.required' => 'Deskripsi harus diisi',
+        //     'gambar.required' => 'Gambar harus diisi',
+        //     'gambar.image' => 'Gambar harus diisi dengan tipe gambar',
+        //     'gambar.mimes' => 'Gambar harus diisi dengan format jpg/jpeg/png',
+        //     'gambar.max' => 'Gambar maksimal 2 Mb'
+        // ];
 
-        $validator = Validator::make($request->all(), [
-            'product_code' => 'required',
-            'product_name' => 'required',
-            'category_id' => 'required',
-            'product_price' => 'required',
-            'product_price_selling' => 'required',
-            'weight' => 'required',
-            'unit' => 'required',
-            'description' => 'required',
-            'image' => 'required|image|mimes:jpg,png,jpeg|max:2048'
-        ], $messages);
+        // $validator = Validator::make($request->all(), [
+        //     'product_code' => 'required',
+        //     'category_id' => 'required',
+        //     'description' => 'required',
+        //     'image' => 'required|image|mimes:jpg,png,jpeg|max:2048'
+        // ], $messages);
 
-        if ($validator->fails()) {
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'status' => 400,
+        //         'errors' => $validator->errors()
+        //     ]);
+        // } else {
+            // $price = str_replace(".", "", $request->product_price);
+            // $price_selling = str_replace(".", "", $request->product_price_selling);
+
+            // $product = new Product;
+            // $product->product_code = $request->product_code;
+            // $product->product_name = $request->product_name;
+            // $product->product_category_id = $request->category_id;
+            // $product->product_price = $price;
+            // $product->product_price_selling = $price_selling;
+            // $product->weight = $request->weight;
+            // $product->unit = $request->unit;
+            // $product->description = $request->description;
+            // $product->video = $request->video;
+
+            // if($request->hasFile('image')) {
+            //     $file = $request->file('image');
+            //     $extension = $file->getClientOriginalExtension();
+            //     $filename = time() . "." . $extension;
+            //     $file->move('public/image/', $filename);
+            //     $product->image = $filename;
+            // }
+
+            // $product->save();
+
+            // if ($request->parameter_name) {
+                // foreach ($request->parameter_name as $key => $value) {
+                //     $product = new Product;
+                //     $product->product_code = $request->product_code;
+                //     $product->product_name = $request->product_name;
+                //     $product->product_category_id = $request->category_id;
+                //     $product->weight = $request->weight;
+                //     $product->unit = $request->unit;
+                //     $product->description = $request->description;
+                //     $product->video = $request->video;
+
+                    // if($request->hasFile('image')) {
+                    //     $file = $request->file('image');
+                    //     $extension = $file->getClientOriginalExtension();
+                    //     $filename = time() . "." . $extension;
+                    //     $file->move('public/image/', $filename);
+                    //     $product->image = $filename;
+                    // }
+
+                //     $product->save();
+                // }
+            //     return response()->json([
+            //         'status' => "if"
+            //     ]);
+            // } else {
+                // $product = new Product;
+                // $product->product_code = $request->product_code;
+                // $product->product_name = $request->product_name;
+                // $product->product_category_id = $request->category_id;
+                // $product->weight = $request->weight;
+                // $product->unit = $request->unit;
+                // $product->description = $request->description;
+                // $product->video = $request->video;
+
+                // if($request->hasFile('image')) {
+                //     $file = $request->file('image');
+                //     $extension = $file->getClientOriginalExtension();
+                //     $filename = time() . "." . $extension;
+                //     $file->move('public/image/', $filename);
+                //     $product->image = $filename;
+                // }
+
+                // $product->save();
+            //     return response()->json([
+            //         'status' => "else"
+            //     ]);
+            // }
+            // return response()->json([
+            //     'status' => $request->all()
+            // ]);
+        // }
+
+
+        if ($request->parameter_name) {
+            foreach ($request->parameter_name as $key => $value) {
+                $product_group = Product::where('product_master_id', $request->product_master)->get();
+                $count_product_group = count($product_group);
+                // $product_ = Product::max('id');
+
+                $product = new Product;
+                $product->product_master_id = $request->product_master;
+                $product->product_code = $request->product_code . $count_product_group;
+                $product->product_name = $value;
+                $product->save();
+            }
             return response()->json([
-                'status' => 400,
-                'errors' => $validator->errors()
+                'status' => $request->all()
             ]);
         } else {
-            $price = str_replace(".", "", $request->product_price);
-            $price_selling = str_replace(".", "", $request->product_price_selling);
+            $product_group = Product::where('product_master_id', $request->product_master)->get();
+            $count_product_group = count($product_group);
+            // $product_ = Product::max('id');
+            $product_master = ProductMaster::find($request->product_master);
 
             $product = new Product;
-            $product->product_code = $request->product_code;
-            $product->product_name = $request->product_name;
-            $product->product_category_id = $request->category_id;
-            $product->product_price = $price;
-            $product->product_price_selling = $price_selling;
-            $product->weight = $request->weight;
-            $product->unit = $request->unit;
-            $product->description = $request->description;
-            $product->video = $request->video;
-
-            if($request->hasFile('image')) {
-                $file = $request->file('image');
-                $extension = $file->getClientOriginalExtension();
-                $filename = time() . "." . $extension;
-                $file->move('public/image/', $filename);
-                $product->image = $filename;
-            }
-
+            $product->product_master_id = $request->product_master;
+            $product->product_code = $request->product_code . $count_product_group;
+            $product->product_name = $product_master->name;
             $product->save();
-
             return response()->json([
-                'status' => 'Data berhasil di simpan'
+                'status' => "tes"
             ]);
         }
+
     }
 
     public function show($id)

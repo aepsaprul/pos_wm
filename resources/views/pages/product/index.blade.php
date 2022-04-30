@@ -160,7 +160,7 @@
                             <div class="card card-primary card-outline pb-3">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <label for="product_master">Nama Produk</label>
                                                 <select name="product_master" id="product_master" class="form-control">
@@ -176,6 +176,12 @@
                                                 <small id="error_category_id" class="form-text text-danger"></small>
                                             </div>
                                         </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center">
+                                            <label for="parameter">Tambah Parameter</label><br>
+                                            <button type="button" class="btn btn-outline-success btn-paramater-plus" id="parameter"><i class="fas fa-plus"></i></button>
+                                            <button type="button" class="btn btn-outline-danger btn-paramater-cancel" id="parameter"><i class="fas fa-times"></i></button>
+                                        </div>
+                                    </div>
                                         {{-- <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                 <label for="product_price">HPP</label>
@@ -190,14 +196,16 @@
                                                 <small id="error_product_price_selling" class="form-text text-danger"></small>
                                             </div>
                                         </div> --}}
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        <div id="form_parameter" class="form_parameter col-12 row"></div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 form-weight">
                                             <div class="form-group">
                                                 <label for="weight">Bobot</label>
                                                 <input type="text" id="weight" name="weight" class="form-control" maxlength="16" >
                                                 <small id="error_weight" class="form-text text-danger"></small>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 form-unit">
                                             <div class="form-group">
                                                 <label for="unit">Satuan</label>
                                                 <input type="text" id="unit" name="unit" class="form-control" maxlength="30" >
@@ -401,9 +409,50 @@
             });
         })
 
+        // add parameter
+        $(document).on('click', '.btn-paramater-plus', function(e) {
+            e.preventDefault();
+            $('.form-weight').addClass('d-none');
+            $('.form-unit').addClass('d-none');
+
+            var html = '';
+            html += '<div id="inputFormRow">';
+            html += '<div class="row">';
+            html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+            html += '<label>Nama Parameter</label>';
+            html += '<input type="text" name="parameter_name[]" class="form-control" autocomplete="off">';
+            html += '</div>';
+            html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+            html += '<label>Bobot</label>';
+            html += '<input type="text" name="parameter_weight[]" class="form-control" autocomplete="off">';
+            html += '</div>';
+            html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+            html += '<label>Satuan</label>';
+            html += '<input type="text" name="parameter_unit[]" class="form-control" autocomplete="off">';
+            html += '</div>';
+            html += '<div class="col-lg-3 col-md-3 col-12 mb-3 text-right">';
+            html += '<label>Aksi</label><br>';
+            html += '<button id="removeRow" type="button" class="btn btn-danger"><i class="fas fa-times"></i></button>';
+            html += '</div>';
+            html += '</div>';
+
+            $('.form_parameter').append(html);
+        });
+
+        // remove parameter
+        $(document).on('click', '#removeRow', function () {
+            $(this).closest('#inputFormRow').remove();
+        });
+
+        // cancel parameter
+        $(document).on('click', '.btn-paramater-cancel', function () {
+            window.location.reload(1);
+        });
+
         // create
         $('#button-create').on('click', function() {
             $('#category_id').empty();
+            $('#product_master').empty();
             $('.modal-title').empty();
             $('.modal-btn').empty();
 
@@ -466,18 +515,12 @@
             });
         });
 
-
         $(document).on('submit', '.form-create', function (e) {
             e.preventDefault();
 
             $('#error_product_code').empty();
-            $('#error_product_name').empty();
             $('#error_category_id').empty();
-            $('#error_product_price').empty();
-            $('#error_product_price_selling').empty();
-            $('#error_weight').empty();
             $('#error_description').empty();
-            $('#error_unit').empty();
             $('#error_video').empty();
             $('#error_image').empty();
 
@@ -496,13 +539,8 @@
                 success: function(response) {
                     if (response.status == 400) {
                         $('#error_product_code').append(response.errors.product_code);
-                        $('#error_product_name').append(response.errors.product_name);
                         $('#error_category_id').append(response.errors.product_category_id);
-                        $('#error_product_price').append(response.errors.product_price);
-                        $('#error_product_price_selling').append(response.errors.product_price_selling);
-                        $('#error_weight').append(response.errors.weight);
                         $('#error_description').append(response.errors.description);
-                        $('#error_unit').append(response.errors.unit);
                         $('#error_video').append(response.errors.video);
                         $('#error_image').append(response.errors.image);
 
@@ -511,14 +549,7 @@
                             $('.btn-save').removeClass('d-none');
                         }, 1000);
                     } else {
-                        Toast.fire({
-                            icon: 'success',
-                            title: 'Data behasil ditambah'
-                        });
-
-                        setTimeout(() => {
-                            window.location.reload(1);
-                        }, 1000);
+                        console.log(response);
                     }
                 },
                 error: function(xhr, status, error){
