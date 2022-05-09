@@ -50,8 +50,8 @@
                                         <th class="text-center text-light">Kode</th>
                                         <th class="text-center text-light">Nama</th>
                                         <th class="text-center text-light">Kategori</th>
-                                        <th class="text-center text-light">HPP</th>
-                                        <th class="text-center text-light">Harga Jual</th>
+                                        {{-- <th class="text-center text-light">HPP</th>
+                                        <th class="text-center text-light">Harga Jual</th> --}}
                                         <th class="text-center text-light">Stok</th>
                                         <th class="text-center text-light">Aksi</th>
                                     </tr>
@@ -60,17 +60,17 @@
                                     @foreach ($products as $key => $item)
                                     <tr>
                                         <td class="text-center">{{ $key + 1 }}</td>
-                                        <td>{{ $item->product_code }}</td>
+                                        <td>{{ $item->productMaster->code }}</td>
                                         <td>
-                                            <a href="#" class="btn-detail" data-id="{{ $item->id }}">{{ $item->product_name }}</a>
+                                            <a href="#" class="btn-detail" data-id="{{ $item->product_master_id }}">{{ $item->productMaster->name }}</a>
                                         </td>
                                         <td>
                                             @if ($item->category)
                                                 {{ $item->category->category_name }}
                                             @endif
                                         </td>
-                                        <td class="text-right">{{ rupiah($item->product_price) }}</td>
-                                        <td class="text-right">{{ rupiah($item->product_price_selling) }}</td>
+                                        {{-- <td class="text-right">{{ rupiah($item->product_price) }}</td>
+                                        <td class="text-right">{{ rupiah($item->product_price_selling) }}</td> --}}
                                         <td class="text-center">{{ $item->stock }}</td>
                                         <td class="text-center">
                                             <div class="btn-group">
@@ -139,17 +139,17 @@
                                             alt="User profile picture">
                                     </div>
                                     <div class="form-group">
-                                        <label for="image">Gambar</label>
+                                        <label for="image" class="font-weight-light">Gambar</label>
                                         <input type="file" id="image" name="image" class="form-control" >
                                         <small id="error_image" class="form-text text-danger"></small>
                                     </div>
                                     <div class="form-group">
-                                        <label for="product_code">Kode Produk</label>
+                                        <label for="product_code" class="font-weight-light">Kode Produk</label>
                                         <input type="text" id="product_code" name="product_code" class="form-control" readonly>
                                         <small id="error_product_code" class="form-text text-danger"></small>
                                     </div>
                                     <div class="form-group">
-                                        <label for="video">Video</label>
+                                        <label for="video" class="font-weight-light">Video</label>
                                         <input type="text" id="video" name="video" class="form-control" maxlength="30" >
                                         <small id="error_video" class="form-text text-danger"></small>
                                     </div>
@@ -162,22 +162,22 @@
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-12">
                                             <div class="form-group">
-                                                <label for="product_master">Nama Produk</label>
-                                                <select name="product_master" id="product_master" class="form-control">
+                                                <label for="product_master" class="font-weight-light">Nama Produk</label>
+                                                <select name="product_master" id="product_master" class="form-control select_product_master">
                                                 </select>
                                                 <small id="error_product_master" class="form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                             <div class="form-group">
-                                                <label for="category_id">Kategori Produk</label>
+                                                <label for="category_id" class="font-weight-light">Kategori Produk</label>
                                                 <select name="category_id" id="category_id" class="form-control select_category">
                                                 </select>
                                                 <small id="error_category_id" class="form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center">
-                                            <label for="parameter">Tambah Parameter</label><br>
+                                            <label for="parameter" class="font-weight-light">Tambah Parameter</label><br>
                                             <button type="button" class="btn btn-outline-success btn-paramater-plus" id="parameter"><i class="fas fa-plus"></i></button>
                                             <button type="button" class="btn btn-outline-danger btn-paramater-cancel" id="parameter"><i class="fas fa-times"></i></button>
                                         </div>
@@ -200,21 +200,21 @@
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 form-weight">
                                             <div class="form-group">
-                                                <label for="weight">Bobot</label>
+                                                <label for="weight" class="font-weight-light">Bobot</label>
                                                 <input type="text" id="weight" name="weight" class="form-control" maxlength="16" >
                                                 <small id="error_weight" class="form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 form-unit">
                                             <div class="form-group">
-                                                <label for="unit">Satuan</label>
+                                                <label for="unit" class="font-weight-light">Satuan</label>
                                                 <input type="text" id="unit" name="unit" class="form-control" maxlength="30" >
                                                 <small id="error_unit" class="form-text text-danger"></small>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <div class="form-group">
-                                                <label for="description">Deskripsi</label>
+                                                <label for="description" class="font-weight-light">Deskripsi</label>
                                                 <textarea name="description" id="description" cols="30" rows="4" class="form-control"></textarea>
                                                 <small id="error_description" class="form-text text-danger"></small>
                                             </div>
@@ -239,7 +239,60 @@
     </div>
 </div>
 
-<!-- Modal -->
+{{-- modal detail --}}
+<div class="modal fade modal-form-detail" id="modal-default" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form id="form-detail" class="form-detail">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Data Produk</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal">
+                            <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card card-primary card-outline">
+                                <div class="card-body box-profile pb-3">
+                                    <div class="text-center profile_img">
+                                        <img
+                                            class="profile-user-img img-fluid img-circle"
+                                            src="{{ asset('public/assets/image_not_found.jpg') }}"
+                                            alt="User profile picture">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="detail_product_code" class="font-weight-light">Kode Produk</label>
+                                        <input type="text" id="detail_product_code" name="detail_product_code" class="form-control" readonly>
+                                        <small id="error_detail_product_code" class="form-text text-danger"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="detail_video" class="font-weight-light">Video</label>
+                                        <input type="text" id="detail_video" name="detail_video" class="form-control" maxlength="30" >
+                                        <small id="error_detail_video" class="form-text text-danger"></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card card-primary card-outline pb-3">
+                                <div class="card-body">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal  Product Master -->
 <div class="modal fade modal-form-product-master" id="modal-default" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -256,7 +309,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="form-group">
-                            <label for="product_master_name">Nama Produk</label>
+                            <label for="product_master_name" class="font-weight-light">Nama Produk</label>
                             <input type="text" name="product_master_name" id="product_master_name" class="form-control">
                             <small id="error_product_master_name" class="form-text text-danger"></small>
                         </div>
@@ -268,6 +321,43 @@
                         Loading...
                     </button>
                     <button type="submit" class="btn btn-primary btn-product-master-save" style="width: 130px;">
+                        <i class="fas fa-save"></i> <span class="modal-btn">Simpan</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal  Product Category -->
+<div class="modal fade modal-form-product-category" id="modal-default" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form_product_category" method="post" enctype="multipart/form-data" class="form-product-category">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Data Kategori Produk</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal">
+                            <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="form-group">
+                            <label for="product_category_name" class="font-weight-light">Nama Kategori</label>
+                            <input type="text" name="product_category_name" id="product_category_name" class="form-control">
+                            <small id="error_product_category_name" class="form-text text-danger"></small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-product-category-spinner d-none" disabled style="width: 130px;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading...
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-product-category-save" style="width: 130px;">
                         <i class="fas fa-save"></i> <span class="modal-btn">Simpan</span>
                     </button>
                 </div>
@@ -364,12 +454,20 @@
         // create product master
         $(document).on('change', '#product_master', function() {
             if ($(this).val() == "add_product_master") {
+                $('#product_master_name').val("");
+                $('.btn-product-master-spinner').addClass('d-none');
+                $('.btn-product-master-save').removeClass('d-none');
+
                 $('.modal-form-product-master').modal('show');
             }
         })
 
         $(document).on('submit', '#form_product_master', function (e) {
             e.preventDefault();
+            $('#category_id').empty();
+            $('#product_master').empty();
+            $('.modal-title').empty();
+            $('.modal-btn').empty();
 
             let formData = new FormData($('#form_product_master')[0]);
 
@@ -392,13 +490,155 @@
                             $('.btn-product-master-save').removeClass('d-none');
                         }, 1000);
                     } else {
+                        $('.modal-form-product-master').modal('hide');
+
                         Toast.fire({
                             icon: 'success',
                             title: 'Data behasil ditambah'
                         });
 
                         setTimeout(() => {
-                            window.location.reload(1);
+                            $('#form').removeClass('form-edit');
+                            $('#form').addClass('form-create');
+                            $('.modal-title').append("Tambah Data Produk");
+                            $('.modal-btn').append("Simpan");
+                            $('.modal-footer').removeClass("d-none");
+
+                            $('#product_code').val(response.product_code);
+                            $('#id').val("");
+                            $('#product_name').val("");
+                            $('#product_price').val("");
+                            $('#product_price_selling').val("");
+                            $('#weight').val("");
+                            $('#unit').val("");
+                            $('#description').val("");
+                            $('#video').val("");
+                            $('#image').val("");
+
+                            $('#id').prop('readonly', false);
+                            $('#product_name').prop('readonly', false);
+                            $('#product_price').prop('readonly', false);
+                            $('#product_price_selling').prop('readonly', false);
+                            $('#weight').prop('readonly', false);
+                            $('#unit').prop('readonly', false);
+                            $('#description').prop('readonly', false);
+                            $('#video').prop('readonly', false);
+                            $('#category_id').prop('disabled', false);
+                            $('#image').prop('disabled', false);
+
+                            var value_product_master = '<option value="">--Pilih Produk--</option>';
+                            value_product_master += '<option value="add_product_master" class="font-weight-bold">--Tambah Data--</option>';
+                            $.each(response.product_masters, function(index, item) {
+                                value_product_master += "<option value=\"" + item.id + "\">" + item.name + "</option>";
+                            });
+                            $('#product_master').append(value_product_master);
+
+                            var value = "<option value=\"\">--Pilih Kategori--</option>" +
+                                        "<option value=\"add_product_category\" class=\"font-weight-bold\">--Tambah Data--</option>";
+                            $.each(response.categories, function(index, item) {
+                                value += "<option value=\"" + item.id + "\">" + item.category_name + "</option>";
+                            });
+                            $('#category_id').append(value);
+
+                            $('.modal-form').modal('show');
+                        }, 1000);
+                    }
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + error
+                    alert('Error - ' + errorMessage);
+                }
+            });
+        })
+
+        // create product category
+        $(document).on('change', '#category_id', function() {
+            $('.modal-title').empty();
+            if ($(this).val() == "add_product_category") {
+                $('.modal-title').append("Tambah Kategori Produk");
+                $('.modal-form-product-category').modal('show');
+            }
+        })
+
+        $(document).on('submit', '#form_product_category', function (e) {
+            e.preventDefault();
+            $('#category_id').empty();
+            $('#product_master').empty();
+            $('.modal-title').empty();
+            $('.modal-btn').empty();
+
+            let formData = new FormData($('#form_product_category')[0]);
+
+            $.ajax({
+                url: "{{ URL::route('product.product_category_store') }} ",
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $('.btn-product-category-spinner').removeClass('d-none');
+                    $('.btn-product-category-save').addClass('d-none');
+                },
+                success: function(response) {
+                    if (response.status == 400) {
+                        $('#error_product_category_name').append(response.errors.product_category_name);
+
+                        setTimeout(() => {
+                            $('.btn-product-category-spinner').addClass('d-none');
+                            $('.btn-product-category-save').removeClass('d-none');
+                        }, 1000);
+                    } else {
+                        $('.modal-form-product-category').modal('hide');
+
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Data behasil ditambah'
+                        });
+
+                        setTimeout(() => {
+                            $('#form').removeClass('form-edit');
+                            $('#form').addClass('form-create');
+                            $('.modal-title').append("Tambah Data Produk");
+                            $('.modal-btn').append("Simpan");
+                            $('.modal-footer').removeClass("d-none");
+
+                            $('#product_code').val(response.product_code);
+                            $('#id').val("");
+                            $('#product_name').val("");
+                            $('#product_price').val("");
+                            $('#product_price_selling').val("");
+                            $('#weight').val("");
+                            $('#unit').val("");
+                            $('#description').val("");
+                            $('#video').val("");
+                            $('#image').val("");
+
+                            $('#id').prop('readonly', false);
+                            $('#product_name').prop('readonly', false);
+                            $('#product_price').prop('readonly', false);
+                            $('#product_price_selling').prop('readonly', false);
+                            $('#weight').prop('readonly', false);
+                            $('#unit').prop('readonly', false);
+                            $('#description').prop('readonly', false);
+                            $('#video').prop('readonly', false);
+                            $('#category_id').prop('disabled', false);
+                            $('#image').prop('disabled', false);
+
+                            var value_product_master = "<option value=\"\">--Pilih Produk--</option>";
+                            value_product_master += "<option value=\"add_product_master\" class=\"font-weight-bold\">--Tambah Data--</option>";
+                            $.each(response.product_masters, function(index, item) {
+                                value_product_master += "<option value=\"" + item.id + "\">" + item.name + "</option>";
+                            });
+                            $('#product_master').append(value_product_master);
+
+                            var value = "<option value=\"\">--Pilih Kategori--</option>";
+                            value += "<option value=\"add_product_category\" class=\"font-weight-bold\">--Tambah Data--</option>";
+                            $.each(response.categories, function(index, item) {
+                                value += "<option value=\"" + item.id + "\">" + item.category_name + "</option>";
+                            });
+                            $('#category_id').append(value);
+
+                            $('.modal-form').modal('show');
                         }, 1000);
                     }
                 },
@@ -489,13 +729,14 @@
                     $('#image').prop('disabled', false);
 
                     var value_product_master = "<option value=\"\">--Pilih Produk--</option>";
+                    value_product_master += "<option value=\"add_product_master\" class=\"font-weight-bold\">--Tambah Data--</option>";
                     $.each(response.product_masters, function(index, item) {
                         value_product_master += "<option value=\"" + item.id + "\">" + item.name + "</option>";
                     });
-                    value_product_master += "<option value=\"add_product_master\" class=\"font-weight-bold\">Tambah</option>";
                     $('#product_master').append(value_product_master);
 
                     var value = "<option value=\"\">--Pilih Kategori--</option>";
+                    value += "<option value=\"add_product_category\" class=\"font-weight-bold\">--Tambah Data--</option>";
                     $.each(response.categories, function(index, item) {
                         value += "<option value=\"" + item.id + "\">" + item.category_name + "</option>";
                     });
@@ -510,6 +751,11 @@
             $('#product_name').focus();
 
             $('.select_category').select2({
+                theme: 'bootstrap4',
+                dropdownParent: $('.modal-form')
+            });
+
+            $('.select_product_master').select2({
                 theme: 'bootstrap4',
                 dropdownParent: $('.modal-form')
             });
@@ -549,7 +795,13 @@
                             $('.btn-save').removeClass('d-none');
                         }, 1000);
                     } else {
-                        console.log(response);
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Data berhasil ditambah.'
+                        });
+                        setTimeout(() => {
+                            window.location.reload(1);
+                        }, 1000);
                     }
                 },
                 error: function(xhr, status, error){
@@ -667,8 +919,6 @@
         // detail
         $('body').on('click', '.btn-detail', function(e) {
             e.preventDefault();
-            $('.modal-title').empty();
-            $('.modal-btn').empty();
 
             var id = $(this).attr('data-id');
             var url = '{{ route("product.show", ":id") }}';
@@ -683,20 +933,13 @@
                 type: 'GET',
                 data: formData,
                 success: function(response) {
-                    $('#form').removeClass('form-create');
-                    $('#form').addClass('form-edit');
-                    $('.modal-title').append("Detail Data Produk");
-                    $('.modal-footer').addClass("d-none");
-
                     $('#id').val(response.product.id);
-                    $('#product_code').val(response.product.product_code);
+                    $('#detail_product_code').val(response.product.code);
                     $('#product_name').val(response.product.product_name);
-                    $('#product_price').val(format_rupiah(response.product.product_price));
-                    $('#product_price_selling').val(format_rupiah(response.product.product_price_selling));
                     $('#weight').val(response.product.weight);
                     $('#unit').val(response.product.unit);
                     $('#description').val(response.product.description);
-                    $('#video').val(response.product.video);
+                    $('#detail_video').val(response.product.video);
 
                     $('#id').prop('readonly', true);
                     $('#product_code').prop('readonly', true);
@@ -724,7 +967,7 @@
                     value += "</select>";
                     $('#category_id').append(value);
 
-                    $('.modal-form').modal('show');
+                    $('.modal-form-detail').modal('show');
                 }
             })
         });

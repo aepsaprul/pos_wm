@@ -28,4 +28,8 @@ class Product extends Model
     public function shopStock() {
         return $this->hasMany(ShopStock::class, 'product_id', 'id');
     }
+
+    public function productMaster() {
+        return $this->belongsTo(ProductMaster::class, 'product_master_id', 'id');
+    }
 }

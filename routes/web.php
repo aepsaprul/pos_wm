@@ -130,6 +130,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('master/product/{id}/delete_btn', [ProductController::class, 'deleteBtn'])->name('product.delete_btn');
         Route::post('master/product/delete', [ProductController::class, 'delete'])->name('product.delete');
         Route::post('master/product/product_master_store', [ProductController::class, 'productMasterStore'])->name('product.product_master_store');
+        Route::post('master/product/product_category_store', [ProductController::class, 'productCategoryStore'])->name('product.product_category_store');
 
         // shop
         Route::get('master/shop', [ShopController::class, 'index'])->name('shop.index');
