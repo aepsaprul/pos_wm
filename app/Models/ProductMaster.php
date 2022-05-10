@@ -12,4 +12,8 @@ class ProductMaster extends Model
     public function product() {
         return $this->hasMany(Product::class, 'product_master_id', 'id');
     }
+
+    public function productCategory() {
+        return $this->belongsTo(ProductCategory::class, 'product_category_id', 'id');
+    }
 }

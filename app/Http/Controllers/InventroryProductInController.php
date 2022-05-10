@@ -20,7 +20,7 @@ class InventroryProductInController extends Controller
 
     public function create()
     {
-        $product = Product::get();
+        $product = Product::with('productMaster')->get();
         $supplier = Supplier::get();
 
         return response()->json([

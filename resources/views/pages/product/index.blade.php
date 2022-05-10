@@ -65,8 +65,8 @@
                                             <a href="#" class="btn-detail" data-id="{{ $item->product_master_id }}">{{ $item->productMaster->name }}</a>
                                         </td>
                                         <td>
-                                            @if ($item->category)
-                                                {{ $item->category->category_name }}
+                                            @if ($item->productMaster)
+                                                {{ $item->productMaster->productCategory->category_name }}
                                             @endif
                                         </td>
                                         {{-- <td class="text-right">{{ rupiah($item->product_price) }}</td>
@@ -111,7 +111,7 @@
 
 <!-- Modal -->
 <div class="modal fade modal-form" id="modal-default" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <form id="form" method="post" enctype="multipart/form-data" class="form-create">
                 <div class="modal-header">
@@ -241,7 +241,7 @@
 
 {{-- modal detail --}}
 <div class="modal fade modal-form-detail" id="modal-default" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <form id="form-detail" class="form-detail">
                 <div class="modal-header">
@@ -268,12 +268,10 @@
                                     <div class="form-group">
                                         <label for="detail_product_code" class="font-weight-light">Kode Produk</label>
                                         <input type="text" id="detail_product_code" name="detail_product_code" class="form-control" readonly>
-                                        <small id="error_detail_product_code" class="form-text text-danger"></small>
                                     </div>
                                     <div class="form-group">
                                         <label for="detail_video" class="font-weight-light">Video</label>
-                                        <input type="text" id="detail_video" name="detail_video" class="form-control" maxlength="30" >
-                                        <small id="error_detail_video" class="form-text text-danger"></small>
+                                        <input type="text" id="detail_video" name="detail_video" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -281,7 +279,31 @@
                         <div class="col-md-9">
                             <div class="card card-primary card-outline pb-3">
                                 <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <label for="detail_product_master" class="font-weight-light">Nama Produk</label>
+                                                <input type="text" name="detail_product_master" id="detail_product_master" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="detail_category_id" class="font-weight-light">Kategori Produk</label>
+                                                <input type="text" name="detail_category_id" id="detail_category_id" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="detail_parameter" class="row">
 
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="detail_description" class="font-weight-light">Deskripsi</label>
+                                                <textarea name="detail_description" id="detail_description" cols="30" rows="4" class="form-control" readonly></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -368,7 +390,7 @@
 
 {{-- modal delete --}}
 <div class="modal fade modal-delete" id="modal-default">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form id="form-delete">
                 <input type="hidden" id="delete_id" name="id">
@@ -695,6 +717,7 @@
             $('#product_master').empty();
             $('.modal-title').empty();
             $('.modal-btn').empty();
+            $('.profile_img img').prop("src", "{{ URL::to('') }}" + "/public/assets/image_not_found.jpg");
 
             $.ajax({
                 url: "{{ URL::route('product.create') }}",
@@ -919,6 +942,7 @@
         // detail
         $('body').on('click', '.btn-detail', function(e) {
             e.preventDefault();
+            $('#detail_parameter').empty();
 
             var id = $(this).attr('data-id');
             var url = '{{ route("product.show", ":id") }}';
@@ -933,39 +957,39 @@
                 type: 'GET',
                 data: formData,
                 success: function(response) {
+                    console.log(response);
                     $('#id').val(response.product.id);
                     $('#detail_product_code').val(response.product.code);
-                    $('#product_name').val(response.product.product_name);
-                    $('#weight').val(response.product.weight);
-                    $('#unit').val(response.product.unit);
-                    $('#description').val(response.product.description);
+                    $('#detail_product_master').val(response.product.name);
+                    $('#detail_category_id').val(response.product.product_category.category_name);
                     $('#detail_video').val(response.product.video);
-
-                    $('#id').prop('readonly', true);
-                    $('#product_code').prop('readonly', true);
-                    $('#product_name').prop('readonly', true);
-                    $('#product_price').prop('readonly', true);
-                    $('#product_price_selling').prop('readonly', true);
-                    $('#weight').prop('readonly', true);
-                    $('#unit').prop('readonly', true);
-                    $('#description').prop('readonly', true);
-                    $('#video').prop('readonly', true);
-                    $('#category_id').prop('disabled', true);
-                    $('#image').prop('disabled', true);
+                    $('#detail_description').val(response.product.description);
 
                     $('.profile_img img').prop("src", "{{ URL::to('') }}" + "/public/image/" + response.product.image);
 
-                    var value = "<option value=\"\">-- Pilih Kategori --</option>";
-                    $.each(response.categories, function(index, item) {
-                        value += "<option value=\"" + item.id + "\"";
-                        // sesuai kategori yg terpilih
-                        if (item.id === response.product.product_category_id) {
-                            value += "selected";
-                        }
-                        value += ">" + item.category_name + "</option>";
-                    });
-                    value += "</select>";
-                    $('#category_id').append(value);
+                    let val_parameter = "";
+                    $.each(response.product.product, function (index, value) {
+                        val_parameter += '' +
+                        '<div class="col-lg-4 col-md-4 col-sm-12 col-12">' +
+                            '<div class="form-group">' +
+                                '<label for="detail_product_master" class="font-weight-light">Nama Parameter</label>' +
+                                '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.product_name + '" readonly>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="col-lg-4 col-md-4 col-sm-12 col-12">' +
+                            '<div class="form-group">' +
+                                '<label for="detail_product_master" class="font-weight-light">Bobot</label>' +
+                                '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.weight + '" readonly>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="col-lg-4 col-md-4 col-sm-12 col-12">' +
+                            '<div class="form-group">' +
+                                '<label for="detail_product_master" class="font-weight-light">Satuan</label>' +
+                                '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.unit + '" readonly>' +
+                            '</div>' +
+                        '</div>';
+                    })
+                    $('#detail_parameter').append(val_parameter);
 
                     $('.modal-form-detail').modal('show');
                 }

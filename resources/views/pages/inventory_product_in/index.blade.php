@@ -318,10 +318,11 @@
                 type: 'GET',
                 data: formData,
                 success: function(response) {
+                    console.log(response.products);
                     // product query
                     var value = "<option value=\"\">--Pilih Produk--</option>";
                     $.each(response.products, function(index, item) {
-                        value += "<option value=\"" + item.id + "\">" + item.product_name + "</option>";
+                        value += "<option value=\"" + item.id + "\">" + item.product_master.name + " - " + item.product_name + "</option>";
                     });
                     $('#create_product_id').append(value);
 
