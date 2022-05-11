@@ -85,13 +85,13 @@
                                                     <a
                                                         class="dropdown-item btn-edit"
                                                         href="#"
-                                                        data-id="{{ $item->id }}">
+                                                        data-id="{{ $item->product_master_id }}">
                                                             <i class="fa fa-pencil-alt px-2"></i> Ubah
                                                     </a>
                                                     <a
                                                         class="dropdown-item btn-delete"
                                                         href="#"
-                                                        data-id="{{ $item->id }}">
+                                                        data-id="{{ $item->product_master_id }}">
                                                             <i class="fa fa-trash px-2"></i> Hapus
                                                     </a>
                                                 </div>
@@ -109,7 +109,7 @@
     </section>
 </div>
 
-<!-- Modal -->
+<!-- Modal create -->
 <div class="modal fade modal-form" id="modal-default" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
@@ -143,11 +143,11 @@
                                         <input type="file" id="image" name="image" class="form-control" >
                                         <small id="error_image" class="form-text text-danger"></small>
                                     </div>
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label for="product_code" class="font-weight-light">Kode Produk</label>
                                         <input type="text" id="product_code" name="product_code" class="form-control" readonly>
                                         <small id="error_product_code" class="form-text text-danger"></small>
-                                    </div>
+                                    </div> --}}
                                     <div class="form-group">
                                         <label for="video" class="font-weight-light">Video</label>
                                         <input type="text" id="video" name="video" class="form-control" maxlength="30" >
@@ -196,7 +196,7 @@
                                                 <small id="error_product_price_selling" class="form-text text-danger"></small>
                                             </div>
                                         </div> --}}
-                                        <div id="form_parameter" class="form_parameter col-12 row"></div>
+                                    <div id="form_parameter" class="form_parameter row"></div>
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 form-weight">
                                             <div class="form-group">
@@ -232,6 +232,182 @@
                     </button>
                     <button type="submit" class="btn btn-primary btn-save" style="width: 130px;">
                         <i class="fas fa-save"></i> <span class="modal-btn">Simpan</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- modal edit -->
+<div class="modal fade modal_form_edit" id="modal-default" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <form id="form_edit" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ubah Data Produk</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal">
+                            <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    {{-- id --}}
+                    <input type="hidden" id="edit_id" name="edit_id">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card card-primary card-outline">
+                                <div class="card-body box-profile pb-3">
+                                    <div class="text-center edit_profile_img">
+                                        <img
+                                            class="profile-user-img img-fluid img-circle"
+                                            src="{{ asset('public/assets/image_not_found.jpg') }}"
+                                            alt="User profile picture">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit_image" class="font-weight-light">Gambar</label>
+                                        <input type="file" id="edit_image" name="edit_image" class="form-control" >
+                                        <small id="error_edit_image" class="form-text text-danger"></small>
+                                    </div>
+                                    {{-- <div class="form-group">
+                                        <label for="product_code" class="font-weight-light">Kode Produk</label>
+                                        <input type="text" id="product_code" name="product_code" class="form-control" readonly>
+                                        <small id="error_product_code" class="form-text text-danger"></small>
+                                    </div> --}}
+                                    <div class="form-group">
+                                        <label for="edit_video" class="font-weight-light">edit_Video</label>
+                                        <input type="text" id="edit_video" name="edit_video" class="form-control" maxlength="30" >
+                                        <small id="error_edit_video" class="form-text text-danger"></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card card-primary card-outline pb-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            <div class="form-group">
+                                                <label for="edit_product_master" class="font-weight-light">Nama Produk</label>
+                                                <select name="edit_product_master" id="edit_product_master" class="form-control select_edit_product_master">
+                                                </select>
+                                                <small id="error_edit_product_master" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="edit_category_id" class="font-weight-light">Kategori Produk</label>
+                                                <select name="edit_category_id" id="edit_category_id" class="form-control select_category">
+                                                </select>
+                                                <small id="error_edit_category_id" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center">
+                                            <label for="edit_parameter" class="font-weight-light">Tambah Parameter</label><br>
+                                            <button type="button" class="btn btn-outline-success btn-edit-paramater-plus"><i class="fas fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                        {{-- <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="product_price">HPP</label>
+                                                <input type="text" id="product_price" name="product_price" class="form-control" maxlength="16" >
+                                                <small id="error_product_price" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="product_price_selling">Harga Jual</label>
+                                                <input type="text" id="product_price_selling" name="product_price_selling" class="form-control">
+                                                <small id="error_product_price_selling" class="form-text text-danger"></small>
+                                            </div>
+                                        </div> --}}
+                                    <div id="edit_form_parameter" class="edit_form_parameter row"></div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="form-group">
+                                                <label for="edit_description" class="font-weight-light">Deskripsi</label>
+                                                <textarea name="edit_description" id="edit_description" cols="30" rows="4" class="form-control"></textarea>
+                                                <small id="error_edit_description" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-edit-spinner d-none" disabled style="width: 130px;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading...
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-edit-save" style="width: 130px;">
+                        <i class="fas fa-save"></i> <span class="modal-btn">Perbaharui</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- modal create parameter in edit -->
+<div class="modal fade modal_form_edit_add_parameter" id="modal-default" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form_edit_add_parameter" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Parameter</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal">
+                            <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    {{-- id --}}
+                    <input type="hidden" id="edit_add_parameter_id" name="edit_add_parameter_id">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label for="edit_add_parameter_name" class="font-weight-light">Nama Parameter</label>
+                                        <input type="text" name="edit_add_parameter_name" id="edit_add_parameter_name" class="form-control">
+                                        <small id="error_edit_add_parameter_name" class="form-text text-danger"></small>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label for="edit_add_parameter_weight" class="font-weight-light">Bobot</label>
+                                        <input type="text" name="edit_add_parameter_weight" id="edit_add_parameter_weight" class="form-control">
+                                        <small id="error_edit_add_parameter_weight" class="form-text text-danger"></small>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label for="edit_add_parameter_unit" class="font-weight-light">Unit</label>
+                                        <input type="text" name="edit_add_parameter_unit" id="edit_add_parameter_unit" class="form-control">
+                                        <small id="error_edit_add_parameter_unit" class="form-text text-danger"></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-edit-add-parameter-spinner d-none" disabled style="width: 130px;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading...
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-edit-add-parameter-save" style="width: 130px;">
+                        <i class="fas fa-save"></i> <span class="modal-btn">Tambah</span>
                     </button>
                 </div>
             </form>
@@ -392,7 +568,7 @@
 <div class="modal fade modal-delete" id="modal-default">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form id="form-delete">
+            <form id="form_delete">
                 <input type="hidden" id="delete_id" name="id">
                 <div class="modal-header">
                     <h5 class="modal-title">Yakin akan dihapus?</h5>
@@ -679,7 +855,7 @@
 
             var html = '';
             html += '<div id="inputFormRow">';
-            html += '<div class="row">';
+            html += '<div class="col-12 row">';
             html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
             html += '<label>Nama Parameter</label>';
             html += '<input type="text" name="parameter_name[]" class="form-control" autocomplete="off">';
@@ -718,6 +894,9 @@
             $('.modal-title').empty();
             $('.modal-btn').empty();
             $('.profile_img img').prop("src", "{{ URL::to('') }}" + "/public/assets/image_not_found.jpg");
+            $('.form-weight').removeClass('d-none');
+            $('.form-unit').removeClass('d-none');
+            $('#form_parameter').empty();
 
             $.ajax({
                 url: "{{ URL::route('product.create') }}",
@@ -729,7 +908,6 @@
                     $('.modal-btn').append("Simpan");
                     $('.modal-footer').removeClass("d-none");
 
-                    $('#product_code').val(response.product_code);
                     $('#id').val("");
                     $('#product_name').val("");
                     $('#product_price').val("");
@@ -787,7 +965,6 @@
         $(document).on('submit', '.form-create', function (e) {
             e.preventDefault();
 
-            $('#error_product_code').empty();
             $('#error_category_id').empty();
             $('#error_description').empty();
             $('#error_video').empty();
@@ -807,7 +984,6 @@
                 },
                 success: function(response) {
                     if (response.status == 400) {
-                        $('#error_product_code').append(response.errors.product_code);
                         $('#error_category_id').append(response.errors.product_category_id);
                         $('#error_description').append(response.errors.description);
                         $('#error_video').append(response.errors.video);
@@ -837,8 +1013,9 @@
         // edit
         $('body').on('click', '.btn-edit', function(e) {
             e.preventDefault();
-            $('.modal-title').empty();
-            $('.modal-btn').empty();
+            $('#edit_category_id').empty();
+            $('#edit_product_master').empty();
+            $('#edit_form_parameter').empty();
 
             var id = $(this).attr('data-id');
             var url = '{{ route("product.edit", ":id") }}';
@@ -853,35 +1030,27 @@
                 type: 'GET',
                 data: formData,
                 success: function(response) {
-                    $('#form').removeClass('form-create');
-                    $('#form').addClass('form-edit');
-                    $('.modal-title').append("Ubah Data Produk");
-                    $('.modal-btn').append("Perbaharui");
-                    $('.modal-footer').removeClass("d-none");
 
-                    $('#id').val(response.product.id);
-                    $('#product_code').val(response.product.product_code);
-                    $('#product_name').val(response.product.product_name);
-                    $('#product_price').val(format_rupiah(response.product.product_price));
-                    $('#product_price_selling').val(format_rupiah(response.product.product_price_selling));
-                    $('#weight').val(response.product.weight);
-                    $('#unit').val(response.product.unit);
-                    $('#description').val(response.product.description);
-                    $('#video').val(response.product.video);
+                    $('#edit_id').val(response.product.id);
+                    $('#edit_product_name').val(response.product.id);
+                    $('#edit_description').val(response.product.description);
+                    $('#edit_video').val(response.product.video);
 
-                    $('#id').prop('readonly', false);
-                    $('#product_name').prop('readonly', false);
-                    $('#product_price').prop('readonly', false);
-                    $('#product_price_selling').prop('readonly', false);
-                    $('#weight').prop('readonly', false);
-                    $('#unit').prop('readonly', false);
-                    $('#description').prop('readonly', false);
-                    $('#video').prop('readonly', false);
-                    $('#category_id').prop('disabled', false);
-                    $('#image').prop('disabled', false);
+                    $('.edit_profile_img img').prop("src", "{{ URL::to('') }}" + "/public/image/" + response.product.image);
 
-                    $('.profile_img img').prop("src", "{{ URL::to('') }}" + "/public/image/" + response.product.image);
+                    // product master
+                    var value_product = "<option value=\"\">-- Pilih Product --</option>";
+                    $.each(response.product_masters, function(index, item) {
+                        value_product += "<option value=\"" + item.id + "\"";
+                        // sesuai kategori yg terpilih
+                        if (item.id == response.product.id) {
+                            value_product += "selected";
+                        }
+                        value_product += ">" + item.name + "</option>";
+                    });
+                    $('#edit_product_master').append(value_product);
 
+                    // product category
                     var value = "<option value=\"\">-- Pilih Kategori --</option>";
                     $.each(response.categories, function(index, item) {
                         value += "<option value=\"" + item.id + "\"";
@@ -891,13 +1060,167 @@
                         }
                         value += ">" + item.category_name + "</option>";
                     });
-                    value += "</select>";
-                    $('#category_id').append(value);
+                    $('#edit_category_id').append(value);
 
-                    $('.modal-form').modal('show');
+                    var html = '';
+                    $.each(response.product.product, function (index, value) {
+                        html += '<div id="inputFormRow">';
+                        html += '<div class="col-12 row">';
+                        html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+                        html += '<label>Nama Parameter</label>';
+                        html += '<input type="hidden" name="parameter_id[]" class="form-control" value="' + value.id + '" autocomplete="off">';
+                        html += '<input type="text" name="parameter_name[]" class="form-control" value="' + value.product_name + '" autocomplete="off">';
+                        html += '</div>';
+                        html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+                        html += '<label>Bobot</label>';
+                        html += '<input type="text" name="parameter_weight[]" class="form-control" value="' + value.weight + '" autocomplete="off">';
+                        html += '</div>';
+                        html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+                        html += '<label>Satuan</label>';
+                        html += '<input type="text" name="parameter_unit[]" class="form-control" value="' + value.unit + '" autocomplete="off">';
+                        html += '</div>';
+                        html += '<div class="col-lg-3 col-md-3 col-12 mb-3 text-right">';
+                        html += '<label>Aksi</label><br>';
+                        html += '<button class="btn btn-danger btn-edit-spinner-' + value.id + ' d-none" disabled><span class="spinner-grow spinner-grow-sm"></span></button>';
+                        html += '<button id="edit_remove_row_' + value.id + '" type="button" class="btn btn-danger edit_remove_row" data-id="' + value.id + '"><i class="fas fa-times"></i></button>';
+                        html += '</div>';
+                        html += '</div>';
+                    })
+                    $('.edit_form_parameter').append(html);
+
+                    $('.modal_form_edit').modal('show');
                 }
             })
         });
+
+        $(document).on('click', '.edit_remove_row', function (e) {
+            e.preventDefault();
+
+            var id = $(this).attr('data-id');
+            var url = '{{ route("product.remove", ":id") }}';
+            url = url.replace(':id', id );
+
+            $.ajax({
+                url: url,
+                type: "get",
+                beforeSend: function() {
+                    $('.btn-edit-spinner-' + id).removeClass('d-none');
+                    $('#edit_remove_row_' + id).addClass('d-none');
+                },
+                success: function(response) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Data berhasil diperbaharui.'
+                    });
+
+                    if (response.products.length == 0) {
+                        setTimeout(() => {
+                            window.location.reload(1);
+                        }, 1000)
+                    } else {
+                        $('.edit_form_parameter').empty();
+
+                        setTimeout(() => {
+                            var html = '';
+                            $.each(response.products, function (index, value) {
+                                html += '<div id="inputFormRow">';
+                                html += '<div class="col-12 row">';
+                                html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+                                html += '<label>Nama Parameter</label>';
+                                html += '<input type="hidden" name="parameter_id[]" class="form-control" value="' + value.id + '" autocomplete="off">';
+                                html += '<input type="text" name="parameter_name[]" class="form-control" value="' + value.product_name + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+                                html += '<label>Bobot</label>';
+                                html += '<input type="text" name="parameter_weight[]" class="form-control" value="' + value.weight + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+                                html += '<label>Satuan</label>';
+                                html += '<input type="text" name="parameter_unit[]" class="form-control" value="' + value.unit + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-3 col-md-3 col-12 mb-3 text-right">';
+                                html += '<label>Aksi</label><br>';
+                                html += '<button class="btn btn-danger btn-edit-spinner-' + value.id + ' d-none" disabled><span class="spinner-grow spinner-grow-sm"></span></button>';
+                                html += '<button id="edit_remove_row_' + value.id + '" type="button" class="btn btn-danger edit_remove_row" data-id="' + value.id + '"><i class="fas fa-times"></i></button>';
+                                html += '</div>';
+                                html += '</div>';
+                            })
+                            $('.edit_form_parameter').append(html);
+                        }, 1000);
+                    }
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + error
+                    alert('Error - ' + errorMessage);
+                }
+            })
+        })
+
+        $(document).on('click', '.btn-edit-paramater-plus', function (e) {
+            e.preventDefault();
+            let id = $('#edit_id').val();
+
+            $('#edit_add_parameter_id').val(id);
+            $('.modal_form_edit_add_parameter').modal('show');
+            $('.modal_form_edit').modal('hide');
+        })
+
+        $(document).on('submit', '#form_edit_add_parameter', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData($('#form_edit_add_parameter')[0]);
+
+            $.ajax({
+                url: "{{ URL::route('product.add_parameter') }}",
+                type: "post",
+                data: formData,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                    $('.btn-edit-add-parameter-spinner').removeClass('d-none');
+                    $('.btn-edit-add-parameter-save').addClass('d-none');
+                },
+                success: function(response) {
+                    $('.modal_form_edit_add_parameter').modal('hide');
+
+                    $('.edit_form_parameter').empty();
+
+                    setTimeout(() => {
+                        var html = '';
+                        $.each(response.products, function (index, value) {
+                            html += '<div id="inputFormRow">';
+                            html += '<div class="col-12 row">';
+                            html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+                            html += '<label>Nama Parameter</label>';
+                            html += '<input type="hidden" name="parameter_id[]" class="form-control" value="' + value.id + '" autocomplete="off">';
+                            html += '<input type="text" name="parameter_name[]" class="form-control" value="' + value.product_name + '" autocomplete="off">';
+                            html += '</div>';
+                            html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+                            html += '<label>Bobot</label>';
+                            html += '<input type="text" name="parameter_weight[]" class="form-control" value="' + value.weight + '" autocomplete="off">';
+                            html += '</div>';
+                            html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+                            html += '<label>Satuan</label>';
+                            html += '<input type="text" name="parameter_unit[]" class="form-control" value="' + value.unit + '" autocomplete="off">';
+                            html += '</div>';
+                            html += '<div class="col-lg-3 col-md-3 col-12 mb-3 text-right">';
+                            html += '<label>Aksi</label><br>';
+                            html += '<button class="btn btn-danger btn-edit-spinner-' + value.id + ' d-none" disabled><span class="spinner-grow spinner-grow-sm"></span></button>';
+                            html += '<button id="edit_remove_row_' + value.id + '" type="button" class="btn btn-danger edit_remove_row" data-id="' + value.id + '"><i class="fas fa-times"></i></button>';
+                            html += '</div>';
+                            html += '</div>';
+                        })
+                        $('.edit_form_parameter').append(html);
+
+                        $('.modal_form_edit').modal('show');
+                    }, 1000);
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + error
+                    alert('Error - ' + errorMessage);
+                }
+            })
+        })
 
         $(document).on('shown.bs.modal', '.modal-form', function() {
             $('#edit_product_name').focus();
@@ -908,10 +1231,10 @@
             });
         });
 
-        $(document).on('submit', '.form-edit', function (e) {
+        $(document).on('submit', '#form_edit', function (e) {
             e.preventDefault();
 
-            let formData = new FormData($('#form')[0]);
+            let formData = new FormData($('#form_edit')[0]);
 
             $.ajax({
                 url: "{{ URL::route('product.update') }}",
@@ -920,13 +1243,13 @@
                 contentType: false,
                 processData: false,
                 beforeSend: function() {
-                    $('.btn-spinner').removeClass('d-none');
-                    $('.btn-save').addClass('d-none');
+                    $('.btn-edit-spinner').removeClass('d-none');
+                    $('.btn-edit-save').addClass('d-none');
                 },
                 success: function(response) {
                     Toast.fire({
                         icon: 'success',
-                        title: 'Data berhasil diperbaharui.'
+                        title: 'Data berhasil dihapus.'
                     });
                     setTimeout(() => {
                         window.location.reload(1);
@@ -943,6 +1266,7 @@
         $('body').on('click', '.btn-detail', function(e) {
             e.preventDefault();
             $('#detail_parameter').empty();
+            $('.modal-title').empty();
 
             var id = $(this).attr('data-id');
             var url = '{{ route("product.show", ":id") }}';
@@ -957,7 +1281,8 @@
                 type: 'GET',
                 data: formData,
                 success: function(response) {
-                    console.log(response);
+                    $('.modal-title').append("Detail Data Produk");
+
                     $('#id').val(response.product.id);
                     $('#detail_product_code').val(response.product.code);
                     $('#detail_product_master').val(response.product.name);
@@ -1000,8 +1325,6 @@
         $('body').on('click', '.btn-delete', function(e) {
             e.preventDefault();
 
-            $('.delete_title').empty();
-
             var id = $(this).attr('data-id');
             var url = '{{ route("product.delete_btn", ":id") }}';
             url = url.replace(':id', id );
@@ -1015,7 +1338,6 @@
                 type: 'GET',
                 data: formData,
                 success: function(response) {
-                    $('.delete_title').append(response.product_name);
                     $('#delete_id').val(response.id);
                     $('.modal-delete').modal('show');
                 }

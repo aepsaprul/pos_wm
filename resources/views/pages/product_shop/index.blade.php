@@ -68,14 +68,14 @@
                                         </td>
                                         <td class="product_{{ $item->id }}">
                                             @if ($item->product)
-                                                {{ $item->product->product_name }}
+                                                {{ $item->product->productMaster->name }} - {{ $item->product->product_name }}
                                             @else
                                                 Produk Kosong
                                             @endif
                                         </td>
                                         <td class="category_{{ $item->id }}">
-                                            @if ($item->product->category)
-                                                {{ $item->product->category->category_name }}
+                                            @if ($item->product)
+                                                {{ $item->product->productMaster->productCategory->category_name }}
                                             @else
                                                 Kategori Kosong
                                             @endif
@@ -285,7 +285,7 @@
 
                     var value = "<option value=\"\">--Pilih Produk--</option>";
                     $.each(response.products, function(index, item) {
-                        value += "<option value=\"" + item.id + "\">" + item.product_name + "</option>";
+                        value += "<option value=\"" + item.id + "\">" + item.product_master.name + " - " + item.product_name + "</option>";
                     });
 
                     $('#create_product_id').append(value);
@@ -452,7 +452,6 @@
                 type: 'GET',
                 data: formData,
                 success: function(response) {
-                    $('.delete_title').append(response.product_name);
                     $('#delete_id').val(response.id);
                     $('.modal-delete').modal('show');
                 }

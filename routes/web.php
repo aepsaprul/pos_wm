@@ -131,6 +131,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('master/product/delete', [ProductController::class, 'delete'])->name('product.delete');
         Route::post('master/product/product_master_store', [ProductController::class, 'productMasterStore'])->name('product.product_master_store');
         Route::post('master/product/product_category_store', [ProductController::class, 'productCategoryStore'])->name('product.product_category_store');
+        Route::get('master/product/{id}/remove', [ProductController::class, 'remove'])->name('product.remove');
+        Route::post('master/product/add_parameter', [ProductController::class, 'addParameter'])->name('product.add_parameter');
 
         // shop
         Route::get('master/shop', [ShopController::class, 'index'])->name('shop.index');

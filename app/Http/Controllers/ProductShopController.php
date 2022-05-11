@@ -22,7 +22,7 @@ class ProductShopController extends Controller
 
     public function create()
     {
-        $product = Product::get();
+        $product = Product::with('productMaster')->doesntHave('productShop')->get();
 
         return response()->json([
             'products' => $product
@@ -102,8 +102,7 @@ class ProductShopController extends Controller
 
 
         return response()->json([
-            'id' => $product_shop->id,
-            'product_name' => $product_shop->product->product_name
+            'id' => $product_shop->id
         ]);
     }
 

@@ -32,4 +32,8 @@ class Product extends Model
     public function productMaster() {
         return $this->belongsTo(ProductMaster::class, 'product_master_id', 'id');
     }
+
+    public function productShop() {
+        return $this->hasMany(ProductShop::class, 'product_id', 'id');
+    }
 }

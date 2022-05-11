@@ -32,7 +32,10 @@
                                                 <select name="product_manual" id="product_manual" class="form-control form-control-sm product_manual_select2" style="width: 100%;">
                                                     <option value="">--Pilih Produk--</option>
                                                     @foreach ($product_manuals as $item)
-                                                        <option value="{{ $item->product->id }}">{{ $item->product->product_code }} - {{ $item->product->product_name }}</option>
+                                                    @if ($item->product)
+
+                                                    <option value="{{ $item->product->id }}">{{ $item->product->product_code }} - {{ $item->product->product_name }}</option>
+                                                    @endif
                                                     @endforeach
                                                 </select>
                                             </div>

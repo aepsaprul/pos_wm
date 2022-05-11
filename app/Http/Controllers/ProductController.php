@@ -28,20 +28,15 @@ class ProductController extends Controller
         $category = ProductCategory::get();
         $product_master = ProductMaster::doesntHave('product')->get();
 
-        $product = Product::max('id');
-        $code = sprintf("%05s", $product + 1);
-
         return response()->json([
             'categories' => $category,
-            'product_masters' => $product_master,
-            'product_code' => $code
+            'product_masters' => $product_master
         ]);
     }
 
     public function store(Request $request)
     {
         $messages = [
-            'product_code.required' => 'Kode produk harus diisi',
             'category_id.required' => 'Kategori harus diisi',
             'description.required' => 'Deskripsi harus diisi',
             'gambar.required' => 'Gambar harus diisi',
@@ -51,7 +46,6 @@ class ProductController extends Controller
         ];
 
         $validator = Validator::make($request->all(), [
-            'product_code' => 'required',
             'category_id' => 'required',
             'description' => 'required',
             'image' => 'required|image|mimes:jpg,png,jpeg|max:2048'
@@ -141,23 +135,8 @@ class ProductController extends Controller
 
 
             if ($request->parameter_name) {
-                foreach ($request->parameter_name as $key => $value) {
-                    $product_group = Product::where('product_master_id', $request->product_master)->get();
-                    $count_product_group = count($product_group);
-
-                    // insert data product
-                    $product = new Product;
-                    $product->product_master_id = $request->product_master;
-                    $product->product_code = $request->product_code . $count_product_group;
-                    $product->product_name = $value;
-                    $product->weight = $request->parameter_weight[$key];
-                    $product->unit = $request->parameter_unit[$key];
-                    $product->save();
-                }
-
-                // insert data product master
+                // update data product master
                 $product_master = ProductMaster::find($request->product_master);
-                $product_master->code = $request->product_code;
                 $product_master->product_category_id = $request->category_id;
                 $product_master->description = $request->description;
                 $product_master->video = $request->video;
@@ -172,16 +151,25 @@ class ProductController extends Controller
 
                 $product_master->save();
 
-                return response()->json([
-                    'status' => $request->all()
-                ]);
+                foreach ($request->parameter_name as $key => $value) {
+                    $product_group = Product::where('product_master_id', $request->product_master)->get();
+                    $count_product_group = count($product_group) + 1;
+
+                    // insert data product
+                    $product = new Product;
+                    $product->product_master_id = $request->product_master;
+                    $product->product_code = $product_master->code . $count_product_group;
+                    $product->product_name = $value;
+                    $product->weight = $request->parameter_weight[$key];
+                    $product->unit = $request->parameter_unit[$key];
+                    $product->save();
+                }
             } else {
                 $product_group = Product::where('product_master_id', $request->product_master)->get();
-                $count_product_group = count($product_group);
+                $count_product_group = count($product_group) + 1;
 
-                // insert data product master
+                // update data product master
                 $product_master = ProductMaster::find($request->product_master);
-                $product_master->code = $request->product_code;
                 $product_master->product_category_id = $request->category_id;
                 $product_master->description = $request->description;
                 $product_master->video = $request->video;
@@ -199,16 +187,16 @@ class ProductController extends Controller
                 // insert data product
                 $product = new Product;
                 $product->product_master_id = $request->product_master;
-                $product->product_code = $request->product_code . $count_product_group;
+                $product->product_code = $product_master->code . $count_product_group;
                 $product->product_name = $product_master->name;
                 $product->weight = $request->weight;
                 $product->unit = $request->unit;
                 $product->save();
-
-                return response()->json([
-                    'status' => "tes"
-                ]);
             }
+
+            return response()->json([
+                'status' => 'true'
+            ]);
         }
     }
 
@@ -225,65 +213,87 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::find($id);
+        $product = ProductMaster::with(['product', 'productCategory'])->find($id);
         $category = ProductCategory::get();
+        $product_master = ProductMaster::get();
 
         return response()->json([
             'product' => $product,
-            'categories' => $category
+            'categories' => $category,
+            'product_masters' => $product_master
         ]);
     }
 
     public function update(Request $request)
     {
-        $price = str_replace(".", "", $request->product_price);
-        $price_selling = str_replace(".", "", $request->product_price_selling);
+        // update data product master
+        $product_master = ProductMaster::find($request->edit_id);
+        $product_master->product_category_id = $request->edit_category_id;
+        $product_master->description = $request->edit_description;
+        $product_master->video = $request->edit_video;
 
-        $product = Product::find($request->id);
-        $product->product_code = $request->product_code;
-        $product->product_name = $request->product_name;
-        $product->product_category_id = $request->category_id;
-        $product->product_price = $price;
-        $product->product_price_selling = $price_selling;
-        $product->weight = $request->weight;
-        $product->unit = $request->unit;
-        $product->description = $request->description;
-        $product->video = $request->video;
-
-        if($request->hasFile('image')) {
-            if (file_exists("public/image/" . $product->image)) {
-                File::delete("public/image/" . $product->image);
-            }
-            $file = $request->file('image');
+        if($request->hasFile('edit_image')) {
+            $file = $request->file('edit_image');
             $extension = $file->getClientOriginalExtension();
             $filename = time() . "." . $extension;
             $file->move('public/image/', $filename);
-            $product->image = $filename;
+            $product_master->image = $filename;
         }
 
-        $product->save();
+        $product_master->save();
+
+        // update product
+        foreach ($request->parameter_id as $key => $value) {
+
+            // insert data product
+            $product = Product::find($value);
+            $product->product_name = $request->parameter_name[$key];
+            $product->weight = $request->parameter_weight[$key];
+            $product->unit = $request->parameter_unit[$key];
+            $product->save();
+        }
+
+        // $product = Product::find($request->id);
+        // $product->product_code = $request->product_code;
+        // $product->product_name = $request->product_name;
+        // $product->product_category_id = $request->category_id;
+        // $product->weight = $request->weight;
+        // $product->unit = $request->unit;
+        // $product->description = $request->description;
+        // $product->video = $request->video;
+
+        // if($request->hasFile('image')) {
+        //     if (file_exists("public/image/" . $product->image)) {
+        //         File::delete("public/image/" . $product->image);
+        //     }
+        //     $file = $request->file('image');
+        //     $extension = $file->getClientOriginalExtension();
+        //     $filename = time() . "." . $extension;
+        //     $file->move('public/image/', $filename);
+        //     $product->image = $filename;
+        // }
+
+        // $product->save();
 
         return response()->json([
-            'status' => 'Data berhasil diperbaharui'
+            'status' => $request->all()
         ]);
     }
 
     public function deleteBtn($id)
     {
-        $product = Product::find($id);
-
         return response()->json([
-            'id' => $product->id,
-            'product_name' => $product->product_name
+            'id' => $id
         ]);
     }
 
     public function delete(Request $request)
     {
-        $product = Product::find($request->id);
+        $product = Product::where('product_master_id', $request->id);
 
-        if (file_exists("public/image/" . $product->image)) {
-            File::delete("public/image/" . $product->image);
+        $product_master = ProductMaster::find($request->id);
+        if (file_exists("public/image/" . $product_master->image)) {
+            File::delete("public/image/" . $product_master->image);
         }
 
         $product->delete();
@@ -295,20 +305,20 @@ class ProductController extends Controller
 
     public function productMasterStore(Request $request)
     {
+        $product = ProductMaster::max('id');
+        $code = sprintf("%05s", $product + 1);
+
         $product_master = new ProductMaster;
+        $product_master->code = $code;
         $product_master->name = $request->product_master_name;
         $product_master->save();
 
         $category = ProductCategory::get();
         $product_master = ProductMaster::get();
 
-        $product = Product::max('id');
-        $code = sprintf("%05s", $product + 1);
-
         return response()->json([
             'categories' => $category,
-            'product_masters' => $product_master,
-            'product_code' => $code
+            'product_masters' => $product_master
         ]);
     }
 
@@ -321,13 +331,46 @@ class ProductController extends Controller
         $category = ProductCategory::get();
         $product_master = ProductMaster::get();
 
-        $product = Product::max('id');
-        $code = sprintf("%05s", $product + 1);
-
         return response()->json([
             'categories' => $category,
-            'product_masters' => $product_master,
-            'product_code' => $code
+            'product_masters' => $product_master
+        ]);
+    }
+
+    public function remove($id)
+    {
+        $product = Product::find($id);
+        $product->delete();
+
+        $product_master = ProductMaster::with('product')->find($product->product_master_id);
+        $products = Product::where('product_master_id', $product_master->id)->get();
+
+        return response()->json([
+            'status' => 'true',
+            'products' => $products
+        ]);
+    }
+
+    public function addParameter(Request $request)
+    {
+        $product_master = ProductMaster::find($request->edit_add_parameter_id);
+        $product_group = Product::where('product_master_id', $request->edit_add_parameter_id)->get();
+        $count_product_group = count($product_group) + 1;
+
+        $product = new Product;
+        $product->product_master_id = $request->edit_add_parameter_id;
+        $product->product_code = $product_master->code . $count_product_group;
+        $product->product_name = $request->edit_add_parameter_name;
+        $product->weight = $request->edit_add_parameter_weight;
+        $product->unit = $request->edit_add_parameter_unit;
+        $product->save();
+
+        // view data prdocut
+        $product_master = ProductMaster::with('product')->find($request->edit_add_parameter_id);
+        $products = Product::where('product_master_id', $product_master->id)->get();
+
+        return response()->json([
+            'products' => $products
         ]);
     }
 }
