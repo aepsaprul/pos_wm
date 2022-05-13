@@ -45,6 +45,10 @@ class InventroryProductInController extends Controller
         $stock = Product::where('id', $request->product_id)->first();
         $stock->stock = $stock->stock + $request->quantity;
         $stock->product_price = $request->price;
+
+        $uang = ceil($request->price / 0.9);
+        $stock->product_price_selling = pembulatan($uang);
+
         $stock->save();
 
         return response()->json([
