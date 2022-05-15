@@ -169,6 +169,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('inventory_transaction/inventory_invoice/delete', [InventoryInvoiceController::class, 'delete'])->name('inventory_invoice.delete');
         Route::get('inventory_transaction/inventory_invoice/{id}/print', [InventoryInvoiceController::class, 'print'])->name('inventory_invoice.print');
         Route::get('inventory_transaction/inventory_invoice/{id}/unpaid', [InventoryInvoiceController::class, 'unpaid'])->name('inventory_invoice.unpaid');
+        Route::get('inventory_transaction/inventory_invoice/{id}/cancel', [InventoryInvoiceController::class, 'cancel'])->name('inventory_invoice.cancel');
 
         // inventory cashier
         Route::get('inventory_cashier', [InventoryCashierController::class, 'index'])->name('inventory_cashier.index');
@@ -240,6 +241,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('shop_buy/cart/delete', [ShopBuyController::class, 'cartDelete'])->name('shop_buy.cart.delete');
     Route::post('shop_buy/cart/finish', [ShopBuyController::class, 'cartFinish'])->name('shop_buy.cart.finish');
     Route::get('shop_buy/cart/{kode}/invoice', [ShopBuyController::class, 'cartInvoice'])->name('shop_buy.cart.invoice');
+    Route::get('shop_buy/cart/{kode}/invoice_print', [ShopBuyController::class, 'cartInvoicePrint'])->name('shop_buy.cart.invoice_print');
 
     // transaction buy
     Route::get('transaction', [TransactionController::class, 'index'])->name('transaction.index');

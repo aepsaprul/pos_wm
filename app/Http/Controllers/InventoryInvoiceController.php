@@ -92,4 +92,21 @@ class InventoryInvoiceController extends Controller
             'status' => 200
         ]);
     }
+
+    public function cancel($id)
+    {
+        $invoice = InventoryInvoice::find($id);
+        $invoice->status = "cancel";
+        $invoice->save();
+
+        $notif = Notif::where('invoice_id', $id)->first();
+        if ($notif) {
+            $notif->status = "finish";
+            $notif->save();
+        }
+
+        return response()->json([
+            'status' => 200
+        ]);
+    }
 }

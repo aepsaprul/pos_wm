@@ -89,6 +89,7 @@
                                             <td class="text-center"><span class="text-uppercase">{{ $item->payment_methods }}</span></td>
                                             <td class="text-center">
                                                 @if ($item->status == "unpaid")
+                                                    <button type="button" id="btn-cancel-{{ $item->id }}" class="btn text-capitalize rounded bg-gradient-warning px-3 btn-cancel" data-id="{{ $item->id }}" style="width: 120px;">cancel</button>
                                                     <button class="btn btn-default btn-unpaid-spinner-{{ $item->id }} d-none" disabled style="width: 120px;">
                                                         <span class="spinner-grow spinner-grow-sm"></span>
                                                         Loading..
@@ -253,6 +254,7 @@
             'responsive': true
         });
 
+        // btn detail
         $('body').on('click', '.btn-detail', function(e) {
             e.preventDefault();
             $('#table_two tbody').empty();
@@ -292,6 +294,7 @@
 
         });
 
+        // btn delete
         $('body').on('click', '.btn-delete', function(e) {
             e.preventDefault()
 
@@ -368,6 +371,39 @@
                 beforeSend: function () {
                     $('.btn-unpaid-spinner-' + id).removeClass('d-none');
                     $('#btn-unpaid-' + id).addClass('d-none');
+                },
+                success: function(response) {
+                    setTimeout(() => {
+                        window.location.reload(1);
+                    }, 1000);
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + error
+                    alert('Error - ' + errorMessage);
+                }
+            });
+        })
+
+        // btn cancel
+        $(document).on('click', '.btn-cancel', function (e) {
+            e.preventDefault();
+
+            var id = $(this).attr('data-id');
+            var url = '{{ route("inventory_invoice.cancel", ":id") }}';
+            url = url.replace(':id', id );
+
+            var formData = {
+                id: id,
+                _token: CSRF_TOKEN
+            }
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: formData,
+                beforeSend: function () {
+                    $('.btn-unpaid-spinner-' + id).removeClass('d-none');
+                    $('#btn-cancel-' + id).addClass('d-none');
                 },
                 success: function(response) {
                     setTimeout(() => {

@@ -52,8 +52,8 @@
                                             <div class="overlay-wrapper">
                                                 <div id="overlay_{{ $item->id }}" class="overlay d-none"><i class="fas fa-3x fa-sync-alt fa-spin"></i></div>
                                                 <a href="#" class="text-secondary product" data-id="{{ $item->id }}">
-                                                    @if (file_exists("public/image/" . $item->image))
-                                                        <img src="{{ asset('public/image/' . $item->image) }}" alt="" style="width: 100%;">
+                                                    @if (file_exists("public/image/" . $item->productMaster->image))
+                                                        <img src="{{ asset('public/image/' . $item->productMaster->image) }}" alt="" style="width: 100%;">
                                                     @else
                                                         <img src="{{ asset('public/assets/image_not_found.jpg') }}" alt="" style="width: 100%;">
                                                     @endif
@@ -213,8 +213,8 @@
                     $('#product_name').append(response.product.product_name);
                     $('#product_price_selling').append(format_rupiah(response.product.product_price_selling));
                     $('#unit').append(response.product.unit);
-                    $('#detail').val(response.product.description);
-                    $('.profile_img img').prop("src", "{{ URL::to('') }}" + "/public/image/" + response.product.image);
+                    $('#detail').val(response.product.product_master.description);
+                    $('.profile_img img').prop("src", "{{ URL::to('') }}" + "/public/image/" + response.product.product_master.image);
 
                     $('.modal-form').modal('show');
                 }

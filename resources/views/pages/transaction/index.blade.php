@@ -21,7 +21,7 @@
                         @foreach ($transactions as $item)
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Kode Transaksi : <strong>{{ $item->code }}</strong></h3>
+                                    <h3 class="card-title">Kode Transaksi : <strong><a href="{{ route('shop_buy.cart.invoice_print', [$item->code]) }}" target="_blank">{{ $item->code }}</a></strong></h3>
                                     <div class="card-tools">
                                         <span class="font-weight-bold h3 mr-3">Rp. {{ rupiah($item->total_amount) }}</span>
                                     </div>
@@ -38,7 +38,7 @@
                                         <tbody>
                                             @foreach ($item->productOut as $item_product)
                                                 <tr style="border-top: hidden;">
-                                                    <td style="width: 100px;"><img src="{{ asset('public/image/' . $item_product->product->image) }}" alt="" class="img-circle" style="max-width: 80px;"></td>
+                                                    <td style="width: 100px;"><img src="{{ asset('public/image/' . $item_product->product->productMaster->image) }}" alt="" class="img-circle" style="max-width: 80px;"></td>
                                                     <td>
                                                         <p class="p-0 m-0"><b>{{ $item_product->product->product_name }}</b></p>
                                                         <p class="text-sm">Rp. {{ rupiah($item_product->product->product_price_selling) }} / {{ $item_product->product->unit }}</p>

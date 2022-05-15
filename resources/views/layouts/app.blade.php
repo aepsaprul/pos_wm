@@ -81,7 +81,7 @@
                                     <div class="dropdown-divider"></div>
                                     <a href="#" class="dropdown-item py-0">
                                         <div class="media">
-                                            <img src="{{ asset('public/image/' . $item->product->image) }}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                            <img src="{{ asset('public/image/' . $item->product->productMaster->image) }}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                                             <div class="media-body">
                                                 <h3 class="dropdown-item-title">{{ $item->product->product_name }}</h3>
                                                 <small>Rp. {{ rupiah($item->product->product_price_selling) }} / {{ $item->product->unit }}</small>

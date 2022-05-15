@@ -1,27 +1,21 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Invoice Print</title>
 
-@section('style')
-
-@endsection
-
-@section('content')
-
-<div class="content-wrapper">
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="{{ asset('public/themes/plugins/font-google/font-google.css') }}">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="{{ asset('public/themes/plugins/fontawesome-free/css/all.min.css') }}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{{ asset('public/themes/dist/css/adminlte.min.css') }}">
+</head>
+<body>
+<div class="wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Invoice</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Invoice</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
     </section>
 
     <section class="content">
@@ -163,13 +157,6 @@
                             <!-- /.col -->
                         </div>
                         <!-- /.row -->
-
-                        <!-- this row will not appear when printing -->
-                        <div class="row no-print">
-                            <div class="col-12">
-                                <a href="{{ route('shop_buy.cart.invoice_print', [$invoices->code]) }}" rel="noopener" target="_blank" class="btn btn-default float-right"><i class="fas fa-print"></i> Print</a>
-                            </div>
-                        </div>
                     </div>
                     <!-- /.invoice -->
                 </div>
@@ -178,8 +165,8 @@
     </section>
 </div>
 
-@endsection
-
-@section('script')
-
-@endsection
+<script>
+window.addEventListener("load", window.print());
+</script>
+</body>
+</html>

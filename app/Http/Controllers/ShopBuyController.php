@@ -35,7 +35,7 @@ class ShopBuyController extends Controller
 
     public function detail($id)
     {
-        $product = Product::find($id);
+        $product = Product::with('productMaster')->find($id);
 
         return response()->json([
             'product' => $product
@@ -243,5 +243,56 @@ class ShopBuyController extends Controller
         }
 
         return view('pages.shop_buy.invoice', ['invoices' => $invoice]);
+    }
+
+    public function cartInvoicePrint($code)
+    {
+        $invoice = InventoryInvoice::where('code', $code)->first();
+        $invoice->status = "unpaid";
+        $invoice->save();
+
+        $product_out = InventoryProductOut::where('invoice_id', $invoice->id)->get();
+
+        foreach ($product_out as $key => $value) {
+            $product_shop = ProductShop::where('product_id', $value->product_id)->first();
+            if ($product_shop) {
+                $product_shop->product_id = $value->product_id;
+                $product_shop->shop_id = Auth::user()->employee->shop_id;
+                $product_shop->stock = $product_shop->stock + $value->quantity;
+            } else {
+                $product_shop = new ProductShop;
+                $product_shop->product_id = $value->product_id;
+                $product_shop->shop_id = Auth::user()->employee->shop_id;
+                $product_shop->stock = $value->quantity;
+            }
+            $product_shop->save();
+
+            $receive_product = new ReceiveProduct;
+            $receive_product->user_id = Auth::user()->id;
+            $receive_product->shop_id = Auth::user()->employee->shop_id;
+            $receive_product->product_id = $value->product_id;
+            $receive_product->price = $value->product->product_price_selling;
+            $receive_product->quantity = $value->quantity;
+            $receive_product->sub_total = $value->sub_total;
+            $receive_product->stock = $value->quantity;
+            $receive_product->date = date('Y-m-d H:i:s');
+            $receive_product->save();
+        }
+
+        $notif = Notif::where('invoice_id', $invoice->id)->first();
+
+        if ($notif) {
+            $notif->invoice_id = $invoice->id;
+            $notif->save();
+        } else {
+            $notif = new Notif;
+            $notif->title = "transaction";
+            $notif->shop_id = Auth::user()->employee->shop_id;
+            $notif->status = "start";
+            $notif->invoice_id = $invoice->id;
+            $notif->save();
+        }
+
+        return view('pages.shop_buy.invoice_print', ['invoices' => $invoice]);
     }
 }

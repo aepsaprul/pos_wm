@@ -34,7 +34,7 @@
                                 <tbody>
                                     @foreach ($carts as $item)
                                         <tr style="border-top: hidden;">
-                                            <td style="width: 100px;"><img src="{{ asset('public/image/' . $item->product->image) }}" alt="" class="img-circle" style="max-width: 80px;"></td>
+                                            <td style="width: 100px;"><img src="{{ asset('public/image/' . $item->product->productMaster->image) }}" alt="" class="img-circle" style="max-width: 80px;"></td>
                                             <td>
                                                 <p class="p-0 m-0"><b>{{ $item->product->product_name }}</b></p>
                                                 <p class="text-sm">Rp. {{ rupiah($item->product->product_price_selling) }} / {{ $item->product->unit }}</p>
@@ -364,6 +364,9 @@
 
         $('#form_metode_bayar').on('submit', function (e) {
             e.preventDefault();
+
+            let total_price = $('.total_price_text').text().replace(/\./g,'');
+            let payment_methods = $("#metode_bayar").val();
 
             let formData = {
                 shop_id: $('#id').val(),
