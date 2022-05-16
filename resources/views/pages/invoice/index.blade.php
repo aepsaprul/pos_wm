@@ -43,6 +43,7 @@
                                         <th class="text-center text-light">Nama Kasir</th>
                                         <th class="text-center text-light">Kode Nota</th>
                                         <th class="text-center text-light">Total</th>
+                                        <th class="text-center text-light">Keterangan</th>
                                         <th class="text-center text-light">Aksi</th>
                                     </tr>
                                 </thead>
@@ -58,32 +59,22 @@
                                                     User Tidak Ada
                                                 @endif
                                             </td>
-                                            <td>{{ $item->code }}</td>
+                                            <td><a href="#" class="btn-detail" data-id="{{ $item->id }}">{{ $item->code }}</a></td>
                                             <td class="text-right">{{ rupiah($item->total_amount) }}</td>
                                             <td class="text-center">
-                                                <div class="btn-group">
-                                                    <a
-                                                        class="dropdown-toggle"
-                                                        data-toggle="dropdown"
-                                                        aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                            <i class="fa fa-cog"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                        <a
-                                                            class="dropdown-item btn-detail"
-                                                            href="#"
-                                                            data-id="{{ $item->id }}">
-                                                                <i class="fa fa-eye px-2"></i> Detail
-                                                        </a>
-                                                        <a
-                                                            class="dropdown-item btn-delete"
-                                                            href="#"
-                                                            data-id="{{ $item->id }}">
-                                                                <i class="fa fa-trash px-2"></i> Hapus
-                                                        </a>
-                                                    </div>
-                                                </div>
+                                                @if ($item->debt == null || $item->debt == 0)
+                                                    <span class="text-capitalize">lunas</span>
+                                                @else
+                                                    <button type="button" class="btn-danger text-capitalize btn_bayar" data-id="{{ $item->id }}">bayar</button>
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                <a
+                                                    class="text-danger btn-delete"
+                                                    href="#"
+                                                    data-id="{{ $item->id }}">
+                                                        <i class="fa fa-trash px-2"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -174,6 +165,51 @@
                             </table>
                         </div>
                     </div>
+                    <div class="mb-1 row">
+                        <div id="credit" class="col-md-12">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- modal bayar  --}}
+<div class="modal fade modal-bayar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form_bayar">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Piutang</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal">
+                            <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="bayar_id" id="bayar_id">
+                    <div class="form-group">
+                        <label for="bayar_customer_id">Nama Customer</label>
+                        <input type="text" name="bayar_customer_id" id="bayar_customer_id" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="bayar_debt">Piutang</label>
+                        <input type="text" name="bayar_debt" id="bayar_debt" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="bayar_price">Nominal Bayar</label>
+                        <input type="text" name="bayar_price" id="bayar_price" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-bayar-spinner d-none" disabled style="width: 130px;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading..
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-bayar-yes text-center" style="width: 130px;"><i class="fas fa-save"></i> Simpan</button>
                 </div>
             </form>
         </div>
@@ -213,9 +249,12 @@
             'responsive': true
         });
 
+
+        // detail
         $('body').on('click', '.btn-detail', function(e) {
             e.preventDefault();
             $('#table_two tbody').empty();
+            $('#credit').empty();
 
             var id = $(this).attr('data-id');
             var url = '{{ route("invoice.show", ":id") }}';
@@ -246,12 +285,38 @@
                         $('#table_two tbody').append(sales_val);
                     });
 
+                    if (response.count_credits != 0) {
+                        let val_credit = '<h6 class="font-weight-bold">Tempo ' + response.count_credits + ' Minggu</h6>' +
+                            '<table class="table table-bordered">' +
+                                '<thead>' +
+                                    '<tr>' +
+                                        '<th>Nama Customer</th>' +
+                                        '<th>Tanggal Bayar</th>' +
+                                        '<th>Bayar</th>' +
+                                        '<th>Piutang</th>' +
+                                    '</tr>' +
+                                '</thead>' +
+                                '<tbody>';
+                        $.each(response.credits, function (index, value) {
+                            val_credit += '' +
+                                '<tr>' +
+                                    '<td>' + (value.customer ? value.customer.customer_name : '') + '</td>' +
+                                    '<td>' + (value.pay_date != null ? tanggal(value.pay_date) : '') + '</td>' +
+                                    '<td>' + (value.price != null ? format_rupiah(value.price) : '') + '</td>' +
+                                    '<td>' + (value.debt != null ? format_rupiah(value.debt) : '') + '</td>' +
+                                '</tr>';
+                        })
+                        val_credit += '</tbody></table>';
+                        $('#credit').append(val_credit);
+                    }
+
                     $('.modal-detail').modal('show');
                 }
             });
 
         });
 
+        // delete
         $('body').on('click', '.btn-delete', function(e) {
             e.preventDefault()
 
@@ -307,6 +372,70 @@
                 }
             });
         });
+
+        // btn bayar
+        $(document).on('click', '.btn_bayar', function (e) {
+            e.preventDefault();
+
+            let id = $(this).attr('data-id');
+            let url = '{{ route("invoice.bayar", ":id") }}';
+            url = url.replace(':id', id );
+
+            $.ajax({
+                url: url,
+                type: "get",
+                success: function (response) {
+                    console.log(response);
+                    $('#bayar_id').val(response.credit.id);
+                    $('#bayar_debt').val(format_rupiah(response.invoice.debt));
+                    $('#bayar_customer_id').val(response.invoice.customer.customer_name);
+                    $('.modal-bayar').modal('show');
+                }
+            })
+        })
+
+        $(document).on('shown.bs.modal', '.modal-bayar', function() {
+            $('#bayar_price').focus();
+
+            var bayar = document.getElementById("bayar_price");
+            bayar.addEventListener("keyup", function(e) {
+                bayar.value = formatRupiah(this.value, "");
+            });
+        });
+
+        $(document).on('submit', '#form_bayar', function (e) {
+            e.preventDefault();
+
+            var formData = {
+                id: $('#bayar_id').val(),
+                price: $('#bayar_price').val().replace(/\./g,''),
+                debt: $('#bayar_debt').val().replace(/\./g,''),
+                _token: CSRF_TOKEN
+            }
+
+            $.ajax({
+                url: "{{ URL::route('invoice.bayar_save') }}",
+                type: "post",
+                data: formData,
+                beforeSend: function() {
+                    $('.btn-bayar-spinner').removeClass('d-none');
+                    $('.btn-bayar-yes').addClass('d-none');
+                },
+                success: function (response) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Data berhasil diperbaharui.'
+                    });
+                    setTimeout(() => {
+                        window.location.reload(1);
+                    }, 1000);
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + error
+                    alert('Error - ' + errorMessage);
+                }
+            })
+        })
     } );
 </script>
 @endsection

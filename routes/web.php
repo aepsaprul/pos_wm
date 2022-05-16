@@ -268,6 +268,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('shop_transaction/invoice/{id}/show', [InvoiceController::class, 'show'])->name('invoice.show');
         Route::get('shop_transaction/invoice/{id}/delete_btn', [InvoiceController::class, 'deleteBtn'])->name('invoice.delete_btn');
         Route::post('shop_transaction/invoice/delete', [InvoiceController::class, 'delete'])->name('invoice.delete');
+        Route::get('shop_transaction/{id}/bayar', [InvoiceController::class, 'bayar'])->name('invoice.bayar');
+        Route::post('shop_transaction/invoice/bayar_save', [InvoiceController::class, 'bayarSave'])->name('invoice.bayar_save');
 
     // customer
     Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CreditPayment;
 use App\Models\Invoice;
 use App\Models\Sales;
 use Illuminate\Http\Request;
@@ -40,6 +41,9 @@ class SalesController extends Controller
 
         $sales = Sales::where('invoice_id', $invoice->id);
         $sales->delete();
+
+        $credit = CreditPayment::where('invoice_id', $invoice->id);
+        $credit->delete();
 
         return response()->json([
             'status' => 'Data berhasil dihapus'

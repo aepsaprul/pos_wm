@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CreditPayment;
 use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\Product;
@@ -166,11 +167,25 @@ class CashierController extends Controller
         $invoice->user_id = Auth::user()->id;
         $invoice->shop_id = Auth::user()->employee->shop_id;
         $invoice->code = $invoice_code;
+        $invoice->pay_method = $request->pay_method;
+        if ($request->pay_method == "credit") {
+            $invoice->debt = $request->total_amount;
+        }
         $invoice->save();
 
         $sales = Sales::where('user_id', Auth::user()->id)->where('invoice_id', null)->update(['invoice_id' => $invoice->id]);
 
         $sales_query = Sales::where('invoice_id', $invoice->id)->get();
+
+        if ($request->credit) {
+            for ($i=1; $i <= $request->credit; $i++) {
+                $credit_payments = new CreditPayment;
+                $credit_payments->credit = $i;
+                $credit_payments->customer_id = $request->customer_id;
+                $credit_payments->invoice_id = $invoice->id;
+                $credit_payments->save();
+            }
+        }
 
         return response()->json([
             'invoice_id' => $invoice->id,

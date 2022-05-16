@@ -40,23 +40,13 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <label for="quantity">Quantity</label>
                                                 <input type="number" min="0" class="form-control form-control-sm" id="quantity" name="quantity">
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
-                                            <div class="form-group">
-                                                <label for="pay_method">Metode Bayar</label>
-                                                <select name="pay_method" id="pay_method" class="form-control form-control-sm">
-                                                    <option value="cash">Cash</option>
-                                                    <option value="edc">EDC</option>
-                                                    <option value="warungmitra">Warung Mitra</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <label for="bid">Nego</label>
                                                 <input type="text" class="form-control form-control-sm" id="bid" name="bid">
@@ -129,14 +119,41 @@
                                         id="total_price"
                                         value="{{ $total_price }}">
                                     <div class="card-title">
-                                        <div class="form-group">
-                                            <label for="product_code">Customer</label>
-                                            <select name="customer_id" id="customer_id" class="form-control form-control-sm select_customer" style="width: 100%;" autofocus>
-                                                <option value="">--Pilih Customer--</option>
-                                                @foreach ($customers as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->customer_name }}</option>
-                                                @endforeach
-                                            </select>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="customer_id">Customer</label>
+                                                    <select name="customer_id" id="customer_id" class="form-control form-control-sm select_customer" style="width: 100%;" autofocus>
+                                                        <option value="">--Pilih Customer--</option>
+                                                        @foreach ($customers as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->customer_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="pay_method">Metode Bayar</label>
+                                                    <select name="pay_method" id="pay_method" class="form-control form-control-sm">
+                                                        <option value="cash">Cash</option>
+                                                        <option value="credit">Tempo</option>
+                                                        <option value="edc">EDC</option>
+                                                        <option value="warungmitra">Warung Mitra</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="credit">Jumlah Angsuran</label>
+                                                    <select name="credit" id="credit" class="form-control form-control-sm" style="width: 100%;" autofocus>
+                                                        <option value="">--Pilih Jumlah Angsuran--</option>
+                                                        <option value="1">1 Minggu</option>
+                                                        <option value="2">2 Minggu</option>
+                                                        <option value="3">3 Minggu</option>
+                                                        <option value="4">4 Minggu</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="card-tools">
@@ -548,9 +565,11 @@
                     bid: $('#bid').val().replace(/\./g,''),
                     total_amount: $('#total_price').val(),
                     customer_id: $('#customer_id').val(),
+                    credit: $('#credit').val(),
                     promo: $('#promo').val(),
                     coupon_code: $('#coupon_code').val(),
                     discount: $('#discount').val(),
+                    pay_method: $('#pay_method').val(),
                     _token: CSRF_TOKEN
                 }
 
