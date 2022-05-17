@@ -32,6 +32,7 @@ class CustomerController extends Controller
         $customer->email = $request->email;
         $customer->contact = $request->contact;
         $customer->address = $request->address;
+        $customer->debit_card = $request->debit_card;
         $customer->save();
 
         return response()->json([
@@ -48,7 +49,8 @@ class CustomerController extends Controller
             'customer_name' => $customer->customer_name,
             'email' => $customer->email,
             'contact' => $customer->contact,
-            'address' => $customer->address
+            'address' => $customer->address,
+            'debit_card' => $customer->debit_card
         ]);
     }
 
@@ -59,6 +61,7 @@ class CustomerController extends Controller
         $customer->email = $request->email;
         $customer->contact = $request->contact;
         $customer->address = $request->address;
+        $customer->debit_card = $request->debit_card;
         $customer->save();
 
         return response()->json([

@@ -48,6 +48,7 @@
                                         <th class="text-center text-light">Telepon</th>
                                         <th class="text-center text-light">Email</th>
                                         <th class="text-center text-light">Alamat</th>
+                                        <th class="text-center text-light">Nomor Debit</th>
                                         <th class="text-center text-light">Aksi</th>
                                     </tr>
                                 </thead>
@@ -59,6 +60,7 @@
                                             <td>{{ $item->contact }}</td>
                                             <td>{{ $item->email }}</td>
                                             <td>{{ $item->address }}</td>
+                                            <td>{{ $item->debit_card }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a
@@ -127,6 +129,10 @@
                         <label for="create_address" class="form-label">Alamat</label>
                         <textarea name="create_address" id="create_address" rows="3" class="form-control"></textarea>
                     </div>
+                    <div class="mb-3">
+                        <label for="create_debit_card" class="form-label">Nomor Kartu Debit</label>
+                        <input type="text" class="form-control form-control-sm" id="create_debit_card" name="create_debit_card">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary btn-create-spinner" disabled style="width: 130px; display: none;">
@@ -169,6 +175,10 @@
                     <div class="mb-3">
                         <label for="edit_address" class="form-label">Alamat</label>
                         <textarea name="edit_address" id="edit_address" rows="3" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_debit_card" class="form-label">Nomor Kartu Debit</label>
+                        <input type="text" class="form-control form-control-sm" id="edit_debit_card" name="edit_debit_card">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -257,6 +267,7 @@
                 email: $('#create_email').val(),
                 contact: $('#create_contact').val(),
                 address: $('#create_address').val(),
+                debit_card: $('#create_debit_card').val(),
                 _token: CSRF_TOKEN
             }
 
@@ -306,6 +317,7 @@
                     $('#edit_email').val(response.email);
                     $('#edit_contact').val(response.contact);
                     $('#edit_address').val(response.address);
+                    $('#edit_debit_card').val(response.debit_card);
                     $('.modal-edit').modal('show');
                 }
             })
@@ -324,6 +336,7 @@
                 email: $('#edit_email').val(),
                 contact: $('#edit_contact').val(),
                 address: $('#edit_address').val(),
+                debit_card: $('#edit_debit_card').val(),
                 _token: CSRF_TOKEN
             }
 
