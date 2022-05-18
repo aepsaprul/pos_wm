@@ -209,54 +209,6 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid invoice">
-            <div class="row">
-                <div class="col-md-12 col-sm-12 col-12 border border-1">
-                    <h3 class="h3 text-center">Nama Toko</h3>
-                    <p class="text-center">Jl. Pahlawan Tanpa Tanda Jasa No 2 Timur Masjid Agung</p>
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6 col-6">
-                            <span>Kode Nota</span>
-                            <span class="invoice_code"></span>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-6 text-end">
-                            <span class="invoice_date"></span>
-                            <span class="invoice_time"></span>
-                        </div>
-                    </div>
-                    <hr style="border: 2px dashed #000;">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-12 invoice_data">
-                            <table width="100%">
-                                @foreach ($sales as $key => $item)
-                                <tr>
-                                    <td>{{ $item->product->product_name }}</td>
-                                    <td>{{ rupiah($item->quantity) }}</td>
-                                    <td class="text-end">{{ rupiah($item->product->product_price_selling * $item->quantity) }}</td>
-                                </tr>
-                                @endforeach
-                                <tr class="nego_layout">
-                                    {{-- content in jquery --}}
-                                </tr>
-                                <tr>
-                                    <td class="text-end">Total</td>
-                                    <td>:</td>
-                                    <td class="text-end print_total_price" style="border-top: 1px dashed #000;">{{ rupiah($total_price) }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <hr style="border: 2px dashed #000;">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-12 text-center footer">
-                            <span class="text-center">Telp: 081234567890</span><br>
-                            <span class="text-center">Wa: 081234567890</span><br>
-                            <span class="text-center">Email: toko@gmail.com</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 </div>
 
@@ -269,7 +221,11 @@
 
 <script>
     $(document).ready(function() {
-        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
         $('.select_customer').select2();
         $('.product_manual_select2').select2();
@@ -277,8 +233,7 @@
         $('#product_code').on('keyup change', function() {
             var product_code = $('#product_code').val();
             var formData = {
-                product_code: product_code,
-                _token: CSRF_TOKEN
+                product_code: product_code
             }
 
             $.ajax({
@@ -309,8 +264,7 @@
                 var formData = {
                     quantity: quantity,
                     product_id: product_id,
-                    sub_total: final_price,
-                    _token: CSRF_TOKEN
+                    sub_total: final_price
                 }
 
                 $.ajax({
@@ -334,8 +288,7 @@
         $('#product_manual').on('keyup change', function() {
             var product_manual = $('#product_manual').val();
             var formData = {
-                product_manual: product_manual,
-                _token: CSRF_TOKEN
+                product_manual: product_manual
             }
 
             $.ajax({
@@ -371,8 +324,7 @@
             var formData = {
                 quantity: quantity,
                 product_id: product_id,
-                sub_total: final_price,
-                _token: CSRF_TOKEN
+                sub_total: final_price
             }
 
             $.ajax({
@@ -416,8 +368,7 @@
                 var formData = {
                     quantity: quantity,
                     product_id: product_id,
-                    sub_total: final_price,
-                    _token: CSRF_TOKEN
+                    sub_total: final_price
                 }
 
                 $.ajax({
@@ -457,8 +408,7 @@
             }
 
             var formData = {
-                pay_method: pay_method,
-                _token: CSRF_TOKEN
+                pay_method: pay_method
             }
 
             $.ajax({
@@ -534,27 +484,25 @@
             }
         });
 
-        $('.invoice').hide();
+        // $('#customer_id').on('change', function() {
+        //     var total_price = $('#total_price').val();
+        //     var before_discount = $('#before_discount').val();
+        //     var discount = before_discount * 0.05;
+        //     if ($(this).val() != "") {
+        //         var discount_total = before_discount - discount;
+        //         var discount_total_rp = format_rupiah(discount_total);
 
-        $('#customer_id').on('change', function() {
-            var total_price = $('#total_price').val();
-            var before_discount = $('#before_discount').val();
-            var discount = before_discount * 0.05;
-            if ($(this).val() != "") {
-                var discount_total = before_discount - discount;
-                var discount_total_rp = format_rupiah(discount_total);
+        //         $('.total_price_show').text(discount_total_rp);
+        //         $('#total_price').val(discount_total);
+        //         $('#discount').val(discount);
+        //     } else {
+        //         var discount_total = parseInt(total_price) + parseInt(discount);
+        //         var discount_total_rp = format_rupiah(discount_total);
 
-                $('.total_price_show').text(discount_total_rp);
-                $('#total_price').val(discount_total);
-                $('#discount').val(discount);
-            } else {
-                var discount_total = parseInt(total_price) + parseInt(discount);
-                var discount_total_rp = format_rupiah(discount_total);
-
-                $('.total_price_show').text(discount_total_rp);
-                $('#total_price').val(before_discount);
-            }
-        });
+        //         $('.total_price_show').text(discount_total_rp);
+        //         $('#total_price').val(before_discount);
+        //     }
+        // });
 
         $('.btn-print').on('click', function() {
             if ($('#total_price').val() == 0) {
@@ -570,7 +518,8 @@
                     coupon_code: $('#coupon_code').val(),
                     discount: $('#discount').val(),
                     pay_method: $('#pay_method').val(),
-                    _token: CSRF_TOKEN
+                    bayar: $('#pay').val().replace(/\./g,''),
+                    kembalian: $('#change').val().replace(/\./g,'')
                 }
 
                 $.ajax({

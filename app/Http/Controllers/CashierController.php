@@ -149,13 +149,21 @@ class CashierController extends Controller
     public function print(Request $request)
     {
         $invoice_code = Str::random(10);
+        $poin = $request->total_amount / 1000;
+        $round_poin = floor($poin);
 
         $invoice = new Invoice;
 
         if ($request->customer_id) {
             $invoice->customer_id = $request->customer_id;
             $invoice->discount = $request->discount;
+            $invoice->poin = $round_poin;
+
+            $customer = Customer::find($request->customer_id);
+            $customer->poin = $customer->poin + $round_poin;
+            $customer->save();
         }
+
         if ($request->promo) {
             $invoice->promo = $request->promo;
             $invoice->coupon_code = $request->coupon_code;
@@ -168,9 +176,13 @@ class CashierController extends Controller
         $invoice->shop_id = Auth::user()->employee->shop_id;
         $invoice->code = $invoice_code;
         $invoice->pay_method = $request->pay_method;
+        $invoice->bayar = $request->bayar;
+        $invoice->kembalian = $request->kembalian;
+
         if ($request->pay_method == "credit") {
             $invoice->debt = $request->total_amount;
         }
+
         $invoice->save();
 
         $sales = Sales::where('user_id', Auth::user()->id)->where('invoice_id', null)->update(['invoice_id' => $invoice->id]);
@@ -201,11 +213,13 @@ class CashierController extends Controller
         $shop = Shop::find(Auth::user()->employee->shop_id);
         $invoice = Invoice::find($id);
         $product_outs = Sales::where('invoice_id', $id)->get();
+        $customer = Customer::find($invoice->customer_id);
 
-        return view('pages.inventory_cashier.print', [
+        return view('pages.cashier.print', [
             'shop' => $shop,
             'invoice' => $invoice,
-            'product_outs' => $product_outs
+            'product_outs' => $product_outs,
+            'customer' => $customer
         ]);
     }
 

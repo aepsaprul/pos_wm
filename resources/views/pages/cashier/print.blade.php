@@ -106,9 +106,9 @@
 
                     @foreach ($product_outs as $item)
                         <tr class="service">
-                            <td class="tableitem"><p class="itemtext">{{ $item->product->product_name }}</p></td>
-                            <td class="tableitem" style="text-align: center;"><p class="itemtext">{{ $item->quantity }}</p></td>
-                            <td class="tableitem" style="text-align: right;"><p class="itemtext">{{ rupiah($item->sub_total) }}</p></td>
+                            <td class="tableitem"><p>{{ $item->product->product_name }}</p></td>
+                            <td class="tableitem" style="text-align: center;"><p>{{ $item->quantity }}</p></td>
+                            <td class="tableitem" style="text-align: right;"><p>{{ rupiah($item->sub_total) }}</p></td>
                         </tr>
                     @endforeach
 
@@ -117,9 +117,50 @@
                         <td class="Rate" style="text-align: right;"><h2>Total</h2></td>
                         <td class="payment" style="text-align: right;"><h2>{{ rupiah($invoice->total_amount) }}</h2></td>
                     </tr>
-
                 </table>
-            </div><!--End Table-->
+                <hr>
+                <table>
+                    <tr class="tabletitle">
+                        <td>Bayar</td>
+                        <td style="text-align: right;">
+                            @if ($invoice->bayar)
+                                {{ rupiah($invoice->bayar) }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr class="tabletitle">
+                        <td>Kembalian</td>
+                        <td style="text-align: right;">
+                            @if ($invoice->kembalian)
+                                {{ rupiah($invoice->kembalian) }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+
+                    <tr class="tabletitle">
+                        <td>Poin Belanja</td>
+                        <td style="text-align: right;">
+                            @if ($invoice->poin)
+                                {{ $invoice->poin }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                    </tr>
+
+                    @if ($invoice->customer_id)
+                        <tr class="tabletitle">
+                            <td>Poin Anda Sekarang</td>
+                            <td style="text-align: right;">{{ $customer->poin }}</td>
+                        </tr>
+                    @endif
+                </table>
+            </div>
 
             <div id="legalcopy">
                 <p class="legal"><strong>Terimakasih Telah Berbelanja!</strong> Jangan lupa berkunjung kembali

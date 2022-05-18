@@ -93,7 +93,7 @@
                     Kode : {{ $invoice->code }}
                 </p>
             </div>
-        </div><!--End Invoice Mid-->
+        </div>
 
         <div id="bot">
             <div id="table">

@@ -49,6 +49,7 @@
                                         <th class="text-center text-light">Email</th>
                                         <th class="text-center text-light">Alamat</th>
                                         <th class="text-center text-light">Nomor Debit</th>
+                                        <th class="text-center text-light">Poin</th>
                                         <th class="text-center text-light">Aksi</th>
                                     </tr>
                                 </thead>
@@ -61,6 +62,7 @@
                                             <td>{{ $item->email }}</td>
                                             <td>{{ $item->address }}</td>
                                             <td>{{ $item->debit_card }}</td>
+                                            <td class="text-right">{{ $item->poin }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a
@@ -157,7 +159,12 @@
 
                 <div class="modal-header">
                     <h5 class="modal-title">Ubah Customer</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal">
+                            <span aria-hidden="true">x</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
