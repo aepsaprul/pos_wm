@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\InventoryCashierController;
 use App\Http\Controllers\InventoryInvoiceController;
@@ -48,6 +49,9 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
+    // dashboard
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
     // ubah password
     Route::get('change-password', [ChangePasswordController::class, 'index'])->name('change.password.index');
     Route::post('change-password', [ChangePasswordController::class, 'store'])->name('change.password');

@@ -34,7 +34,7 @@
                                                     @foreach ($product_manuals as $item)
                                                     @if ($item->product)
 
-                                                    <option value="{{ $item->product->id }}">{{ $item->product->product_code }} - {{ $item->product->product_name }}</option>
+                                                    <option value="{{ $item->product->id }}">{{ $item->product->product_code }} - {{ $item->product->productMaster->name }} - {{ $item->product->product_name }}</option>
                                                     @endif
                                                     @endforeach
                                                 </select>

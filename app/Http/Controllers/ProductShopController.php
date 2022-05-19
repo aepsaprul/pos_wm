@@ -22,7 +22,7 @@ class ProductShopController extends Controller
 
     public function create()
     {
-        $product = Product::with('productMaster')->doesntHave('productShop')->get();
+        $product = Product::with('productMaster')->get();
 
         return response()->json([
             'products' => $product

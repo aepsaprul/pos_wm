@@ -157,7 +157,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary btn-create-spinner" disabled style="width: 130px; display: none;">
+                    <button class="btn btn-primary btn-create-spinner d-none" disabled style="width: 130px;">
                         <span class="spinner-grow spinner-grow-sm"></span>
                         Loading..
                     </button>
@@ -269,6 +269,7 @@
             'responsive': true
         });
 
+        // create
         $('#button-create').on('click', function() {
             $('#create_product_id').empty();
             $('.create_product_id_error').empty();
@@ -302,7 +303,6 @@
             });
         });
 
-
         $('#form_create').submit(function(e) {
             e.preventDefault();
             $('.create_product_id_error').empty();
@@ -316,6 +316,10 @@
                 url: "{{ URL::route('product_shop.store') }} ",
                 type: 'POST',
                 data: formData,
+                beforeSend: function() {
+                    $('.btn-create-spinner').removeClass('d-none');
+                    $('.btn-create-save').addClass('d-none');
+                },
                 success: function(response) {
                     if (response.status == "false") {
                         $('.create_product_id_error').append("Produk sudah tersedia");
@@ -337,6 +341,7 @@
             });
         });
 
+        // edit
         $('body').on('click', '.btn-edit', function(e) {
             e.preventDefault();
             $('#edit_product_id').empty();
@@ -433,6 +438,7 @@
             });
         });
 
+        // delete
         $('body').on('click', '.btn-delete', function(e) {
             e.preventDefault();
 

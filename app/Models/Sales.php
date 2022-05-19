@@ -17,8 +17,11 @@ class Sales extends Model
         return $this->belongsTo(Invoice::class, 'invoice_id', 'id');
     }
 
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function shop() {
+        return $this->belongsTo(Shop::class, 'shop_id', 'id');
     }
 }

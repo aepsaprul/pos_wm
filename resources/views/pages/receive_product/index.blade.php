@@ -284,7 +284,7 @@
                     // product query
                     var value = "<option value=\"\">--Pilih Produk--</option>";
                     $.each(response.products, function(index, item) {
-                        value += "<option value=\"" + item.product.id + "\">" + item.product.product_name + "</option>";
+                        value += "<option value=\"" + item.product.id + "\">" + item.product.product_master.name + " - " + item.product.product_name + "</option>";
                     });
                     $('#create_product_id').append(value);
 

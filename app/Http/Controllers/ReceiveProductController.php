@@ -25,7 +25,7 @@ class ReceiveProductController extends Controller
 
     public function create()
     {
-        $product = ProductShop::with('product')->where('shop_id', Auth::user()->employee->shop_id)->get();
+        $product = ProductShop::with(['product', 'product.productMaster'])->where('shop_id', Auth::user()->employee->shop_id)->get();
 
         return response()->json([
             'products' => $product,
