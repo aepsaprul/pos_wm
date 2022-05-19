@@ -41,37 +41,43 @@
                             <hr>
                             <div class="row">
                                 <div class="col-12 col-sm-6 col-md-4">
-                                    <div class="info-box">
-                                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-box-open"></i></span>
-
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">Tersedia</span>
-                                            <span class="info-box-number">{{ $count_stok_tersedia }} item</span>
+                                    <a href="{{ route('dashboard.show', ["tersedia"]) }}" id="btn_stok_tersedia" class="text-secondary">
+                                        <div class="info-box">
+                                            <div class="overlay spin_tersedia d-none"><i class="fas fa-3x fa-sync-alt fa-spin"></i></div>
+                                            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-box-open"></i></span>
+                                            <div class="info-box-content">
+                                                <span class="info-box-text">Tersedia</span>
+                                                <span class="info-box-number">{{ $count_stok_tersedia }} item</span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                                 <div class="col-12 col-sm-6 col-md-4">
-                                    <div class="info-box mb-3">
-                                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-box-open"></i></span>
-
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">Hampir Habis</span>
-                                            <span class="info-box-number">{{ $count_stok_hampir_habis }} item</span>
+                                    <a href="{{ route('dashboard.show', ["sedikit"]) }}" id="btn_stok_sedikit" class="text-secondary">
+                                        <div class="info-box mb-3">
+                                            <div class="overlay spin_sedikit d-none"><i class="fas fa-3x fa-sync-alt fa-spin"></i></div>
+                                            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-box-open"></i></span>
+                                            <div class="info-box-content">
+                                                <span class="info-box-text">Sedikit</span>
+                                                <span class="info-box-number">{{ $count_stok_sedikit }} item</span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                                 <!-- fix for small devices only -->
                                 <div class="clearfix hidden-md-up"></div>
 
                                 <div class="col-12 col-sm-6 col-md-4">
-                                    <div class="info-box mb-3">
-                                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-box-open"></i></span>
-
-                                        <div class="info-box-content">
-                                            <span class="info-box-text">Habis</span>
-                                            <span class="info-box-number">{{ $count_stok_habis }} item</span>
+                                    <a href="{{ route('dashboard.show', ["habis"]) }}" id="btn_stok_habis" class="text-secondary">
+                                        <div class="info-box mb-3">
+                                            <div class="overlay spin_habis d-none"><i class="fas fa-3x fa-sync-alt fa-spin"></i></div>
+                                            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-box-open"></i></span>
+                                            <div class="info-box-content">
+                                                <span class="info-box-text">Habis</span>
+                                                <span class="info-box-number">{{ $count_stok_habis }} item</span>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -143,6 +149,7 @@
         </div>
     </section>
 </div>
+
 @endsection
 
 @section('script')
