@@ -65,7 +65,7 @@
                                 <tbody>
                                     @foreach ($subs as $key => $item)
                                         <tr>
-                                            <td rowspan="{{ $item->total }}">{{ $item->navMain->title }}</td>
+                                            <td rowspan="{{ $item->total }}">{{ $item->navMain->title }} {{ $item->navMain->alias ? '(' . $item->navMain->alias . ')' : '' }}</td>
                                             @foreach ($menus as $item_menu)
                                                 @if ($item_menu->main_id == $item->main_id)
                                                         <td>{{ $item_menu->navSub->title }}</td>

@@ -51,6 +51,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware(['auth'])->group(function () {
     // dashboard
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('dashboard/shop', [DashboardController::class, 'shop'])->name('dashboard.shop');
 
     // ubah password
     Route::get('change-password', [ChangePasswordController::class, 'index'])->name('change.password.index');

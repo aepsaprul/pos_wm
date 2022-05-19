@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('*', function ($view)
         {
             if (Auth::check()) {
-                $current_nav_main = NavMain::whereHas('navAccess' , function ($query) { $query->where('user_id', Auth::user()->employee_id)->where('tampil', 'y'); })->get();
+                $current_nav_main = NavMain::whereHas('navAccess' , function ($query) { $query->where('user_id', Auth::user()->employee_id)->where('tampil', 'y'); })->orderBy('hirarki', 'asc')->get();
                 $current_menu = NavAccess::whereHas('navSub' , function ($query) { $query->where('link', '!=', '#'); })->where('user_id', Auth::user()->employee_id)->where('tampil', 'y')->get();
 
                 if (Auth::user()->employee != null) {
