@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         $product = Product::with(['productMaster', 'category'])
-            ->select(DB::raw('max(product_category_id) as product_category_id'), 'product_master_id')
+            ->select(DB::raw('max(product_category_id) as product_category_id'), DB::raw('sum(stock) as total_stock'), 'product_master_id')
             ->groupBy('product_master_id')
             ->orderBy('id', 'desc')
             ->get();
@@ -372,5 +372,30 @@ class ProductController extends Controller
         return response()->json([
             'products' => $products
         ]);
+    }
+
+    public function barcode($id)
+    {
+        $product = Product::with('productMaster')->where('product_master_id', $id)->get();
+
+        return response()->json([
+            'products' => $product
+        ]);
+    }
+
+    public function barcodePrint(Request $request)
+    {
+        $product = Product::find($request->id);
+
+        return response()->json([
+            'product' => $product
+        ]);
+    }
+
+    public function barcodePrintTemplate($id)
+    {
+        $product = Product::find($id);
+
+        return view('pages.product.barcode', ['product' => $product]);
     }
 }

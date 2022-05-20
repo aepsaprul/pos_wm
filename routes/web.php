@@ -140,6 +140,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('master/product/product_category_store', [ProductController::class, 'productCategoryStore'])->name('product.product_category_store');
         Route::get('master/product/{id}/remove', [ProductController::class, 'remove'])->name('product.remove');
         Route::post('master/product/add_parameter', [ProductController::class, 'addParameter'])->name('product.add_parameter');
+        Route::get('master/product/{id}/barcode', [ProductController::class, 'barcode'])->name('product.barcode');
+        Route::post('master/product/barcode_print', [ProductController::class, 'barcodePrint'])->name('product.barcode_print');
+        Route::get('master/product/{id}/barcode_print_template', [ProductController::class, 'barcodePrintTemplate'])->name('product.barcode_print_template');
 
         // shop
         Route::get('master/shop', [ShopController::class, 'index'])->name('shop.index');

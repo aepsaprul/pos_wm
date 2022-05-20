@@ -53,6 +53,7 @@
                                         {{-- <th class="text-center text-light">HPP</th>
                                         <th class="text-center text-light">Harga Jual</th> --}}
                                         <th class="text-center text-light">Stok</th>
+                                        <th class="text-center text-light">Barcode</th>
                                         <th class="text-center text-light">Aksi</th>
                                     </tr>
                                 </thead>
@@ -71,7 +72,18 @@
                                         </td>
                                         {{-- <td class="text-right">{{ rupiah($item->product_price) }}</td>
                                         <td class="text-right">{{ rupiah($item->product_price_selling) }}</td> --}}
-                                        <td class="text-center">{{ $item->stock }}</td>
+                                        <td class="text-center">{{ $item->total_stock }}</td>
+                                        <td class="text-center">
+                                            @php
+                                                $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
+                                                echo '<img src="data:image/png;base64,' . base64_encode($generator->getBarcode($item->productMaster->code, $generator::TYPE_CODE_128)) . '">';
+                                            @endphp
+                                            <button class="btn-primary btn-sm ml-2 btn-cetak-barcode-spinner-{{ $item->productMaster->id }} d-none" disabled style="width: 130px;">
+                                                <span class="spinner-grow spinner-grow-sm"></span>
+                                                Loading...
+                                            </button>
+                                            <button type="button" id="btn_cetak_barcode_{{ $item->productMaster->id }}" class="btn-primary btn-sm ml-2 btn_cetak_barcode" data-id="{{ $item->productMaster->id }}" style="width: 130px;">cetak barcode</button>
+                                        </td>
                                         <td class="text-center">
                                             <div class="btn-group">
                                                 <a
@@ -581,6 +593,40 @@
                     </button>
                     <button type="submit" class="btn btn-primary btn-delete-save text-center" style="width: 130px;">
                         Ya
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal cetak barcode -->
+<div class="modal fade modal-form-cetak-barcode" id="modal-default" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form_cetak_barcode">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cetak Barcode Produk</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal">
+                            <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 row">
+                        <label for="product_id">Produk</label>
+                        <select name="product_id" id="product_id" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-form-cetak-barcode-spinner d-none" disabled style="width: 130px;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading...
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-form-cetak-barcode-save" style="width: 130px;">
+                        <i class="fas fa-print"></i> <span class="modal-btn">Cetak</span>
                     </button>
                 </div>
             </form>
@@ -1374,6 +1420,86 @@
                 }
             });
         });
+
+        // cetak barcode
+        $(document).on('click', '.btn_cetak_barcode', function (e) {
+            e.preventDefault();
+            $('#product_id').empty();
+
+            var id = $(this).attr('data-id');
+            var url = '{{ route("product.barcode", ":id") }}';
+            url = url.replace(':id', id );
+
+            var formData = {
+                id: id
+            }
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                data: formData,
+                beforeSend: function() {
+                    $('.btn-cetak-barcode-spinner-' + id).removeClass("d-none");
+                    $('#btn_cetak_barcode_' + id).addClass("d-none");
+                },
+                success: function(response) {
+                    let val_product = '<option value="">--Pilih Produk--</option>';
+                    $.each(response.products, function (index, value) {
+                        val_product += '<option value="' + value.id + '">' + value.product_master.name + " - " + value.product_name + '</option>';
+                    })
+                    $('#product_id').append(val_product);
+
+                    $('.modal-form-cetak-barcode').modal('show');
+
+                    setTimeout(() => {
+                        $('.btn-cetak-barcode-spinner-' + id).addClass("d-none");
+                        $('#btn_cetak_barcode_' + id).removeClass("d-none");
+                    }, 1000);
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + error
+                    alert('Error - ' + errorMessage);
+                }
+            })
+        })
+
+        $(document).on('submit', '#form_cetak_barcode', function (e) {
+            e.preventDefault();
+
+            var formData = {
+                id: $('#product_id').val()
+            }
+
+            $.ajax({
+                url: "{{ URL::route('product.barcode_print') }}",
+                type: 'post',
+                data: formData,
+                beforeSend: function() {
+                    $('.btn-form-cetak-barcode-spinner').removeClass("d-none");
+                    $('.btn-form-cetak-barcode-save').addClass("d-none");
+                },
+                success: function(response) {
+                    console.log(response);
+                    var id = response.product.id;
+                    var url = '{{ route("product.barcode_print_template", ":id") }}';
+                    url = url.replace(':id', id );
+
+                    window.open(url);
+
+                    window.open(url);
+
+                    setTimeout(() => {
+                        $('.btn-form-cetak-barcode-spinner').addClass("d-none");
+                        $('.btn-form-cetak-barcode-save').removeClass("d-none");
+                        $('.modal-form-cetak-barcode').modal('hide');
+                    }, 1000);
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + error
+                    alert('Error - ' + errorMessage);
+                }
+            })
+        })
     } );
 </script>
 @endsection
