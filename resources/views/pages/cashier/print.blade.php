@@ -106,9 +106,9 @@
 
                     @foreach ($product_outs as $item)
                         <tr class="service">
-                            <td class="tableitem"><p>{{ $item->product->product_name }}</p></td>
+                            <td class="tableitem"><p>{{ $item->product->productMaster->name }} - {{ $item->product->product_name }}</p></td>
                             <td class="tableitem" style="text-align: center;"><p>{{ $item->quantity }}</p></td>
-                            <td class="tableitem" style="text-align: right;"><p>{{ rupiah($item->sub_total) }}</p></td>
+                            <td class="tableitem" style="text-align: right;"><p>{{ rupiah($item->sub_total + $item->promo_total) }}</p></td>
                         </tr>
                     @endforeach
 

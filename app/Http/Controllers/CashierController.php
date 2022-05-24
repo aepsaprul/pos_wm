@@ -12,7 +12,6 @@ use App\Models\PromoProduct;
 use App\Models\ReceiveProduct;
 use App\Models\Sales;
 use App\Models\Shop;
-use App\Models\ShopStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,14 +25,14 @@ class CashierController extends Controller
             $invoice_number = Str::random(10);
 
             $sales = Sales::with(['product', 'product.promo'])->where('user_id', Auth::user()->id)->where('invoice_id', null)->get();
-            $total_price = $sales->sum('sub_total');
+            $total_price = $sales->sum('sub_total') + $sales->sum('promo_total');
 
             $product_manual = ProductShop::where('shop_id', Auth::user()->employee->shop_id)->get();
             $customer = Customer::where('shop_id', Auth::user()->employee->shop_id)->get();
 
             $promo = PromoProduct::with('promo')
                 ->whereHas('promo', function ($query){
-                    $query->where('promo_method', 'per_produk');
+                    $query->where('promo_method', 'per_produk')->where('publish', 'y');
                 })->get();
 
             return view('pages.cashier.index', [
@@ -106,10 +105,12 @@ class CashierController extends Controller
                 }
             }
 
+            $product = Product::find($request->product_id);
+
             // cek promo per produk
             $promo = PromoProduct::with('promo')
                 ->whereHas('promo', function ($query){
-                    $query->where('promo_method', 'per_produk');
+                    $query->where('promo_method', 'per_produk')->where('publish', 'y');
                 })
                 ->where('product_id', $request->product_id)
                 ->first();
@@ -119,9 +120,23 @@ class CashierController extends Controller
                 ->where('invoice_id', null)
                 ->first();
 
+            $discount = $product->product_price_selling * ($promo->promo->discount_percent / 100);
+            $promo_harga = $product->product_price_selling - $discount;
+
             if ($sales_qty) {
-                $sales_qty->quantity = $sales_qty->quantity + $request->quantity;
-                $sales_qty->sub_total = $sales_qty->sub_total + $request->sub_total;
+                $promo_limit_qty = $sales_qty->quantity + $request->quantity;
+                if ($promo_limit_qty >= $promo->promo->minimum_order_qty) {
+                    $discount = $product->product_price_selling * ($promo->promo->discount_percent / 100);
+                    $promo_harga = $product->product_price_selling - $discount;
+
+                    $sales_qty->sub_total = 0;
+                    $sales_qty->promo_harga = $promo_harga;
+                    $sales_qty->promo_total = $promo_limit_qty * $promo_harga;
+                } else {
+                    $sales_qty->sub_total = $sales_qty->sub_total + $request->sub_total;
+                }
+
+                $sales_qty->quantity = $promo_limit_qty;
                 $sales_qty->promo_id = $promo->id;
                 $sales_qty->save();
             } else {
@@ -130,7 +145,15 @@ class CashierController extends Controller
                 $sales->shop_id = Auth::user()->employee->shop_id;
                 $sales->product_id = $request->product_id;
                 $sales->quantity = $request->quantity;
-                $sales->sub_total = $request->sub_total;
+
+                if ($request->quantity >= $promo->promo->minimum_order_qty) {
+                    $sales->sub_total = 0;
+                    $sales->promo_harga = $promo_harga;
+                    $sales->promo_total = $request->quantity * $promo_harga;
+                } else {
+                    $sales->sub_total = $request->sub_total;
+                }
+
                 $sales->promo_id = $promo->id;
                 $sales->save();
             }
