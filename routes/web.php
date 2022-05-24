@@ -205,6 +205,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('promo/{id}/delete_btn', [PromoController::class, 'deleteBtn'])->name('promo.delete_btn');
     Route::post('promo/delete', [PromoController::class, 'delete'])->name('promo.delete');
     Route::put('promo/{id}/publish', [PromoController::class, 'publish'])->name('promo.publish');
+    Route::get('promo/{id}/add_product', [PromoController::class, 'addProduct'])->name('promo.add_product');
+    Route::post('promo/add_product_save', [PromoController::class, 'addProductSave'])->name('promo.add_product_save');
+    Route::get('promo/{id}/delete_promo_product', [PromoController::class, 'deletePromoProduct'])->name('promo.delete_promo_product');
 
     // report
         // sales
@@ -298,6 +301,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('cashier/{id}/delete', [CashierController::class, 'delete'])->name('cashier.delete');
         Route::post('cashier/promo', [CashierController::class, 'promo'])->name('cashier.promo');
         Route::get('cashier/{id}/print_result', [CashierController::class, 'printResult'])->name('cashier.print_result');
+        Route::post('cashier/update_promo', [CashierController::class, 'updatePromo'])->name('cashier.update_promo');
 
         // credit
         Route::get('cashier/credit', [CashierController::class, 'credit'])->name('cashier.credit');

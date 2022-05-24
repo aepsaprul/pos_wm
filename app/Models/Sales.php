@@ -24,4 +24,9 @@ class Sales extends Model
     public function shop() {
         return $this->belongsTo(Shop::class, 'shop_id', 'id');
     }
+
+    public function promo()
+    {
+        return $this->belongsTo(PromoProduct::class, 'promo_id', 'id');
+    }
 }

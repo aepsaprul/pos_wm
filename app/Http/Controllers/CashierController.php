@@ -8,6 +8,7 @@ use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\ProductShop;
 use App\Models\Promo;
+use App\Models\PromoProduct;
 use App\Models\ReceiveProduct;
 use App\Models\Sales;
 use App\Models\Shop;
@@ -24,18 +25,24 @@ class CashierController extends Controller
         if (Auth::user()->employee) {
             $invoice_number = Str::random(10);
 
-            $sales = Sales::with('product')->where('user_id', Auth::user()->id)->where('invoice_id', null)->get();
+            $sales = Sales::with(['product', 'product.promo'])->where('user_id', Auth::user()->id)->where('invoice_id', null)->get();
             $total_price = $sales->sum('sub_total');
 
             $product_manual = ProductShop::where('shop_id', Auth::user()->employee->shop_id)->get();
             $customer = Customer::where('shop_id', Auth::user()->employee->shop_id)->get();
+
+            $promo = PromoProduct::with('promo')
+                ->whereHas('promo', function ($query){
+                    $query->where('promo_method', 'per_produk');
+                })->get();
 
             return view('pages.cashier.index', [
                 'sales' => $sales,
                 'total_price' => $total_price,
                 'invoice_number' => $invoice_number,
                 'product_manuals' => $product_manual,
-                'customers' => $customer
+                'customers' => $customer,
+                'promos' => $promo
             ]);
         } else {
             return view('page_403');
@@ -62,25 +69,6 @@ class CashierController extends Controller
 
     public function salesSave(Request $request)
     {
-        $sales_qty = Sales::where('user_id', Auth::user()->id)
-            ->where('product_id', $request->product_id)
-            ->where('invoice_id', null)
-            ->first();
-
-        if ($sales_qty) {
-            $sales_qty->quantity = $sales_qty->quantity + $request->quantity;
-            $sales_qty->sub_total = $sales_qty->sub_total + $request->sub_total;
-            $sales_qty->save();
-        } else {
-            $sales = new Sales;
-            $sales->user_id = Auth::user()->id;
-            $sales->shop_id = Auth::user()->employee->shop_id;
-            $sales->product_id = $request->product_id;
-            $sales->quantity = $request->quantity;
-            $sales->sub_total = $request->sub_total;
-            $sales->save();
-        }
-
         // update stock
         $received_product_stock = ReceiveProduct::where('product_id', $request->product_id)
             ->where('shop_id', Auth::user()->employee->shop_id)
@@ -117,18 +105,48 @@ class CashierController extends Controller
                     $received_product_update->save();
                 }
             }
+
+            // cek promo per produk
+            $promo = PromoProduct::with('promo')
+                ->whereHas('promo', function ($query){
+                    $query->where('promo_method', 'per_produk');
+                })
+                ->where('product_id', $request->product_id)
+                ->first();
+
+            $sales_qty = Sales::where('user_id', Auth::user()->id)
+                ->where('product_id', $request->product_id)
+                ->where('invoice_id', null)
+                ->first();
+
+            if ($sales_qty) {
+                $sales_qty->quantity = $sales_qty->quantity + $request->quantity;
+                $sales_qty->sub_total = $sales_qty->sub_total + $request->sub_total;
+                $sales_qty->promo_id = $promo->id;
+                $sales_qty->save();
+            } else {
+                $sales = new Sales;
+                $sales->user_id = Auth::user()->id;
+                $sales->shop_id = Auth::user()->employee->shop_id;
+                $sales->product_id = $request->product_id;
+                $sales->quantity = $request->quantity;
+                $sales->sub_total = $request->sub_total;
+                $sales->promo_id = $promo->id;
+                $sales->save();
+            }
+
+            $stock = ProductShop::where('product_id', $request->product_id)->where('shop_id', Auth::user()->employee->shop_id)->first();
+            $stock->stock = $stock->stock - $request->quantity;
+            $stock->save();
+
+            return response()->json([
+                'status' => "true"
+            ]);
         } else {
-            echo "stok barang tidak cukup";
+            return response()->json([
+                'status' => "false" // stok barang tidak cukup
+            ]);
         }
-
-
-        $stock = ProductShop::where('product_id', $request->product_id)->where('shop_id', Auth::user()->employee->shop_id)->first();
-        $stock->stock = $stock->stock - $request->quantity;
-        $stock->save();
-
-        return response()->json([
-            'status' => "data berhasil ditambahkan"
-        ]);
     }
 
     public function delete($id)

@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="card card-default">
                                 <div class="card-body">
                                     <div class="row">
@@ -99,7 +99,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <div class="card card-default">
                                 <div class="card-header">
                                     <input
@@ -168,7 +168,7 @@
                                                     <div class="product-info" style="margin-left: 0px;">
                                                         <div class="row">
                                                             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                                                <div class="product-title">{{ $item->product->product_name }}
+                                                                <div class="product-title">{{ $item->product->productMaster->name }} - {{ $item->product->product_name }}
                                                                     {{-- <span class="badge badge-danger float-right"><i class="fas fa-times p-1"></i></span> --}}
                                                                     <form
                                                                         action="{{ route('cashier.delete', [$item->id]) }}"
@@ -177,7 +177,7 @@
                                                                             @method('delete')
                                                                             @csrf
                                                                                 <button
-                                                                                    class="badge badge-danger float-right"
+                                                                                    class="badge badge-danger float-right border-0"
                                                                                     onclick="return confirm('Yakin akan dihapus?')"
                                                                                     title="Hapus">
                                                                                     <i class="fa fa-times"></i>
@@ -187,17 +187,55 @@
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                                                                Rp. {{ rupiah($item->product->product_price_selling) }}
-                                                            </div>
-                                                            <div class="col-lg-2 col-md-2 col-sm-2 col-2">
-                                                                <input type="number" class="form-control form-control-sm" value="{{ $item->quantity }}">
-                                                            </div>
-                                                            <div class="col-lg-4 col-md-4 col-sm-4 col-4">
-                                                                <strong>Rp {{ rupiah($item->product->product_price_selling * $item->quantity) }}</strong>
-                                                            </div>
+                                                            @if ($item->promo_id)
+                                                            {{-- {{$item->promo->promo->minimum_order_qty}} --}}
+                                                                @if ($item->quantity >= $item->promo->promo->minimum_order_qty)
+                                                                    @php
+                                                                        $discount_produk = $item->product->product_price_selling * ($item->promo->promo->discount_percent / 100);
+                                                                        $discount_harga = $item->product->product_price_selling - $discount_produk;
+                                                                    @endphp
+                                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                                                        <span style="text-decoration: line-through;">Rp. {{ rupiah($item->product->product_price_selling) }}</span> <span>Rp. {{ rupiah($discount_harga) }}</span>
+                                                                    </div>
+                                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+                                                                        <input type="number" class="form-control form-control-sm" value="{{ $item->quantity }}">
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                                                                        <strong style="text-decoration: line-through;">Rp {{ rupiah($item->product->product_price_selling * $item->quantity) }}</strong> <span>Rp {{ rupiah($discount_harga * $item->quantity) }}</span>
+                                                                    </div>
+
+                                                                @else
+                                                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                                                        <span>Rp. {{ rupiah($item->product->product_price_selling) }}</span>
+                                                                    </div>
+                                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+                                                                        <input type="number" class="form-control form-control-sm" value="{{ $item->quantity }}">
+                                                                    </div>
+                                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                                                                        <strong>Rp {{ rupiah($item->product->product_price_selling * $item->quantity) }}</strong>
+                                                                    </div>
+                                                                @endif
+                                                            @else
+                                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                                                    <span>Rp. {{ rupiah($item->product->product_price_selling) }}</span>
+                                                                </div>
+                                                                <div class="col-lg-2 col-md-2 col-sm-2 col-2">
+                                                                    <input type="number" class="form-control form-control-sm" value="{{ $item->quantity }}">
+                                                                </div>
+                                                                <div class="col-lg-4 col-md-4 col-sm-4 col-4">
+                                                                    <strong>Rp {{ rupiah($item->product->product_price_selling * $item->quantity) }}</strong>
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                     </div>
+                                                    @foreach ($promos as $item_promo)
+                                                        @if ($item_promo->product_id == $item->product_id)
+                                                            @php
+                                                                $discount = $item->product->product_price_selling * ($item_promo->promo->discount_percent / 100);
+                                                            @endphp
+                                                            <small class="text-danger"><i>Min beli {{ $item_promo->promo->minimum_order_qty }}, Harga turun jadi <strong>{{  rupiah($item->product->product_price_selling - $discount) }}</strong></i></small>
+                                                        @endif
+                                                    @endforeach
                                                 </li>
                                             @endforeach
                                         </ul>
@@ -336,9 +374,13 @@
                     $('.btn-cart-save').addClass("d-none");
                 },
                 success: function(response) {
-                    setTimeout(() => {
-                        window.location.reload(1);
-                    }, 100);
+                    if (response.status == "true") {
+                        setTimeout(() => {
+                            window.location.reload(1);
+                        }, 100);
+                    } else {
+                        alert('stok barang tidak cukup');
+                    }
                 },
                 error: function(xhr, status, error){
                     var errorMessage = xhr.status + ': ' + error
@@ -435,7 +477,7 @@
                     }
                 },
                 error: function(xhr, status, error){
-                    var errorMessage = xhr.status + ': ' + xhr.statusText
+                    var errorMessage = xhr.status + ': ' + error
                     alert('Error - ' + errorMessage);
                 }
             });

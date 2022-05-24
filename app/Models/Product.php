@@ -36,4 +36,8 @@ class Product extends Model
     public function productShop() {
         return $this->hasMany(ProductShop::class, 'product_id', 'id');
     }
+
+    public function promo() {
+        return $this->hasMany(PromoProduct::class, 'product_id', 'id');
+    }
 }

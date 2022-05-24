@@ -16,12 +16,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Toko</h1>
+                    <h1 class="m-0">Promo</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Toko</li>
+                        <li class="breadcrumb-item active">Promo</li>
                     </ol>
                 </div>
             </div>
@@ -59,9 +59,25 @@
                                         <td class="text-center">{{ $key + 1 }}</td>
                                         <td>{{ $item->promo_name }}</td>
                                         <td>{{ $item->pay_method }}</td>
-                                        <td class="text-right">{{ rupiah($item->discount_value) }}</td>
+                                        <td class="text-right">
+                                            @if ($item->discount_value)
+                                                {{ rupiah($item->discount_value) }}
+                                            @endif
+
+                                            @if ($item->discount_percent)
+                                                {{ $item->discount_percent }} %
+                                            @endif
+                                        </td>
                                         <td class="text-center">{{ $item->coupon_code }}</td>
-                                        <td class="text-right">{{ rupiah($item->minimum_order) }}</td>
+                                        <td class="text-right">
+                                            @if ($item->minimum_order)
+                                                {{ rupiah($item->minimum_order) }}
+                                            @endif
+
+                                            @if ($item->minimum_order_qty)
+                                                {{ $item->minimum_order_qty }}
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             <input type="checkbox" name="index_publish[]" id="index_publish_{{ $item->id }}" data-id="{{ $item->id }}" value="{{ $item->publish }}"
                                                 @if ($item->publish == "y")
@@ -79,6 +95,12 @@
                                                             <i class="fa fa-cog"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right">
+                                                    <a
+                                                        class="dropdown-item btn-add-product"
+                                                        href="{{ route('promo.add_product', [$item->id]) }}"
+                                                        data-id="{{ $item->id }}">
+                                                            <i class="fa fa-box-open px-2"></i> Produk
+                                                    </a>
                                                     <a
                                                         class="dropdown-item btn-edit"
                                                         href="#"
@@ -126,6 +148,13 @@
                         <input type="text" class="form-control form-control-sm" id="create_promo_name" name="create_promo_name">
                     </div>
                     <div class="mb-3">
+                        <label for="create_promo_method" class="form-label">Metode Promo</label>
+                        <select name="create_promo_method" id="create_promo_method" class="form-control form-control-sm">
+                            <option value="semua_produk">Semua Produk</option>
+                            <option value="per_produk">Per Produk</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
                         <label for="create_pay_method" class="form-label">Metode Bayar</label>
                         <select name="create_pay_method" id="create_pay_method" class="form-control form-control-sm">
                             <option value="cash">Cash</option>
@@ -134,16 +163,24 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="create_discount_value" class="form-label">Nominal</label>
+                        <label for="create_discount_value" class="form-label">Diskon Nominal (Angka)</label>
                         <input type="text" class="form-control form-control-sm" id="create_discount_value" name="create_discount_value">
                     </div>
                     <div class="mb-3">
-                        <label for="create_coupon_code" class="form-label">Kode</label>
-                        <input type="text" class="form-control form-control-sm" id="create_coupon_code" name="create_coupon_code">
+                        <label for="create_discount_percent" class="form-label">Diskon Nominal (Percent)</label>
+                        <input type="text" class="form-control form-control-sm" id="create_discount_percent" name="create_discount_percent">
                     </div>
                     <div class="mb-3">
                         <label for="create_minimum_order" class="form-label">Minimal Belanja</label>
                         <input type="text" class="form-control form-control-sm" id="create_minimum_order" name="create_minimum_order">
+                    </div>
+                    <div class="mb-3">
+                        <label for="create_minimum_order_qty" class="form-label">Jumlah Minimal Belanja</label>
+                        <input type="text" class="form-control form-control-sm" id="create_minimum_order_qty" name="create_minimum_order_qty">
+                    </div>
+                    <div class="mb-3">
+                        <label for="create_coupon_code" class="form-label">Kode</label>
+                        <input type="text" class="form-control form-control-sm" id="create_coupon_code" name="create_coupon_code">
                     </div>
                     <div class="mb-3">
                         <label for="create_publish" class="form-label">Publish</label>
@@ -195,16 +232,30 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_discount_value" class="form-label">Nominal</label>
+                        <label for="edit_promo_method" class="form-label">Metode Bayar</label>
+                        <select name="edit_promo_method" id="edit_promo_method" class="form-control form-control-sm">
+
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_discount_value" class="form-label">Diskon Nominal (Angka)</label>
                         <input type="text" class="form-control form-control-sm" id="edit_discount_value" name="edit_discount_value">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_discount_percent" class="form-label">Diskon Nominal (Percent)</label>
+                        <input type="text" class="form-control form-control-sm" id="edit_discount_percent" name="edit_discount_percent">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_minimum_order" class="form-label">Minimal Belanja</label>
+                        <input type="text" class="form-control form-control-sm" id="edit_minimum_order" name="edit_minimum_order">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_minimum_order_qty" class="form-label">Jumlah Minimal Belanja</label>
+                        <input type="text" class="form-control form-control-sm" id="edit_minimum_order_qty" name="edit_minimum_order_qty">
                     </div>
                     <div class="mb-3">
                         <label for="edit_coupon_code" class="form-label">Kode</label>
                         <input type="text" class="form-control form-control-sm" id="edit_coupon_code" name="edit_coupon_code">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_minimum_order" class="form-label">Minimal Belanjan</label>
-                        <input type="text" class="form-control form-control-sm" id="edit_minimum_order" name="edit_minimum_order">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -300,9 +351,13 @@
 
             var formData = {
                 promo_name: $('#create_promo_name').val(),
+                promo_method: $('#create_promo_method').val(),
+                pay_method: $('#create_pay_method').val(),
                 discount_value: $('#create_discount_value').val().replace(/\./g,''),
-                coupon_code: $('#create_coupon_code').val(),
+                discount_percent: $('#create_discount_percent').val().replace(/\./g,''),
                 minimum_order: $('#create_minimum_order').val().replace(/\./g,''),
+                minimum_order_qty: $('#create_minimum_order_qty').val().replace(/\./g,''),
+                coupon_code: $('#create_coupon_code').val(),
                 publish: $('#create_publish').val(),
                 _token: CSRF_TOKEN
             }
@@ -335,6 +390,10 @@
             e.preventDefault();
 
             $('#edit_pay_method').empty();
+            $('#edit_discount_value').empty();
+            $('#edit_discount_percent').empty();
+            $('#edit_minimum_order').empty();
+            $('#edit_minimum_order_qty').empty();
 
             var id = $(this).attr('data-id');
             var url = '{{ route("promo.edit", ":id") }}';
@@ -353,9 +412,32 @@
                     $('#edit_id').val(response.id);
                     $('#edit_promo_name').val(response.promo_name);
                     $('#edit_pay_method').val(response.pay_method);
-                    $('#edit_discount_value').val(format_rupiah(response.discount_value));
+                    if (response.discount_value != null) {
+                        $('#edit_discount_value').val(format_rupiah(response.discount_value));
+                    } else {
+                        $('#edit_discount_value').val('0');
+                    }
+                    $('#edit_discount_percent').val(response.discount_percent);
+                    if (response.minimum_order != null) {
+                        $('#edit_minimum_order').val(format_rupiah(response.minimum_order));
+                    } else {
+                        $('#edit_minimum_order').val('0');
+                    }
+                    $('#edit_minimum_order_qty').val(response.minimum_order_qty);
                     $('#edit_coupon_code').val(response.coupon_code);
-                    $('#edit_minimum_order').val(format_rupiah(response.minimum_order));
+
+                    var value_promo_method = "" +
+                        "<option value=\"semua_produk\"";
+                        if (response.promo_method == "semua_produk") {
+                            value_promo_method += " selected";
+                        }
+                        value_promo_method += ">Semua Produk</option>" +
+                        "<option value=\"per_produk\"";
+                        if (response.promo_method == "per_produk") {
+                            value_promo_method += " selected";
+                        }
+                        value_promo_method += ">Per Produk</option>";
+                    $('#edit_promo_method').append(value_promo_method);
 
                     var value_pay_method = "" +
                         "<option value=\"cash\"";
@@ -404,10 +486,13 @@
             var formData = {
                 id: id,
                 promo_name: $('#edit_promo_name').val(),
+                promo_method: $('#edit_promo_method').val(),
                 pay_method: $('#edit_pay_method').val(),
                 discount_value: $('#edit_discount_value').val().replace(/\./g,''),
-                coupon_code: $('#edit_coupon_code').val(),
+                discount_percent: $('#edit_discount_percent').val().replace(/\./g,''),
                 minimum_order: $('#edit_minimum_order').val().replace(/\./g,''),
+                minimum_order_qty: $('#edit_minimum_order_qty').val().replace(/\./g,''),
+                coupon_code: $('#edit_coupon_code').val(),
                 _token: CSRF_TOKEN
             }
 
@@ -441,7 +526,7 @@
             $('.delete_title').empty();
 
             var id = $(this).attr('data-id');
-            var url = '{{ route("supplier.delete_btn", ":id") }}';
+            var url = '{{ route("promo.delete_btn", ":id") }}';
             url = url.replace(':id', id );
 
             var formData = {
@@ -454,7 +539,7 @@
                 type: 'GET',
                 data: formData,
                 success: function(response) {
-                    $('.delete_title').append(response.supplier_name);
+                    $('.delete_title').append(response.promo_name);
                     $('#delete_id').val(response.id);
                     $('.modal-delete').modal('show');
                 }
