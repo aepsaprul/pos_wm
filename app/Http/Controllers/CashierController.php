@@ -181,6 +181,10 @@ class CashierController extends Controller
         $stock->stock = $stock->stock + $sales->quantity;
         $stock->save();
 
+        $received_product_update = ReceiveProduct::where('product_id', $sales->product_id)->where('shop_id', Auth::user()->employee->shop_id)->first();
+        $received_product_update->stock = $received_product_update->stock + $sales->quantity;
+        $received_product_update->save();
+
         $sales->delete();
 
 

@@ -197,6 +197,16 @@ class ShopBuyController extends Controller
     public function cartDelete(Request $request)
     {
         $cart = Cart::find($request->id);
+
+        // update stock
+        $stock = Product::where('id', $cart->product_id)->first();
+        $stock->stock = $stock->stock + $cart->qty;
+        $stock->save();
+
+        $product_in_update = InventoryProductIn::where('product_id', $cart->product_id)->first();
+        $product_in_update->stock = $product_in_update->stock + $cart->qty;
+        $product_in_update->save();
+
         $cart->delete();
 
         return response()->json([

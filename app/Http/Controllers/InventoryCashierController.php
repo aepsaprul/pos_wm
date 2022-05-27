@@ -123,6 +123,10 @@ class InventoryCashierController extends Controller
         $stock->stock = $stock->stock + $inventory_product_out->quantity;
         $stock->save();
 
+        $product_in_update = InventoryProductIn::where('product_id', $inventory_product_out->product_id)->first();
+        $product_in_update->stock = $product_in_update->stock + $inventory_product_out->quantity;
+        $product_in_update->save();
+
         $inventory_product_out->delete();
 
 
