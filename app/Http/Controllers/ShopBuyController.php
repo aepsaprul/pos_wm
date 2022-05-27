@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\InventoryInvoice;
+use App\Models\InventoryProductIn;
 use App\Models\InventoryProductOut;
 use App\Models\Notif;
 use App\Models\Product;
@@ -19,7 +20,7 @@ class ShopBuyController extends Controller
     public function index()
     {
         if (Auth::user()->employee) {
-            $product = Product::paginate(60);
+            $product = Product::where('stock', '>', 10)->paginate(60);
             return view('pages.shop_buy.index', ['products' => $product]);
         } else {
             return view('page_403');
@@ -66,31 +67,76 @@ class ShopBuyController extends Controller
 
     public function cartStore(Request $request)
     {
-        $product = Product::find($request->product_id);
-        $price = $product->product_price_selling * $request->qty;
-        $total_cart = count(Cart::where('shop_id', Auth::user()->employee->shop_id)->where('product_id', $request->product_id)->get());
+        // update stock
+        $product_in_stock = InventoryProductIn::where('product_id', $request->product_id)
+            ->whereNotNull('stock')
+            ->where('stock', '>', 0)
+            ->select(DB::raw('sum(stock) as total_stock'))
+            ->first();
 
-        if ($total_cart > 0) {
-            $cart = Cart::where('shop_id', Auth::user()->employee->shop_id)->where('product_id', $request->product_id)->first();
-            $cart->qty = $cart->qty + $request->qty;
-            $cart->price = $cart->price + $price;
-            $cart->save();
+        $stock_all = $product_in_stock->total_stock;
+        $qty = $request->qty;
+
+        $product_in = InventoryProductIn::where('product_id', $request->product_id)
+            ->whereNotNull('stock')
+            ->where('stock', '>', 0)
+            ->get();
+
+        if ($qty <= $stock_all) {
+            foreach ($product_in as $key => $item) {
+                $id = $item->id;
+                $stock = $item->stock;
+
+                if ($qty > 0) {
+                    $temp = $qty;
+                    $qty = $qty - $stock;
+
+                    if ($qty > 0) {
+                        $stock_update = 0;
+                    } else {
+                        $stock_update = $stock - $temp;
+                    }
+
+                    $product_in_update = InventoryProductIn::where('product_id', $request->product_id)->where('id', $id)->first();
+                    $product_in_update->stock = $stock_update;
+                    $product_in_update->save();
+                }
+            }
+
+            $stock = Product::find($request->product_id);
+            $stock->stock = $stock->stock - $request->qty;
+            $stock->save();
+
+            $product = Product::find($request->product_id);
+            $price = $product->product_price_selling * $request->qty;
+            $total_cart = count(Cart::where('shop_id', Auth::user()->employee->shop_id)->where('product_id', $request->product_id)->get());
+
+            if ($total_cart > 0) {
+                $cart = Cart::where('shop_id', Auth::user()->employee->shop_id)->where('product_id', $request->product_id)->first();
+                $cart->qty = $cart->qty + $request->qty;
+                $cart->price = $cart->price + $price;
+                $cart->save();
+            } else {
+                $cart = new Cart;
+                $cart->product_id = $request->product_id;
+                $cart->qty = $request->qty;
+                $cart->price = $price;
+                $cart->shop_id = $request->shop_id;
+                $cart->save();
+            }
+
+            $count_cart = count(Cart::where('shop_id', Auth::user()->employee->shop_id)->get());
+
+            return response()->json([
+                'status' => "true",
+                'count_cart' => $count_cart,
+                'total_cart' => $total_cart
+            ]);
         } else {
-            $cart = new Cart;
-            $cart->product_id = $request->product_id;
-            $cart->qty = $request->qty;
-            $cart->price = $price;
-            $cart->shop_id = $request->shop_id;
-            $cart->save();
+            return response()->json([
+                'status' => "false" // stok barang tidak cukup
+            ]);
         }
-
-        $count_cart = count(Cart::where('shop_id', Auth::user()->employee->shop_id)->get());
-
-        return response()->json([
-            'status' => 200,
-            'count_cart' => $count_cart,
-            'total_cart' => $total_cart
-        ]);
     }
 
     public function cartQty(Request $request)

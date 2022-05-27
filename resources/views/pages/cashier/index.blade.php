@@ -380,6 +380,10 @@
                         }, 100);
                     } else {
                         alert('stok barang tidak cukup');
+                        setTimeout(() => {
+                            $('.btn-cart-spinner').addClass("d-none");
+                            $('.btn-cart-save').removeClass("d-none");
+                        }, 100);
                     }
                 },
                 error: function(xhr, status, error){
