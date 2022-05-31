@@ -46,8 +46,12 @@ class InventroryProductInController extends Controller
         $stock->stock = $stock->stock + $request->quantity;
         $stock->product_price = $request->price;
 
-        $uang = ceil($request->price / 0.9);
-        $stock->product_price_selling = pembulatan($uang);
+        if ($request->margin_type == "percent") {
+            $margin = ceil($request->price * ($request->margin / 100));
+            $stock->product_price_selling = $request->price + pembulatan($margin);
+        } else {
+            $stock->product_price_selling = $request->margin;
+        }
 
         $stock->save();
 

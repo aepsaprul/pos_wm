@@ -162,6 +162,17 @@
                             required>
                     </div>
                     <div class="mb-3">
+                        <label for="create_margin" class="form-label">Margin</label>
+                        <label for="create_margin_nominal" class="float-right ml-3"><input type="radio" name="create_margin_type" id="create_margin_nominal" value="nominal"> Nominal</label>
+                        <label for="create_margin_percent" class="float-right"><input type="radio" name="create_margin_type" id="create_margin_percent" value="percent"> Persen</label>
+                        <input
+                            type="text"
+                            class="form-control form-control-sm"
+                            id="create_margin"
+                            name="create_margin"
+                            required>
+                    </div>
+                    <div class="mb-3">
                         <label for="create_quantity" class="form-label">Quantity</label>
                         <input
                             type="text"
@@ -221,6 +232,17 @@
                             class="form-control form-control-sm"
                             id="edit_price"
                             name="edit_price"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_margin" class="form-label">Margin</label>
+                        <label for="edit_margin_nominal" class="float-right ml-3"><input type="radio" name="edit_margin_type" id="edit_margin_nominal" value="nominal"> Nominal</label>
+                        <label for="edit_margin_percent" class="float-right"><input type="radio" name="edit_margin_type" id="edit_margin_percent" value="percent"> Persen</label>
+                        <input
+                            type="text"
+                            class="form-control form-control-sm"
+                            id="edit_margin"
+                            name="edit_margin"
                             required>
                     </div>
                     <div class="mb-3">
@@ -305,6 +327,7 @@
             'responsive': true
         });
 
+        // create
         $('#button-create').on('click', function() {
             $('#create_product_id').empty();
             $('#create_supplier_id').empty();
@@ -355,7 +378,6 @@
             });
         });
 
-
         $('#form_create').submit(function(e) {
             e.preventDefault();
 
@@ -363,6 +385,8 @@
                 product_id: $('#create_product_id').val(),
                 supplier_id: $('#create_supplier_id').val(),
                 price: $('#create_price').val().replace(/\./g,''),
+                margin_type: $('input[name="create_margin_type"]:checked').val(),
+                margin: $('#create_margin').val(),
                 quantity: $('#create_quantity').val(),
                 _token: CSRF_TOKEN
             }
@@ -391,6 +415,7 @@
             });
         });
 
+        // edit
         $('body').on('click', '.btn-edit', function(e) {
             e.preventDefault();
 
@@ -495,6 +520,7 @@
             });
         });
 
+        // delete
         $('body').on('click', '.btn-delete', function(e) {
             e.preventDefault()
             $('.delete_title').empty();

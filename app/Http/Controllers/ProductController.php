@@ -250,6 +250,8 @@ class ProductController extends Controller
             $product->product_name = $request->parameter_name[$key];
             $product->weight = $request->parameter_weight[$key];
             $product->unit = $request->parameter_unit[$key];
+            $product->product_price = $request->parameter_hpp[$key];
+            $product->product_price_selling = $request->parameter_harga_jual[$key];
             $product->save();
         }
 

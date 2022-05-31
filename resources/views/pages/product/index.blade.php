@@ -1111,26 +1111,34 @@
                     var html = '';
                     $.each(response.product.product, function (index, value) {
                         html += '<div id="inputFormRow">';
-                        html += '<div class="col-12 row">';
-                        html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
-                        html += '<label>Nama Parameter</label>';
-                        html += '<input type="hidden" name="parameter_id[]" class="form-control" value="' + value.id + '" autocomplete="off">';
-                        html += '<input type="text" name="parameter_name[]" class="form-control" value="' + value.product_name + '" autocomplete="off">';
-                        html += '</div>';
-                        html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
-                        html += '<label>Bobot</label>';
-                        html += '<input type="text" name="parameter_weight[]" class="form-control" value="' + value.weight + '" autocomplete="off">';
-                        html += '</div>';
-                        html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
-                        html += '<label>Satuan</label>';
-                        html += '<input type="text" name="parameter_unit[]" class="form-control" value="' + value.unit + '" autocomplete="off">';
-                        html += '</div>';
-                        html += '<div class="col-lg-3 col-md-3 col-12 mb-3 text-right">';
-                        html += '<label>Aksi</label><br>';
-                        html += '<button class="btn btn-danger btn-edit-spinner-' + value.id + ' d-none" disabled><span class="spinner-grow spinner-grow-sm"></span></button>';
-                        html += '<button id="edit_remove_row_' + value.id + '" type="button" class="btn btn-danger edit_remove_row" data-id="' + value.id + '"><i class="fas fa-times"></i></button>';
-                        html += '</div>';
-                        html += '</div>';
+                            html += '<div class="col-12 row">';
+                                html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+                                    html += '<label>Nama Parameter</label>';
+                                    html += '<input type="hidden" name="parameter_id[]" class="form-control" value="' + value.id + '" autocomplete="off">';
+                                    html += '<input type="text" name="parameter_name[]" class="form-control" value="' + value.product_name + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                    html += '<label>Bobot</label>';
+                                    html += '<input type="text" name="parameter_weight[]" class="form-control" value="' + value.weight + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                    html += '<label>Satuan</label>';
+                                    html += '<input type="text" name="parameter_unit[]" class="form-control" value="' + value.unit + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                    html += '<label>HPP</label>';
+                                    html += '<input type="text" name="parameter_hpp[]" class="form-control" value="' + value.product_price + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                    html += '<label>Harga Jual</label>';
+                                    html += '<input type="text" name="parameter_harga_jual[]" class="form-control" value="' + value.product_price_selling + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-1 col-md-1 col-12 mb-3 text-right">';
+                                    html += '<label>Aksi</label><br>';
+                                    html += '<button class="btn btn-danger btn-edit-spinner-' + value.id + ' d-none" disabled><span class="spinner-grow spinner-grow-sm"></span></button>';
+                                    html += '<button id="edit_remove_row_' + value.id + '" type="button" class="btn btn-danger edit_remove_row" data-id="' + value.id + '"><i class="fas fa-times"></i></button>';
+                                html += '</div>';
+                            html += '</div>';
                     })
                     $('.edit_form_parameter').append(html);
 
@@ -1170,26 +1178,34 @@
                             var html = '';
                             $.each(response.products, function (index, value) {
                                 html += '<div id="inputFormRow">';
-                                html += '<div class="col-12 row">';
+                            html += '<div class="col-12 row">';
                                 html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
-                                html += '<label>Nama Parameter</label>';
-                                html += '<input type="hidden" name="parameter_id[]" class="form-control" value="' + value.id + '" autocomplete="off">';
-                                html += '<input type="text" name="parameter_name[]" class="form-control" value="' + value.product_name + '" autocomplete="off">';
+                                    html += '<label>Nama Parameter</label>';
+                                    html += '<input type="hidden" name="parameter_id[]" class="form-control" value="' + value.id + '" autocomplete="off">';
+                                    html += '<input type="text" name="parameter_name[]" class="form-control" value="' + value.product_name + '" autocomplete="off">';
                                 html += '</div>';
-                                html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
-                                html += '<label>Bobot</label>';
-                                html += '<input type="text" name="parameter_weight[]" class="form-control" value="' + value.weight + '" autocomplete="off">';
+                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                    html += '<label>Bobot</label>';
+                                    html += '<input type="text" name="parameter_weight[]" class="form-control" value="' + value.weight + '" autocomplete="off">';
                                 html += '</div>';
-                                html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
-                                html += '<label>Satuan</label>';
-                                html += '<input type="text" name="parameter_unit[]" class="form-control" value="' + value.unit + '" autocomplete="off">';
+                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                    html += '<label>Satuan</label>';
+                                    html += '<input type="text" name="parameter_unit[]" class="form-control" value="' + value.unit + '" autocomplete="off">';
                                 html += '</div>';
-                                html += '<div class="col-lg-3 col-md-3 col-12 mb-3 text-right">';
-                                html += '<label>Aksi</label><br>';
-                                html += '<button class="btn btn-danger btn-edit-spinner-' + value.id + ' d-none" disabled><span class="spinner-grow spinner-grow-sm"></span></button>';
-                                html += '<button id="edit_remove_row_' + value.id + '" type="button" class="btn btn-danger edit_remove_row" data-id="' + value.id + '"><i class="fas fa-times"></i></button>';
+                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                    html += '<label>HPP</label>';
+                                    html += '<input type="text" name="parameter_hpp[]" class="form-control" value="' + value.product_price + '" autocomplete="off">';
                                 html += '</div>';
+                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                    html += '<label>Harga Jual</label>';
+                                    html += '<input type="text" name="parameter_harga_jual[]" class="form-control" value="' + value.product_price_selling + '" autocomplete="off">';
                                 html += '</div>';
+                                html += '<div class="col-lg-1 col-md-1 col-12 mb-3 text-right">';
+                                    html += '<label>Aksi</label><br>';
+                                    html += '<button class="btn btn-danger btn-edit-spinner-' + value.id + ' d-none" disabled><span class="spinner-grow spinner-grow-sm"></span></button>';
+                                    html += '<button id="edit_remove_row_' + value.id + '" type="button" class="btn btn-danger edit_remove_row" data-id="' + value.id + '"><i class="fas fa-times"></i></button>';
+                                html += '</div>';
+                            html += '</div>';
                             })
                             $('.edit_form_parameter').append(html);
                         }, 1000);
@@ -1236,24 +1252,32 @@
                         $.each(response.products, function (index, value) {
                             html += '<div id="inputFormRow">';
                             html += '<div class="col-12 row">';
-                            html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
-                            html += '<label>Nama Parameter</label>';
-                            html += '<input type="hidden" name="parameter_id[]" class="form-control" value="' + value.id + '" autocomplete="off">';
-                            html += '<input type="text" name="parameter_name[]" class="form-control" value="' + value.product_name + '" autocomplete="off">';
-                            html += '</div>';
-                            html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
-                            html += '<label>Bobot</label>';
-                            html += '<input type="text" name="parameter_weight[]" class="form-control" value="' + value.weight + '" autocomplete="off">';
-                            html += '</div>';
-                            html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
-                            html += '<label>Satuan</label>';
-                            html += '<input type="text" name="parameter_unit[]" class="form-control" value="' + value.unit + '" autocomplete="off">';
-                            html += '</div>';
-                            html += '<div class="col-lg-3 col-md-3 col-12 mb-3 text-right">';
-                            html += '<label>Aksi</label><br>';
-                            html += '<button class="btn btn-danger btn-edit-spinner-' + value.id + ' d-none" disabled><span class="spinner-grow spinner-grow-sm"></span></button>';
-                            html += '<button id="edit_remove_row_' + value.id + '" type="button" class="btn btn-danger edit_remove_row" data-id="' + value.id + '"><i class="fas fa-times"></i></button>';
-                            html += '</div>';
+                                html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+                                    html += '<label>Nama Parameter</label>';
+                                    html += '<input type="hidden" name="parameter_id[]" class="form-control" value="' + value.id + '" autocomplete="off">';
+                                    html += '<input type="text" name="parameter_name[]" class="form-control" value="' + value.product_name + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                    html += '<label>Bobot</label>';
+                                    html += '<input type="text" name="parameter_weight[]" class="form-control" value="' + value.weight + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                    html += '<label>Satuan</label>';
+                                    html += '<input type="text" name="parameter_unit[]" class="form-control" value="' + value.unit + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                    html += '<label>HPP</label>';
+                                    html += '<input type="text" name="parameter_hpp[]" class="form-control" value="' + value.product_price + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                    html += '<label>Harga Jual</label>';
+                                    html += '<input type="text" name="parameter_harga_jual[]" class="form-control" value="' + value.product_price_selling + '" autocomplete="off">';
+                                html += '</div>';
+                                html += '<div class="col-lg-1 col-md-1 col-12 mb-3 text-right">';
+                                    html += '<label>Aksi</label><br>';
+                                    html += '<button class="btn btn-danger btn-edit-spinner-' + value.id + ' d-none" disabled><span class="spinner-grow spinner-grow-sm"></span></button>';
+                                    html += '<button id="edit_remove_row_' + value.id + '" type="button" class="btn btn-danger edit_remove_row" data-id="' + value.id + '"><i class="fas fa-times"></i></button>';
+                                html += '</div>';
                             html += '</div>';
                         })
                         $('.edit_form_parameter').append(html);
@@ -1295,7 +1319,7 @@
                 success: function(response) {
                     Toast.fire({
                         icon: 'success',
-                        title: 'Data berhasil dihapus.'
+                        title: 'Data berhasil diperbaharui.'
                     });
                     setTimeout(() => {
                         window.location.reload(1);
@@ -1347,16 +1371,28 @@
                                 '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.product_name + '" readonly>' +
                             '</div>' +
                         '</div>' +
-                        '<div class="col-lg-4 col-md-4 col-sm-12 col-12">' +
+                        '<div class="col-lg-2 col-md-2 col-sm-12 col-12">' +
                             '<div class="form-group">' +
                                 '<label for="detail_product_master" class="font-weight-light">Bobot</label>' +
                                 '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.weight + '" readonly>' +
                             '</div>' +
                         '</div>' +
-                        '<div class="col-lg-4 col-md-4 col-sm-12 col-12">' +
+                        '<div class="col-lg-2 col-md-2 col-sm-12 col-12">' +
                             '<div class="form-group">' +
                                 '<label for="detail_product_master" class="font-weight-light">Satuan</label>' +
                                 '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.unit + '" readonly>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="col-lg-2 col-md-2 col-sm-12 col-12">' +
+                            '<div class="form-group">' +
+                                '<label for="detail_product_master" class="font-weight-light">HPP</label>' +
+                                '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.product_price + '" readonly>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="col-lg-2 col-md-2 col-sm-12 col-12">' +
+                            '<div class="form-group">' +
+                                '<label for="detail_product_master" class="font-weight-light">Harga Jual</label>' +
+                                '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.product_price_selling + '" readonly>' +
                             '</div>' +
                         '</div>';
                     })
