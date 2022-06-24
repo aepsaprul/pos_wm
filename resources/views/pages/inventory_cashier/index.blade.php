@@ -32,7 +32,7 @@
                                                 <select name="product_manual" id="product_manual" class="form-control form-control-sm product_manual_select2" style="width: 100%;">
                                                     <option value="">--Pilih Produk--</option>
                                                     @foreach ($products as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->product_code }} - {{ $item->product_name }}</option>
+                                                        <option value="{{ $item->id }}">{{ $item->product_code }} - {{ $item->productMaster->name }} - {{ $item->product_name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -320,12 +320,19 @@
                     $('.btn-cart-save').addClass("d-none");
                 },
                 success: function(response) {
-                    setTimeout(() => {
-                        window.location.reload(1);
-                    }, 100);
+                    if (response.status == "true") {
+                        setTimeout(() => {
+                            window.location.reload(1);
+                        }, 100);
+                    } else {
+                        alert('Stok Kosong');
+                        setTimeout(() => {
+                            window.location.reload(1);
+                        }, 100);
+                    }
                 },
                 error: function(xhr, status, error){
-                    var errorMessage = xhr.status + ': ' + xhr.statusText
+                    var errorMessage = xhr.status + ': ' + error
                     alert('Error - ' + errorMessage);
                 }
             });

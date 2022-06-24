@@ -47,7 +47,7 @@
                                 <thead class="bg-info">
                                     <tr>
                                         <th class="text-center text-light">No</th>
-                                        <th class="text-center text-light">Kode</th>
+                                        {{-- <th class="text-center text-light">Kode</th> --}}
                                         <th class="text-center text-light">Nama</th>
                                         <th class="text-center text-light">Kategori</th>
                                         {{-- <th class="text-center text-light">HPP</th>
@@ -61,7 +61,7 @@
                                     @foreach ($products as $key => $item)
                                     <tr>
                                         <td class="text-center">{{ $key + 1 }}</td>
-                                        <td>{{ $item->productMaster->code }}</td>
+                                        {{-- <td>{{ $item->productMaster->code }}</td> --}}
                                         <td>
                                             <a href="#" class="btn-detail" data-id="{{ $item->product_master_id }}">{{ $item->productMaster->name }}</a>
                                         </td>
@@ -1364,37 +1364,49 @@
 
                     let val_parameter = "";
                     $.each(response.product.product, function (index, value) {
-                        val_parameter += '' +
-                        '<div class="col-lg-4 col-md-4 col-sm-12 col-12">' +
+                        val_parameter += '<div class="row">' +
+                        '<div class="col-lg-3 col-md-3 col-sm-12 col-12">' +
                             '<div class="form-group">' +
                                 '<label for="detail_product_master" class="font-weight-light">Nama Parameter</label>' +
-                                '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.product_name + '" readonly>' +
+                                '<input type="text" title="' + value.product_name + '" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.product_name + '" readonly>' +
                             '</div>' +
                         '</div>' +
-                        '<div class="col-lg-2 col-md-2 col-sm-12 col-12">' +
+                        '<div class="col-lg-3 col-md-3 col-sm-12 col-12">' +
                             '<div class="form-group">' +
                                 '<label for="detail_product_master" class="font-weight-light">Bobot</label>' +
                                 '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.weight + '" readonly>' +
                             '</div>' +
                         '</div>' +
-                        '<div class="col-lg-2 col-md-2 col-sm-12 col-12">' +
+                        '<div class="col-lg-3 col-md-3 col-sm-12 col-12">' +
                             '<div class="form-group">' +
                                 '<label for="detail_product_master" class="font-weight-light">Satuan</label>' +
                                 '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.unit + '" readonly>' +
                             '</div>' +
                         '</div>' +
-                        '<div class="col-lg-2 col-md-2 col-sm-12 col-12">' +
+                        '<div class="col-lg-3 col-md-3 col-sm-12 col-12">' +
+                            '<div class="form-group">' +
+                                '<label for="detail_product_master" class="font-weight-light">Kode Produk</label>' +
+                                '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.product_code + '" readonly>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="col-lg-3 col-md-3 col-sm-12 col-12">' +
                             '<div class="form-group">' +
                                 '<label for="detail_product_master" class="font-weight-light">HPP</label>' +
                                 '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.product_price + '" readonly>' +
                             '</div>' +
                         '</div>' +
-                        '<div class="col-lg-2 col-md-2 col-sm-12 col-12">' +
+                        '<div class="col-lg-3 col-md-3 col-sm-12 col-12">' +
                             '<div class="form-group">' +
                                 '<label for="detail_product_master" class="font-weight-light">Harga Jual</label>' +
                                 '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.product_price_selling + '" readonly>' +
                             '</div>' +
-                        '</div>';
+                        '</div>' +
+                        '<div class="col-lg-3 col-md-3 col-sm-12 col-12">' +
+                            '<div class="form-group">' +
+                                '<label for="detail_product_master" class="font-weight-light">Stok</label>' +
+                                '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.stock + '" readonly>' +
+                            '</div>' +
+                        '</div></div>';
                     })
                     $('#detail_parameter').append(val_parameter);
 

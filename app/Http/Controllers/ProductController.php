@@ -316,7 +316,7 @@ class ProductController extends Controller
         $product_master->save();
 
         $category = ProductCategory::get();
-        $product_master = ProductMaster::get();
+        $product_master = ProductMaster::doesntHave('product')->get();
 
         return response()->json([
             'categories' => $category,
@@ -331,7 +331,7 @@ class ProductController extends Controller
         $product_category->save();
 
         $category = ProductCategory::get();
-        $product_master = ProductMaster::get();
+        $product_master = ProductMaster::doesntHave('product')->get();
 
         return response()->json([
             'categories' => $category,

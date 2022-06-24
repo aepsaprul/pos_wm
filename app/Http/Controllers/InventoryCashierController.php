@@ -46,24 +46,7 @@ class InventoryCashierController extends Controller
 
     public function productOutSave(Request $request)
     {
-        $product_out_qty = InventoryProductOut::where('user_id', Auth::user()->id)
-            ->where('product_id', $request->product_id)
-            ->where('invoice_id', null)
-            ->first();
 
-        if ($product_out_qty) {
-            $product_out_qty->quantity = $product_out_qty->quantity + $request->quantity;
-            $product_out_qty->sub_total = $product_out_qty->sub_total + $request->sub_total;
-            $product_out_qty->save();
-        } else {
-            $product_out = new InventoryProductOut;
-            $product_out->user_id = Auth::user()->id;
-            $product_out->shop_id = $request->shop_id;
-            $product_out->product_id = $request->product_id;
-            $product_out->quantity = $request->quantity;
-            $product_out->sub_total = $request->sub_total;
-            $product_out->save();
-        }
 
         // update stock
         $product_in_stock = InventoryProductIn::where('product_id', $request->product_id)
@@ -80,38 +63,67 @@ class InventoryCashierController extends Controller
             ->where('stock', '>', 0)
             ->get();
 
-        if ($qty <= $stock_all) {
-            foreach ($product_in as $key => $item) {
-                $id = $item->id;
-                $stock = $item->stock;
-
-                if ($qty > 0) {
-                    $temp = $qty;
-                    $qty = $qty - $stock;
+        if ($stock_all != null || $stock_all <= 0) {
+            if ($qty <= $stock_all) {
+                foreach ($product_in as $key => $item) {
+                    $id = $item->id;
+                    $stock = $item->stock;
 
                     if ($qty > 0) {
-                        $stock_update = 0;
-                    } else {
-                        $stock_update = $stock - $temp;
-                    }
+                        $temp = $qty;
+                        $qty = $qty - $stock;
 
-                    $product_in_update = InventoryProductIn::where('product_id', $request->product_id)->where('id', $id)->first();
-                    $product_in_update->stock = $stock_update;
-                    $product_in_update->save();
+                        if ($qty > 0) {
+                            $stock_update = 0;
+                        } else {
+                            $stock_update = $stock - $temp;
+                        }
+
+                        $product_in_update = InventoryProductIn::where('product_id', $request->product_id)->where('id', $id)->first();
+                        $product_in_update->stock = $stock_update;
+                        $product_in_update->save();
+                    }
                 }
+
+                $product_out_qty = InventoryProductOut::where('user_id', Auth::user()->id)
+                    ->where('product_id', $request->product_id)
+                    ->where('invoice_id', null)
+                    ->first();
+
+                if ($product_out_qty) {
+                    $product_out_qty->quantity = $product_out_qty->quantity + $request->quantity;
+                    $product_out_qty->sub_total = $product_out_qty->sub_total + $request->sub_total;
+                    $product_out_qty->save();
+                } else {
+                    $product_out = new InventoryProductOut;
+                    $product_out->user_id = Auth::user()->id;
+                    $product_out->shop_id = $request->shop_id;
+                    $product_out->product_id = $request->product_id;
+                    $product_out->quantity = $request->quantity;
+                    $product_out->sub_total = $request->sub_total;
+                    $product_out->save();
+                }
+
+                $stock = Product::where('id', $request->product_id)->first();
+                $stock->stock = $stock->stock - $request->quantity;
+                $stock->save();
+
+                return response()->json([
+                    'status' => "true"
+                ]);
+            } else {
+                return response()->json([
+                    'status' => "false"
+                ]);
             }
         } else {
-            echo "stok barang tidak cukup";
+            return response()->json([
+                'status' => "false"
+            ]);
         }
 
 
-        $stock = Product::where('id', $request->product_id)->first();
-        $stock->stock = $stock->stock - $request->quantity;
-        $stock->save();
 
-        return response()->json([
-            'status' => "data berhasil ditambahkan"
-        ]);
     }
 
     public function delete($id)
