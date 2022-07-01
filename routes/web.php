@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AngsuranController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
@@ -306,4 +307,11 @@ Route::middleware(['auth'])->group(function () {
         // credit
         Route::get('cashier/credit', [CashierController::class, 'credit'])->name('cashier.credit');
 
+    // angsuran
+    Route::get('angsuran', [AngsuranController::class, 'index'])->name('angsuran.index');
+    Route::post('angsuran/store', [AngsuranController::class, 'store'])->name('angsuran.store');
+    Route::post('angsuran/update', [AngsuranController::class, 'update'])->name('angsuran.update');
+    Route::get('angsuran/{id}/edit', [AngsuranController::class, 'edit'])->name('angsuran.edit');
+    Route::get('angsuran/{id}/delete_btn', [AngsuranController::class, 'deleteBtn'])->name('angsuran.delete_btn');
+    Route::post('angsuran/delete', [AngsuranController::class, 'delete'])->name('angsuran.delete');
 });
