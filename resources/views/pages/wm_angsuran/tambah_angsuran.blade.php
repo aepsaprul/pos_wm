@@ -16,7 +16,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Nasabah</h1>
+                    <h1 class="m-0 text-uppercase">{{ $nasabah->nama }}</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -35,26 +35,35 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <button id="button-create" type="button" class="btn bg-gradient-primary btn-sm pl-3 pr-3">
-                                <i class="fa fa-plus"></i> Tambah Nasabah
-                            </button>
+                            <div class="d-flex justify-content-between">
+                                <button id="button-create" type="button" class="btn bg-gradient-primary btn-sm pl-3 pr-3">
+                                    <i class="fa fa-plus"></i> Tambah Data Angsuran
+                                </button>
+                                <a href="{{ route('angsuran.index') }}" class="btn bg-gradient-danger btn-sm pl-3 pr-3">
+                                    <i class="fa fa-arrow-left"></i> Kembali
+                                </a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <table id="datatable" class="table table-striped table-bordered" style="width:100%">
                                 <thead class="bg-info">
                                     <tr>
                                         <th class="text-center text-light">No</th>
-                                        <th class="text-center text-light">Nama</th>
-                                        <th class="text-center text-light">Nomor Kontrak</th>
+                                        <th class="text-center text-light">Nama Angsuran</th>
+                                        <th class="text-center text-light">Jumlah Angsuran</th>
+                                        <th class="text-center text-light">Total</th>
+                                        <th class="text-center text-light">Status</th>
                                         <th class="text-center text-light">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($nasabahs as $key => $item)
+                                    @foreach ($angsurans as $key => $item)
                                         <tr>
                                             <td class="text-center">{{ $key + 1 }}</td>
                                             <td>{{ $item->nama }}</td>
-                                            <td>{{ $item->nomor_kontrak }}</td>
+                                            <td>{{ $item->jumlah }}</td>
+                                            <td>{{ $item->total }}</td>
+                                            <td>{{ $item->status }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a
@@ -65,16 +74,6 @@
                                                                 <i class="fa fa-cog"></i>
                                                     </a>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a
-                                                            class="dropdown-item"
-                                                            href="{{ route('angsuran.tambah_angsuran', [$item->id]) }}">
-                                                                <i class="fa fa-plus px-2"></i> Tambah Angsuran
-                                                        </a>
-                                                        <a
-                                                            class="dropdown-item"
-                                                            href="{{ route('angsuran.bayar_angsuran', [$item->id]) }}">
-                                                                <i class="fas fa-comment-dollar px-2"></i> Bayar Angsuran
-                                                        </a>
                                                         <a
                                                             class="dropdown-item btn-edit"
                                                             href="#"
@@ -108,7 +107,7 @@
         <div class="modal-content">
             <form id="form_create">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Nasabah</h5>
+                    <h5 class="modal-title">Tambah Data Angsuran</h5>
                     <button
                         type="button"
                         class="close"
@@ -117,13 +116,28 @@
                     </button>
                 </div>
                 <div class="modal-body">
+
+                    {{-- nasabah id --}}
+                    <input type="text" name="create_nasabah_id" id="create_nasabah_id" value="{{ $nasabah->id }}">
+
                     <div class="mb-3">
-                        <label for="create_nama" class="form-label">Nama Nasabah</label>
-                        <input type="text" class="form-control form-control-sm" id="create_nama" name="create_nama" maxlength="50">
+                        <label for="create_nama_angsuran" class="form-label">Nama Angsuran</label>
+                        <input type="text" class="form-control form-control-sm" id="create_nama_angsuran" name="create_nama_angsuran" maxlength="50">
                     </div>
                     <div class="mb-3">
-                        <label for="create_nomor_kontrak" class="form-label">Nomor Kontrak</label>
-                        <input type="text" class="form-control form-control-sm" id="create_nomor_kontrak" name="create_nomor_kontrak">
+                        <label for="create_jumlah" class="form-label">Jumlah Angsuran (per bulan)</label>
+                        <input type="text" class="form-control form-control-sm" id="create_jumlah" name="create_jumlah" maxlength="3">
+                    </div>
+                    <div class="mb-3">
+                        <label for="create_total" class="form-label">Total</label>
+                        <input type="text" class="form-control form-control-sm" id="create_total" name="create_total">
+                    </div>
+                    <div class="mb-3">
+                        <label for="create_status" class="form-label">Status</label>
+                        <select name="create_status" id="create_status" class="form-control">
+                            <option value="hutang">Hutang</option>
+                            <option value="lunas">Lunas</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -252,12 +266,15 @@
             e.preventDefault();
 
             var formData = {
-                nama: $('#create_nama').val(),
-                nomor_kontrak: $('#create_nomor_kontrak').val()
+                nasabah_id: $('#create_nasabah_id').val(),
+                nama_angsuran: $('#create_nama_angsuran').val(),
+                jumlah: $('#create_jumlah').val(),
+                total: $('#create_total').val(),
+                status: $('#create_status').val()
             }
 
             $.ajax({
-                url: "{{ URL::route('angsuran.store') }} ",
+                url: "{{ URL::route('angsuran.tambah_angsuran.store') }} ",
                 type: 'POST',
                 data: formData,
                 beforeSend: function() {
@@ -284,7 +301,7 @@
             e.preventDefault();
 
             var id = $(this).attr('data-id');
-            var url = '{{ route("angsuran.edit", ":id") }}';
+            var url = '{{ route("angsuran.tambah_angsuran.edit", ":id") }}';
             url = url.replace(':id', id );
 
             var formData = {
@@ -318,7 +335,7 @@
             }
 
             $.ajax({
-                url: "{{ URL::route('angsuran.update') }}",
+                url: "{{ URL::route('angsuran.tambah_angsuran.update') }}",
                 type: 'POST',
                 data: formData,
                 beforeSend: function() {
@@ -341,39 +358,20 @@
             });
         });
 
-        $('body').on('click', '.btn-delete', function(e) {
-            e.preventDefault();
-            $('.delete_title').empty();
-
-            var id = $(this).attr('data-id');
-            var url = '{{ route("angsuran.delete_btn", ":id") }}';
-            url = url.replace(':id', id );
-
-            var formData = {
-                id: id
-            }
-
-            $.ajax({
-                url: url,
-                type: 'GET',
-                data: formData,
-                success: function(response) {
-                    $('#delete_id').val(response.nasabah.id);
-                    $('.modal-delete').modal('show');
-                }
-            });
-        });
-
         $('#form_delete').submit(function(e) {
             e.preventDefault();
+
+            var id = $(this).attr('data-id');
+            var url = '{{ route("angsuran.tambah_angsuran.delete", ":id") }}';
+            url = url.replace(':id', id );
 
             var formData = {
                 id: $('#delete_id').val()
             }
 
             $.ajax({
-                url: "{{ URL::route('angsuran.delete') }}",
-                type: 'POST',
+                url: url,
+                type: 'get',
                 data: formData,
                 beforeSend: function() {
                     $('.btn-delete-spinner').removeClass("d-none");

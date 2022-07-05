@@ -314,4 +314,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('angsuran/{id}/edit', [AngsuranController::class, 'edit'])->name('angsuran.edit');
     Route::get('angsuran/{id}/delete_btn', [AngsuranController::class, 'deleteBtn'])->name('angsuran.delete_btn');
     Route::post('angsuran/delete', [AngsuranController::class, 'delete'])->name('angsuran.delete');
+
+        // tambah angsuran
+        Route::get('angsuran/{id}/tambah_angsuran', [AngsuranController::class, 'tambahAngsuran'])->name('angsuran.tambah_angsuran');
+        Route::post('angsuran/tambah_angsuran/store', [AngsuranController::class, 'tambahAngsuranStore'])->name('angsuran.tambah_angsuran.store');
+        Route::get('angsuran/tambah_angsuran/{angsuran_id}/edit', [AngsuranController::class, 'tambahAngsuranEdit'])->name('angsuran.tambah_angsuran.edit');
+        Route::post('angsuran/tambah_angsuran/update', [AngsuranController::class, 'tambahAngsuranUpdate'])->name('angsuran.tambah_angsuran.update');
+        Route::get('angsuran/tambah_angsuran/{angsuran_id}/delete', [AngsuranController::class, 'tambahAngsuranDelete'])->name('angsuran.tambah_angsuran.delete');
+
+        // bayar angsuran
+        Route::get('angsuran/{id}/bayar_angsuran', [AngsuranController::class, 'bayarAngsuran'])->name('angsuran.bayar_angsuran');
 });
