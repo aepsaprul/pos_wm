@@ -54,7 +54,7 @@
                                         <tr>
                                             <td class="text-center">{{ $key + 1 }}</td>
                                             <td>{{ $item->nama }}</td>
-                                            <td>{{ $item->nomor_kontrak }}</td>
+                                            <td class="text-center">{{ $item->nomor_kontrak }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a

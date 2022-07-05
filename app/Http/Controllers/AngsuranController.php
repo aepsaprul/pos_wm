@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\WmAngsuran;
+use App\Models\WmAngsuranDetail;
 use App\Models\WmNasabah;
 use Illuminate\Http\Request;
 
@@ -128,8 +129,50 @@ class AngsuranController extends Controller
     public function bayarAngsuran($id)
     {
         $nasabah = WmNasabah::find($id);
+        $angsuran_detail = WmAngsuranDetail::whereHas('angsuran', function ($query) use ($nasabah) {
+            $query->where('nasabah_id', $nasabah->id);
+        })
+        ->get();
 
-        return view('pages.wm_angsuran.bayar_angsuran', ['nasabah' => $nasabah]);
+        return view('pages.wm_angsuran.bayar_angsuran', ['nasabah' => $nasabah, 'angsuran_details' => $angsuran_detail]);
+    }
+
+    public function bayarAngsuranCreate($id)
+    {
+        $angsuran = WmAngsuran::where('nasabah_id', $id)->where('status', 'hutang')->get();
+
+        return response()->json([
+            'angsurans' => $angsuran
+        ]);
+    }
+
+    public function bayarAngsuranCreateAngsuranKe($id)
+    {
+        $angsuran = WmAngsuran::find($id);
+
+        if ($angsuran) {
+            $angsuran_detail = count(WmAngsuranDetail::where('angsuran_id', $id)->get());
+            $angsuran_ke = $angsuran->jumlah - $angsuran_detail;
+        } else {
+            $angsuran_ke = 0;
+        }
+
+        return response()->json([
+            'angsuran_ke' => $angsuran_ke
+        ]);
+    }
+
+    public function bayarAngsuranStore(Request $request)
+    {
+        $angsuran_detail = new WmAngsuranDetail;
+        $angsuran_detail->angsuran_id = $request->nama_angsuran;
+        $angsuran_detail->angsuran_ke = $request->angsuran_ke;
+        $angsuran_detail->nominal = $request->nominal;
+        $angsuran_detail->save();
+
+        return response()->json([
+            'status' => 'true'
+        ]);
     }
 
     public function bayarAngsuranDelete($id)

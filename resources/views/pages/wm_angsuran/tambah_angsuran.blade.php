@@ -385,6 +385,7 @@
             });
         });
 
+        // delete
         $(document).on('click', '.btn-delete', function(e) {
             e.preventDefault();
 
