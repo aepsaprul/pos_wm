@@ -93,17 +93,35 @@ class AngsuranController extends Controller
 
     public function tambahAngsuranEdit($id)
     {
+        $angsuran = WmAngsuran::find($id);
 
+        return response()->json([
+            'angsuran' => $angsuran
+        ]);
     }
 
     public function tambahAngsuranUpdate(Request $request)
     {
+        $angsuran = WmAngsuran::find($request->id);
+        $angsuran->nama = $request->nama_angsuran;
+        $angsuran->jumlah = $request->jumlah;
+        $angsuran->total = $request->total;
+        $angsuran->status = $request->status;
+        $angsuran->save();
 
+        return response()->json([
+            'status' => 'true'
+        ]);
     }
 
-    public function tambahAngsuranDelete($id)
+    public function tambahAngsuranDelete(Request $request)
     {
+        $angsuran = WmAngsuran::find($request->id);
+        $angsuran->delete();
 
+        return response()->json([
+            'status' => 'true'
+        ]);
     }
 
     // bayar angsuran

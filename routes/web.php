@@ -320,7 +320,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('angsuran/tambah_angsuran/store', [AngsuranController::class, 'tambahAngsuranStore'])->name('angsuran.tambah_angsuran.store');
         Route::get('angsuran/tambah_angsuran/{angsuran_id}/edit', [AngsuranController::class, 'tambahAngsuranEdit'])->name('angsuran.tambah_angsuran.edit');
         Route::post('angsuran/tambah_angsuran/update', [AngsuranController::class, 'tambahAngsuranUpdate'])->name('angsuran.tambah_angsuran.update');
-        Route::get('angsuran/tambah_angsuran/{angsuran_id}/delete', [AngsuranController::class, 'tambahAngsuranDelete'])->name('angsuran.tambah_angsuran.delete');
+        Route::post('angsuran/tambah_angsuran/delete', [AngsuranController::class, 'tambahAngsuranDelete'])->name('angsuran.tambah_angsuran.delete');
 
         // bayar angsuran
         Route::get('angsuran/{id}/bayar_angsuran', [AngsuranController::class, 'bayarAngsuran'])->name('angsuran.bayar_angsuran');

@@ -61,9 +61,9 @@
                                         <tr>
                                             <td class="text-center">{{ $key + 1 }}</td>
                                             <td>{{ $item->nama }}</td>
-                                            <td>{{ $item->jumlah }}</td>
-                                            <td>{{ $item->total }}</td>
-                                            <td>{{ $item->status }}</td>
+                                            <td class="text-center">{{ $item->jumlah }}</td>
+                                            <td class="text-right">{{ $item->total }}</td>
+                                            <td class="text-capitalize text-center text-success">{{ $item->status }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a
@@ -118,7 +118,7 @@
                 <div class="modal-body">
 
                     {{-- nasabah id --}}
-                    <input type="text" name="create_nasabah_id" id="create_nasabah_id" value="{{ $nasabah->id }}">
+                    <input type="hidden" name="create_nasabah_id" id="create_nasabah_id" value="{{ $nasabah->id }}">
 
                     <div class="mb-3">
                         <label for="create_nama_angsuran" class="form-label">Nama Angsuran</label>
@@ -172,12 +172,20 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="edit_nama" class="form-label">Nama Nasabah</label>
-                        <input type="text" class="form-control form-control-sm" id="edit_nama" name="edit_nama" maxlength="50">
+                        <label for="edit_nama_angsuran" class="form-label">Nama Angsuran</label>
+                        <input type="text" class="form-control form-control-sm" id="edit_nama_angsuran" name="edit_nama_angsuran" maxlength="50">
                     </div>
                     <div class="mb-3">
-                        <label for="edit_nomor_kontrak" class="form-label">Nomor Kontrak</label>
-                        <input type="text" class="form-control form-control-sm" id="edit_nomor_kontrak" name="edit_nomor_kontrak">
+                        <label for="edit_jumlah" class="form-label">Jumlah Angsuran (per bulan)</label>
+                        <input type="text" class="form-control form-control-sm" id="edit_jumlah" name="edit_jumlah" maxlength="3">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_total" class="form-label">Total</label>
+                        <input type="text" class="form-control form-control-sm" id="edit_total" name="edit_total">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_status" class="form-label">Status</label>
+                        <select name="edit_status" id="edit_status" class="form-control"></select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -254,6 +262,7 @@
             'responsive': true
         });
 
+        // create
         $('#button-create').on('click', function() {
             $('.modal-create').modal('show');
         });
@@ -297,6 +306,7 @@
             });
         });
 
+        // edit
         $('body').on('click', '.btn-edit', function(e) {
             e.preventDefault();
 
@@ -313,16 +323,31 @@
                 type: 'GET',
                 data: formData,
                 success: function(response) {
-                    $('#edit_id').val(response.nasabah.id);
-                    $('#edit_nama').val(response.nasabah.nama);
-                    $('#edit_nomor_kontrak').val(response.nasabah.nomor_kontrak);
+                    $('#edit_id').val(response.angsuran.id);
+                    $('#edit_nama_angsuran').val(response.angsuran.nama);
+                    $('#edit_jumlah').val(response.angsuran.jumlah);
+                    $('#edit_total').val(response.angsuran.total);
+
+                    let val_status = '' +
+                        '<option value="hutang"';
+                        if (response.angsuran.status == "hutang") {
+                            val_status += ' selected';
+                        }
+                        val_status += '>Hutang</option>' +
+                        '<option value="lunas"';
+                        if (response.angsuran.status == "lunas") {
+                            val_status += ' selected';
+                        }
+                        val_status += '>Lunas</option>';
+                    $('#edit_status').append(val_status);
+
                     $('.modal-edit').modal('show');
                 }
             })
         });
 
         $(document).on('shown.bs.modal', '.modal-edit', function() {
-            $('#edit_nama').focus();
+            $('#edit_nama_angsuran').focus();
         });
 
         $('#form_edit').submit(function(e) {
@@ -330,8 +355,10 @@
 
             var formData = {
                 id: $('#edit_id').val(),
-                nama: $('#edit_nama').val(),
-                nomor_kontrak: $('#edit_nomor_kontrak').val()
+                nama_angsuran: $('#edit_nama_angsuran').val(),
+                jumlah: $('#edit_jumlah').val(),
+                total: $('#edit_total').val(),
+                status: $('#edit_status').val()
             }
 
             $.ajax({
@@ -358,20 +385,23 @@
             });
         });
 
-        $('#form_delete').submit(function(e) {
+        $(document).on('click', '.btn-delete', function(e) {
             e.preventDefault();
 
-            var id = $(this).attr('data-id');
-            var url = '{{ route("angsuran.tambah_angsuran.delete", ":id") }}';
-            url = url.replace(':id', id );
+            $('#delete_id').val($(this).attr('data-id'));
+            $('.modal-delete').modal('show');
+        });
+
+        $('#form_delete').submit(function(e) {
+            e.preventDefault();
 
             var formData = {
                 id: $('#delete_id').val()
             }
 
             $.ajax({
-                url: url,
-                type: 'get',
+                url: "{{ URL::route('angsuran.tambah_angsuran.delete') }}",
+                type: 'post',
                 data: formData,
                 beforeSend: function() {
                     $('.btn-delete-spinner').removeClass("d-none");
