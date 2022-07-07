@@ -68,7 +68,7 @@
                                                         <a
                                                             class="dropdown-item"
                                                             href="{{ route('angsuran.tambah_angsuran', [$item->id]) }}">
-                                                                <i class="fa fa-plus px-2"></i> Tambah Angsuran
+                                                                <i class="fa fa-hand-holding-usd px-2"></i> Data Angsuran
                                                         </a>
                                                         <a
                                                             class="dropdown-item"

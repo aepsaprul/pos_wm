@@ -327,4 +327,5 @@ Route::middleware(['auth'])->group(function () {
         Route::get('angsuran/bayar_angsuran/{id}/create', [AngsuranController::class, 'bayarAngsuranCreate'])->name('angsuran.bayar_angsuran.create');
         Route::get('angsuran/bayar_angsuran/{id}/create_angsuran_ke', [AngsuranController::class, 'bayarAngsuranCreateAngsuranKe'])->name('angsuran.bayar_angsuran.create_angsuran_ke');
         Route::post('angsuran/bayar_angsuran/store', [AngsuranController::class, 'bayarAngsuranStore'])->name('angsuran.bayar_angsuran.store');
+        Route::post('angsuran/bayar_angsuran/delete', [AngsuranController::class, 'bayarAngsuranDelete'])->name('angsuran.bayar_angsuran.delete');
 });

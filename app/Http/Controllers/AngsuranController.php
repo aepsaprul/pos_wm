@@ -84,7 +84,6 @@ class AngsuranController extends Controller
         $angsuran->nama = $request->nama_angsuran;
         $angsuran->jumlah = $request->jumlah;
         $angsuran->total = $request->total;
-        $angsuran->status = $request->status;
         $angsuran->save();
 
         return response()->json([
@@ -107,7 +106,6 @@ class AngsuranController extends Controller
         $angsuran->nama = $request->nama_angsuran;
         $angsuran->jumlah = $request->jumlah;
         $angsuran->total = $request->total;
-        $angsuran->status = $request->status;
         $angsuran->save();
 
         return response()->json([
@@ -130,8 +128,10 @@ class AngsuranController extends Controller
     {
         $nasabah = WmNasabah::find($id);
         $angsuran_detail = WmAngsuranDetail::whereHas('angsuran', function ($query) use ($nasabah) {
-            $query->where('nasabah_id', $nasabah->id);
+            $query->where('nasabah_id', $nasabah->id)->where('status', 'hutang');
         })
+        ->orderBy('angsuran_id', 'asc')
+        ->orderBy('angsuran_ke', 'asc')
         ->get();
 
         return view('pages.wm_angsuran.bayar_angsuran', ['nasabah' => $nasabah, 'angsuran_details' => $angsuran_detail]);
@@ -153,12 +153,17 @@ class AngsuranController extends Controller
         if ($angsuran) {
             $angsuran_detail = count(WmAngsuranDetail::where('angsuran_id', $id)->get());
             $angsuran_ke = $angsuran->jumlah - $angsuran_detail;
+            $angsuran_akhir = $angsuran->jumlah;
         } else {
+            $angsuran_detail = 0;
             $angsuran_ke = 0;
+            $angsuran_akhir = 0;
         }
 
         return response()->json([
-            'angsuran_ke' => $angsuran_ke
+            'angsuran_detail' => $angsuran_detail,
+            'angsuran_ke' => $angsuran_ke,
+            'angsuran_akhir' => $angsuran_akhir
         ]);
     }
 
@@ -170,13 +175,28 @@ class AngsuranController extends Controller
         $angsuran_detail->nominal = $request->nominal;
         $angsuran_detail->save();
 
+        $angsuran = WmAngsuran::find($request->nama_angsuran);
+
+        if ($angsuran->jumlah == $request->angsuran_ke) {
+            $angsuran->status = "lunas";
+            $angsuran->save();
+        } else {
+            $angsuran->status = "hutang";
+            $angsuran->save();
+        }
+
         return response()->json([
             'status' => 'true'
         ]);
     }
 
-    public function bayarAngsuranDelete($id)
+    public function bayarAngsuranDelete(Request $request)
     {
+        $angsuran_detail = WmAngsuranDetail::find($request->id);
+        $angsuran_detail->delete();
 
+        return response()->json([
+            'status' => 'true'
+        ]);
     }
 }

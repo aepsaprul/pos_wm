@@ -62,8 +62,14 @@
                                             <td class="text-center">{{ $key + 1 }}</td>
                                             <td>{{ $item->nama }}</td>
                                             <td class="text-center">{{ $item->jumlah }}</td>
-                                            <td class="text-right">{{ $item->total }}</td>
-                                            <td class="text-capitalize text-center text-success">{{ $item->status }}</td>
+                                            <td class="text-right">{{ rupiah($item->total) }}</td>
+                                            <td class="text-capitalize text-center">
+                                                @if ($item->status)
+                                                    <span class="text-capitalize">{{ $item->status }}</span>
+                                                @else
+                                                    <span class="text-capitalize">hutang</span>
+                                                @endif
+                                            </td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a
@@ -132,13 +138,6 @@
                         <label for="create_total" class="form-label">Total</label>
                         <input type="text" class="form-control form-control-sm" id="create_total" name="create_total">
                     </div>
-                    <div class="mb-3">
-                        <label for="create_status" class="form-label">Status</label>
-                        <select name="create_status" id="create_status" class="form-control">
-                            <option value="hutang">Hutang</option>
-                            <option value="lunas">Lunas</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary btn-create-spinner d-none" disabled style="width: 130px;">
@@ -182,10 +181,6 @@
                     <div class="mb-3">
                         <label for="edit_total" class="form-label">Total</label>
                         <input type="text" class="form-control form-control-sm" id="edit_total" name="edit_total">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_status" class="form-label">Status</label>
-                        <select name="edit_status" id="edit_status" class="form-control"></select>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -268,7 +263,12 @@
         });
 
         $(document).on('shown.bs.modal', '.modal-create', function() {
-            $('#create_nama').focus();
+            $('#create_nama_angsuran').focus();
+
+            var total = document.getElementById("create_total");
+            total.addEventListener("keyup", function(e) {
+                total.value = formatRupiah(this.value, "");
+            });
         });
 
         $('#form_create').submit(function(e) {
@@ -278,8 +278,7 @@
                 nasabah_id: $('#create_nasabah_id').val(),
                 nama_angsuran: $('#create_nama_angsuran').val(),
                 jumlah: $('#create_jumlah').val(),
-                total: $('#create_total').val(),
-                status: $('#create_status').val()
+                total: $('#create_total').val().replace(/\./g,'')
             }
 
             $.ajax({
@@ -326,20 +325,7 @@
                     $('#edit_id').val(response.angsuran.id);
                     $('#edit_nama_angsuran').val(response.angsuran.nama);
                     $('#edit_jumlah').val(response.angsuran.jumlah);
-                    $('#edit_total').val(response.angsuran.total);
-
-                    let val_status = '' +
-                        '<option value="hutang"';
-                        if (response.angsuran.status == "hutang") {
-                            val_status += ' selected';
-                        }
-                        val_status += '>Hutang</option>' +
-                        '<option value="lunas"';
-                        if (response.angsuran.status == "lunas") {
-                            val_status += ' selected';
-                        }
-                        val_status += '>Lunas</option>';
-                    $('#edit_status').append(val_status);
+                    $('#edit_total').val(format_rupiah(response.angsuran.total));
 
                     $('.modal-edit').modal('show');
                 }
@@ -348,6 +334,11 @@
 
         $(document).on('shown.bs.modal', '.modal-edit', function() {
             $('#edit_nama_angsuran').focus();
+
+            var total = document.getElementById("edit_total");
+            total.addEventListener("keyup", function(e) {
+                total.value = formatRupiah(this.value, "");
+            });
         });
 
         $('#form_edit').submit(function(e) {
@@ -357,8 +348,7 @@
                 id: $('#edit_id').val(),
                 nama_angsuran: $('#edit_nama_angsuran').val(),
                 jumlah: $('#edit_jumlah').val(),
-                total: $('#edit_total').val(),
-                status: $('#edit_status').val()
+                total: $('#edit_total').val().replace(/\./g,'')
             }
 
             $.ajax({

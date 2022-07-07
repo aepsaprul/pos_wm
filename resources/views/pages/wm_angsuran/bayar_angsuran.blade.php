@@ -45,7 +45,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+                            <table id="datatable" class="table table-bordered" style="width:100%">
                                 <thead class="bg-info">
                                     <tr>
                                         <th class="text-center text-light">No</th>
@@ -61,7 +61,7 @@
                                             <td class="text-center">{{ $key + 1 }}</td>
                                             <td>{{ $item->angsuran->nama }}</td>
                                             <td class="text-center">{{ $item->angsuran_ke }}</td>
-                                            <td class="text-right">{{ $item->nominal }}</td>
+                                            <td class="text-right">{{ rupiah($item->nominal) }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a
@@ -72,12 +72,6 @@
                                                                 <i class="fa fa-cog"></i>
                                                     </a>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a
-                                                            class="dropdown-item btn-edit"
-                                                            href="#"
-                                                            data-id="{{ $item->id }}">
-                                                                <i class="fa fa-pencil-alt px-2"></i> Ubah
-                                                        </a>
                                                         <a
                                                             class="dropdown-item btn-delete"
                                                             href="#"
@@ -116,17 +110,17 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="create_nama_angsuran" class="form-label">Nama Angsuran</label>
-                        <select name="create_nama_angsuran" id="create_nama_angsuran" class="form-control"></select>
+                        <select name="create_nama_angsuran" id="create_nama_angsuran" class="form-control" required></select>
                     </div>
                     <div class="mb-3">
                         <label for="create_angsuran_ke" class="form-label">Angsuran Ke</label>
-                        <select name="create_angsuran_ke" id="create_angsuran_ke" class="form-control">
+                        <select name="create_angsuran_ke" id="create_angsuran_ke" class="form-control" required>
                             <option value="">--Pilih Angsuran Ke--</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="create_nominal" class="form-label">Nominal</label>
-                        <input type="text" class="form-control form-control-sm" id="create_nominal" name="create_nominal">
+                        <input type="text" class="form-control form-control-sm" id="create_nominal" name="create_nominal" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -135,6 +129,31 @@
                         Loading..
                     </button>
                     <button type="submit" class="btn btn-primary btn-create-save" style="width: 130px;"><i class="fa fa-save"></i> Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- modal delete  --}}
+<div class="modal fade modal-delete" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form_delete">
+
+                {{-- id  --}}
+                <input type="hidden" id="delete_id" name="delete_id">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Yakin akan dihapus <span class="delete_title text-decoration-underline"></span> ?</h5>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 130px;"><span aria-hidden="true">Tidak</span></button>
+                    <button class="btn btn-primary btn-delete-spinner d-none" disabled style="width: 130px;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading..
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-delete-yes text-center" style="width: 130px;">Ya</button>
                 </div>
             </form>
         </div>
@@ -180,6 +199,8 @@
 
         // create
         $('#button-create').on('click', function() {
+            $('#create_nama_angsuran').empty();
+
             let id = $(this).attr('data-id');
             let url = '{{ route("angsuran.bayar_angsuran.create", ":id") }}';
             url = url.replace(':id', id );
@@ -188,7 +209,7 @@
                 url: url,
                 type: 'get',
                 success: function (response) {
-                    let val_angsuran = '<option value="0">--Pilih Angsuran--</option>';
+                    let val_angsuran = '<option value="">--Pilih Angsuran--</option>';
                     $.each(response.angsurans, function (index, item) {
                         val_angsuran += '<option value="' + item.id + '">' + item.nama + '</option>';
                     })
@@ -211,15 +232,24 @@
                 type: 'get',
                 success: function (response) {
                     console.log(response);
-                    let array = response.angsuran_ke;
-                    let val_angsuran_ke = '<option value="0">--Pilih Angsuran Ke--</option>';
-                    for (let index = 0; index < array; index++) {
+                    let array = response.angsuran_akhir;
+                    let val_angsuran_ke = '<option value="">--Pilih Angsuran Ke--</option>';
+                    for (let index = response.angsuran_detail; index < array; index++) {
                         val_angsuran_ke += '<option value="' + (index + 1) + '">Angsuran Ke - ' + (index + 1) + '</option>';
                     }
                     $('#create_angsuran_ke').append(val_angsuran_ke);
                 }
             })
         })
+
+        $(document).on('shown.bs.modal', '.modal-create', function() {
+            $('#create_nama_angsuran').focus();
+
+            var nominal = document.getElementById("create_nominal");
+            nominal.addEventListener("keyup", function(e) {
+                nominal.value = formatRupiah(this.value, "");
+            });
+        });
 
         $('#form_create').submit(function(e) {
             e.preventDefault();
@@ -242,6 +272,45 @@
                     Toast.fire({
                         icon: 'success',
                         title: 'Data berhasil ditambah.'
+                    });
+                    setTimeout(() => {
+                        window.location.reload(1);
+                    }, 1000);
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + error
+                    alert('Error - ' + errorMessage);
+                }
+            });
+        });
+
+        // delete
+        $(document).on('click', '.btn-delete', function(e) {
+            e.preventDefault();
+
+            $('#delete_id').val($(this).attr('data-id'));
+            $('.modal-delete').modal('show');
+        });
+
+        $('#form_delete').submit(function(e) {
+            e.preventDefault();
+
+            var formData = {
+                id: $('#delete_id').val()
+            }
+
+            $.ajax({
+                url: "{{ URL::route('angsuran.bayar_angsuran.delete') }}",
+                type: 'post',
+                data: formData,
+                beforeSend: function() {
+                    $('.btn-delete-spinner').removeClass("d-none");
+                    $('.btn-delete-yes').addClass("d-none");
+                },
+                success: function(response) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Data berhasil dihapus.'
                     });
                     setTimeout(() => {
                         window.location.reload(1);
