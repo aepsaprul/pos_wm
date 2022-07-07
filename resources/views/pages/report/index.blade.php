@@ -139,6 +139,7 @@
                             "</tr>" +
                         "</thead>" +
                         "<tbody>";
+                            let total = 0;
                             $.each(response.invoices, function(index, item) {
                                 invoice_val += "" +
                                     "<tr>" +
@@ -165,9 +166,15 @@
                                         "<td class=\"text-center\">" + item.code + "</td>" +
                                         "<td class=\"text-center\">" + format_rupiah(item.total_amount) + "</td>" +
                                     "</tr>";
+                                    total += item.total_amount;
                             });
                         invoice_val += "</tbody>" +
-                    "</table>";
+                    "</table>" +
+                    '<div class="row mt-5">' +
+                        '<div class="col-12 text-right">' +
+                            'Total<span class="h4 font-weight-bold text-uppercase"> ' + format_rupiah(total) + '</span>' +
+                        '</div>'
+                    '</div>';
 
                     $('.data-table').append(invoice_val);
 
@@ -208,6 +215,7 @@
                             "</tr>" +
                         "</thead>" +
                         "<tbody>";
+                            let total = 0;
                             $.each(response.invoices, function(index, item) {
                                 invoice_val += "" +
                                     "<tr";
@@ -238,9 +246,15 @@
                                         "<td class=\"text-center\">" + item.code + "</td>" +
                                         "<td class=\"text-center\">" + format_rupiah(item.total_amount) + "</td>" +
                                     "</tr>";
+                                    total += item.total_amount;
                             });
                         invoice_val += "</tbody>" +
-                    "</table>";
+                    "</table>" +
+                    '<div class="row mt-5">' +
+                        '<div class="col-12 text-right">' +
+                            'Total<span class="h4 font-weight-bold text-uppercase"> ' + format_rupiah(total) + '</span>' +
+                        '</div>'
+                    '</div>';
 
                     $('.data-table').append(invoice_val);
 
@@ -279,6 +293,7 @@
                             "</tr>" +
                         "</thead>" +
                         "<tbody>";
+                            let total = 0;
                             $.each(response.invoices, function(index, item) {
                                 invoice_val += "" +
                                     "<tr>" +
@@ -297,9 +312,15 @@
                                         "<td class=\"text-center\">" + item.code + "</td>" +
                                         "<td class=\"text-center\">" + format_rupiah(item.total_amount) + "</td>" +
                                     "</tr>";
+                                    total += item.total_amount;
                             });
                         invoice_val += "</tbody>" +
-                    "</table>";
+                    "</table>" +
+                    '<div class="row mt-5">' +
+                        '<div class="col-12 text-right">' +
+                            'Total<span class="h4 font-weight-bold text-uppercase"> ' + format_rupiah(total) + '</span>' +
+                        '</div>'
+                    '</div>';
 
                     $('.data-table').append(invoice_val);
 
@@ -340,6 +361,7 @@
                             "</tr>" +
                         "</thead>" +
                         "<tbody>";
+                            let total = 0;
                             $.each(response.invoices, function(index, item) {
                                 invoice_val += "" +
                                     "<tr>" +
@@ -367,9 +389,15 @@
                                         "<td class=\"text-center\">" + item.code + "</td>" +
                                         "<td class=\"text-center\">" + format_rupiah(item.total_amount) + "</td>" +
                                     "</tr>";
+                                    total += item.total_amount;
                             });
                         invoice_val += "</tbody>" +
-                    "</table>";
+                    "</table>" +
+                    '<div class="row mt-5">' +
+                        '<div class="col-12 text-right">' +
+                            'Total<span class="h4 font-weight-bold text-uppercase"> ' + format_rupiah(total) + '</span>' +
+                        '</div>'
+                    '</div>';
 
                     $('.data-table').append(invoice_val);
 
@@ -447,6 +475,7 @@
                                 "</tr>" +
                             "</thead>" +
                             "<tbody>";
+                                let total = 0;
                                 $.each(response.invoices, function(index, item) {
                                     invoice_val += "" +
                                         "<tr>" +
@@ -473,9 +502,15 @@
                                             "<td class=\"text-center\">" + item.code + "</td>" +
                                             "<td class=\"text-center\">" + format_rupiah(item.total_amount) + "</td>" +
                                         "</tr>";
+                                        total += item.total_amount;
                                 });
                             invoice_val += "</tbody>" +
-                        "</table>";
+                        "</table>" +
+                        '<div class="row mt-5">' +
+                            '<div class="col-12 text-right">' +
+                                'Total<span class="h4 font-weight-bold text-uppercase"> ' + format_rupiah(total) + '</span>' +
+                            '</div>'
+                        '</div>';
 
                         $('.data-table').append(invoice_val);
 
