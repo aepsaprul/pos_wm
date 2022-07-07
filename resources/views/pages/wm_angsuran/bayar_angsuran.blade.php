@@ -257,7 +257,7 @@
             var formData = {
                 nama_angsuran: $('#create_nama_angsuran').val(),
                 angsuran_ke: $('#create_angsuran_ke').val(),
-                nominal: $('#create_nominal').val()
+                nominal: $('#create_nominal').val().replace(/\./g,'')
             }
 
             $.ajax({
