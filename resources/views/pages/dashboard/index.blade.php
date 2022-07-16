@@ -106,7 +106,9 @@
                                             <td class="text-center">{{ $key + 1 }}</td>
                                             <td>
                                                 @if ($item->product)
-                                                    {{ $item->product->productMaster->name }} - {{ $item->product->product_name }}
+                                                    @if ($item->product->productMaster)
+                                                        {{ $item->product->productMaster->name }} - {{ $item->product->product_name }}
+                                                    @endif
                                                 @endif
                                             </td>
                                             <td class="text-center">{{ $item->total_qty }}</td>
