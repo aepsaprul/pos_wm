@@ -172,7 +172,7 @@
                             <div class="card card-primary card-outline pb-3">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        <div class="col-lg-4 col-md-3 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <label for="product_master" class="font-weight-light">Nama Produk</label>
                                                 <select name="product_master" id="product_master" class="form-control select_product_master">
@@ -180,7 +180,7 @@
                                                 <small id="error_product_master" class="form-text text-danger"></small>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                 <label for="category_id" class="font-weight-light">Kategori Produk</label>
                                                 <select name="category_id" id="category_id" class="form-control select_category">
@@ -188,7 +188,7 @@
                                                 <small id="error_category_id" class="form-text text-danger"></small>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center">
+                                        <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12 text-center">
                                             <label for="parameter" class="font-weight-light">Tambah Parameter</label><br>
                                             <button type="button" class="btn btn-outline-success btn-paramater-plus" id="parameter"><i class="fas fa-plus"></i></button>
                                             <button type="button" class="btn btn-outline-danger btn-paramater-cancel" id="parameter"><i class="fas fa-times"></i></button>
@@ -302,7 +302,7 @@
                             <div class="card card-primary card-outline pb-3">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                        <div class="col-lg-4 col-md-3 col-sm-12 col-12">
                                             <div class="form-group">
                                                 <label for="edit_product_master" class="font-weight-light">Nama Produk</label>
                                                 <select name="edit_product_master" id="edit_product_master" class="form-control select_edit_product_master">
@@ -310,7 +310,7 @@
                                                 <small id="error_edit_product_master" class="form-text text-danger"></small>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                        <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12">
                                             <div class="form-group">
                                                 <label for="edit_category_id" class="font-weight-light">Kategori Produk</label>
                                                 <select name="edit_category_id" id="edit_category_id" class="form-control select_category">
@@ -318,7 +318,7 @@
                                                 <small id="error_edit_category_id" class="form-text text-danger"></small>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center">
+                                        <div class="col-lg-4 col-md-3 col-sm-12 col-xs-12 text-center">
                                             <label for="edit_parameter" class="font-weight-light">Tambah Parameter</label><br>
                                             <button type="button" class="btn btn-outline-success btn-edit-paramater-plus"><i class="fas fa-plus"></i></button>
                                         </div>
@@ -337,7 +337,7 @@
                                                 <small id="error_product_price_selling" class="form-text text-danger"></small>
                                             </div>
                                         </div> --}}
-                                    <div id="edit_form_parameter" class="edit_form_parameter row"></div>
+                                    <div id="edit_form_parameter" class="edit_form_parameter"></div>
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <div class="form-group">
@@ -1111,25 +1111,25 @@
                     var html = '';
                     $.each(response.product.product, function (index, value) {
                         html += '<div id="inputFormRow">';
-                            html += '<div class="col-12 row">';
-                                html += '<div class="col-lg-3 col-md-3 col-12 mb-3">';
+                            html += '<div class="row">';
+                                html += '<div class="col-lg-5 col-md-3 col-12 mb-3">';
                                     html += '<label>Nama Parameter</label>';
                                     html += '<input type="hidden" name="parameter_id[]" class="form-control" value="' + value.id + '" autocomplete="off">';
                                     html += '<input type="text" name="parameter_name[]" class="form-control" value="' + value.product_name + '" autocomplete="off">';
                                 html += '</div>';
-                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                html += '<div class="col-lg-3 col-md-2 col-12 mb-3">';
                                     html += '<label>Bobot</label>';
                                     html += '<input type="text" name="parameter_weight[]" class="form-control" value="' + value.weight + '" autocomplete="off">';
                                 html += '</div>';
-                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                html += '<div class="col-lg-3 col-md-2 col-12 mb-3">';
                                     html += '<label>Satuan</label>';
                                     html += '<input type="text" name="parameter_unit[]" class="form-control" value="' + value.unit + '" autocomplete="off">';
                                 html += '</div>';
-                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                html += '<div class="col-lg-5 col-md-4 col-12 mb-3">';
                                     html += '<label>HPP</label>';
                                     html += '<input type="text" name="parameter_hpp[]" class="form-control" value="' + value.product_price + '" autocomplete="off">';
                                 html += '</div>';
-                                html += '<div class="col-lg-2 col-md-2 col-12 mb-3">';
+                                html += '<div class="col-lg-5 col-md-4 col-12 mb-3">';
                                     html += '<label>Harga Jual</label>';
                                     html += '<input type="text" name="parameter_harga_jual[]" class="form-control" value="' + value.product_price_selling + '" autocomplete="off">';
                                 html += '</div>';
@@ -1138,7 +1138,7 @@
                                     html += '<button class="btn btn-danger btn-edit-spinner-' + value.id + ' d-none" disabled><span class="spinner-grow spinner-grow-sm"></span></button>';
                                     html += '<button id="edit_remove_row_' + value.id + '" type="button" class="btn btn-danger edit_remove_row" data-id="' + value.id + '"><i class="fas fa-times"></i></button>';
                                 html += '</div>';
-                            html += '</div>';
+                            html += '</div><hr>';
                     })
                     $('.edit_form_parameter').append(html);
 
