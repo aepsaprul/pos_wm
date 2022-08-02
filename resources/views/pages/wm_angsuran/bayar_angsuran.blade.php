@@ -52,6 +52,7 @@
                                         <th class="text-center text-light">Nama Angsuran</th>
                                         <th class="text-center text-light">Angsuran Ke</th>
                                         <th class="text-center text-light">Nominal</th>
+                                        <th class="text-center text-light">Tanggal</th>
                                         <th class="text-center text-light">Aksi</th>
                                     </tr>
                                 </thead>
@@ -62,6 +63,7 @@
                                             <td>{{ $item->angsuran->nama }}</td>
                                             <td class="text-center">{{ $item->angsuran_ke }}</td>
                                             <td class="text-right">{{ rupiah($item->nominal) }}</td>
+                                            <td class="text-center">{{ $item->created_at->format('d-m-Y') }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
                                                     <a

@@ -439,6 +439,7 @@
                     $('#edit_id').val(response.id);
                     $('#edit_price').val(format_rupiah(response.price));
                     $('#edit_quantity').val(response.quantity);
+                    $('#edit_margin').val(response.margin);
 
                     // product query
                     var value = "<option value=\"\">--Pilih Produk--</option>";
@@ -447,7 +448,7 @@
                             if (item.id == response.product_id) {
                                 value += "selected";
                             }
-                        value += ">" + item.product_name + "</option>";
+                        value += ">" + item.product_master.name + " - " + item.product_name + "</option>";
                     });
                     $('#edit_product_id').append(value);
 
@@ -492,6 +493,7 @@
                 product_id: $('#edit_product_id').val(),
                 supplier_id: $('#edit_supplier_id').val(),
                 price: $('#edit_price').val().replace(/\./g,''),
+                margin: $('#edit_margin').val(),
                 quantity: $('#edit_quantity').val(),
                 _token: CSRF_TOKEN
             }

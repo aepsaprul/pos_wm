@@ -136,8 +136,10 @@
                                                     <div class="product-info" style="margin-left: 0px;">
                                                         <div class="row">
                                                             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                                                <div class="product-title">{{ $item->product->product_name }}
-                                                                    {{-- <span class="badge badge-danger float-right"><i class="fas fa-times p-1"></i></span> --}}
+                                                                <div class="product-title">
+                                                                    @if ($item->product)
+                                                                        {{ $item->product->product_name }}
+                                                                    @endif
                                                                     <form
                                                                         action="{{ route('inventory_cashier.delete', [$item->id]) }}"
                                                                         method="POST"
@@ -156,13 +158,17 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                                                                Rp. {{ rupiah($item->product->product_price_selling) }}
+                                                                @if ($item->product)
+                                                                    Rp. {{ rupiah($item->product->product_price_selling) }}
+                                                                @endif
                                                             </div>
                                                             <div class="col-lg-2 col-md-2 col-sm-2 col-2">
                                                                 <input type="number" class="form-control form-control-sm" value="{{ $item->quantity }}">
                                                             </div>
                                                             <div class="col-lg-4 col-md-4 col-sm-4 col-4">
-                                                                <strong>Rp {{ rupiah($item->product->product_price_selling * $item->quantity) }}</strong>
+                                                                @if ($item->product)
+                                                                    <strong>Rp {{ rupiah($item->product->product_price_selling * $item->quantity) }}</strong>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
@@ -198,9 +204,17 @@
                             <table width="100%">
                                 @foreach ($product_outs as $key => $item)
                                 <tr>
-                                    <td>{{ $item->product->product_name }}</td>
+                                    <td>
+                                        @if ($item->product)
+                                            {{ $item->product->product_name }}
+                                        @endif
+                                    </td>
                                     <td>{{ rupiah($item->quantity) }}</td>
-                                    <td class="text-end">{{ rupiah($item->product->product_price_selling * $item->quantity) }}</td>
+                                    <td class="text-end">
+                                        @if ($item->product)
+                                            {{ rupiah($item->product->product_price_selling * $item->quantity) }}
+                                        @endif
+                                    </td>
                                 </tr>
                                 @endforeach
                                 <tr class="nego_layout">

@@ -52,6 +52,7 @@
                                         <th class="text-center text-light">Nama Angsuran</th>
                                         <th class="text-center text-light">Jumlah Angsuran</th>
                                         <th class="text-center text-light">Total</th>
+                                        <th class="text-center text-light">Tanggal</th>
                                         <th class="text-center text-light">Status</th>
                                         <th class="text-center text-light">Aksi</th>
                                     </tr>
@@ -63,6 +64,7 @@
                                             <td>{{ $item->nama }}</td>
                                             <td class="text-center">{{ $item->jumlah }}</td>
                                             <td class="text-right">{{ rupiah($item->total) }}</td>
+                                            <td class="text-center">{{ $item->created_at->format('d-m-Y') }}</td>
                                             <td class="text-capitalize text-center">
                                                 @if ($item->status)
                                                     <span class="text-capitalize">{{ $item->status }}</span>

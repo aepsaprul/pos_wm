@@ -62,12 +62,13 @@ class InventroryProductInController extends Controller
 
     public function edit($id)
     {
-        $productIn = InventoryProductIn::find($id);
-        $product = Product::get();
+        $productIn = InventoryProductIn::with('product')->find($id);
+        $product = Product::with('productMaster')->get();
         $supplier = Supplier::get();
 
         return response()->json([
             'id' => $productIn->id,
+            'margin' => $productIn->product->product_price_selling,
             'product_id' => $productIn->product_id,
             'supplier_id' => $productIn->supplier_id,
             'price' => $productIn->price,
@@ -100,6 +101,7 @@ class InventroryProductInController extends Controller
         }
 
         $stock->product_price = $request->price;
+        $stock->product_price_selling = $request->margin;
         $stock->save();
 
         // update query
