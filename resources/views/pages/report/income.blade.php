@@ -141,22 +141,22 @@
                     type: 'POST',
                     data: formData,
                     success: function(response) {
-                    var sum_product_price = 0;
-                    var sum_sub_total = 0;
+                        var sum_product_price = 0;
+                        var sum_sub_total = 0;
 
-                    $.each(response.sales, function(index, item) {
-                        sum_product_price += parseFloat(item.quantity * item.product.product_price);
-                        sum_sub_total += parseFloat(item.sub_total);
-                        var total_profit =  sum_sub_total - sum_product_price;
+                        $.each(response.sales, function(index, item) {
+                            sum_product_price += parseFloat(item.quantity * item.product.product_price);
+                            sum_sub_total += parseFloat(item.sub_total);
+                            var total_profit =  sum_sub_total - sum_product_price;
 
-                        var start_date = tanggal(response.start_date);
-                        var end_date = tanggal(response.end_date);
+                            var start_date = tanggal(response.start_date);
+                            var end_date = tanggal(response.end_date);
 
-                        $('#raw_date').html(start_date + " s/d " + end_date);
-                        $('#raw_revenue').html(format_rupiah(sum_product_price));
-                        $('#raw_total_price').html(format_rupiah(sum_sub_total));
-                        $('#raw_profit').html(format_rupiah(total_profit));
-                    });
+                            $('#raw_date').html(start_date + " s/d " + end_date);
+                            $('#raw_revenue').html(format_rupiah(sum_product_price));
+                            $('#raw_total_price').html(format_rupiah(sum_sub_total));
+                            $('#raw_profit').html(format_rupiah(total_profit));
+                        });
                     }
                 });
             }

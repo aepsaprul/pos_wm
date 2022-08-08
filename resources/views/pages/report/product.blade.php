@@ -126,7 +126,12 @@
 
                     $('.data-table').append(invoice_val);
 
-                    $('#datatable').DataTable();
+                    $('#datatable').DataTable({
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'excel'
+                        ]
+                    });
                 }
             });
         }
@@ -202,7 +207,12 @@
 
                         $('.data-table').append(sales_val);
 
-                        $('#datatable').DataTable();
+                        $('#datatable').DataTable({
+                            dom: 'Bfrtip',
+                            buttons: [
+                                'excel'
+                            ]
+                        });
                     }
                 });
             }

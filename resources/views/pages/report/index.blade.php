@@ -179,7 +179,11 @@
                     $('.data-table').append(invoice_val);
 
                     $('#datatable').DataTable({
-                        'responsive': true
+                        'responsive': true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'excel'
+                        ]
                     });
                 }
             });
@@ -259,7 +263,11 @@
                     $('.data-table').append(invoice_val);
 
                     $('#datatable').DataTable({
-                        'responsive': true
+                        'responsive': true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'excel'
+                        ]
                     });
                 }
             });
@@ -325,7 +333,11 @@
                     $('.data-table').append(invoice_val);
 
                     $('#datatable').DataTable({
-                        'responsive': true
+                        'responsive': true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'excel'
+                        ]
                     });
                 }
             });
@@ -402,7 +414,11 @@
                     $('.data-table').append(invoice_val);
 
                     $('#datatable').DataTable({
-                        'responsive': true
+                        'responsive': true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'excel'
+                        ]
                     });
                 }
             });
@@ -515,7 +531,11 @@
                         $('.data-table').append(invoice_val);
 
                         $('#datatable').DataTable({
-                            'responsive': true
+                            'responsive': true,
+                            dom: 'Bfrtip',
+                            buttons: [
+                                'excel'
+                            ]
                         });
                     }
                 });
