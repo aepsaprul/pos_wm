@@ -217,7 +217,12 @@ class ProductController extends Controller
         $category = ProductCategory::get();
         $product_master = ProductMaster::get();
 
-        return response()->json([
+        // return response()->json([
+        //     'product' => $product,
+        //     'categories' => $category,
+        //     'product_masters' => $product_master
+        // ]);
+        return view('pages.product.edit', [
             'product' => $product,
             'categories' => $category,
             'product_masters' => $product_master
@@ -248,6 +253,8 @@ class ProductController extends Controller
             // insert data product
             $product = Product::find($value);
             $product->product_name = $request->parameter_name[$key];
+            $product->minimal_grosir = $request->parameter_minimal_grosir[$key];
+            $product->harga_grosir = $request->parameter_harga_grosir[$key];
             $product->weight = $request->parameter_weight[$key];
             $product->unit = $request->parameter_unit[$key];
             $product->product_price = $request->parameter_hpp[$key];
@@ -255,31 +262,11 @@ class ProductController extends Controller
             $product->save();
         }
 
-        // $product = Product::find($request->id);
-        // $product->product_code = $request->product_code;
-        // $product->product_name = $request->product_name;
-        // $product->product_category_id = $request->category_id;
-        // $product->weight = $request->weight;
-        // $product->unit = $request->unit;
-        // $product->description = $request->description;
-        // $product->video = $request->video;
+        // return response()->json([
+        //     'status' => $request->all()
+        // ]);
 
-        // if($request->hasFile('image')) {
-        //     if (file_exists("public/image/" . $product->image)) {
-        //         File::delete("public/image/" . $product->image);
-        //     }
-        //     $file = $request->file('image');
-        //     $extension = $file->getClientOriginalExtension();
-        //     $filename = time() . "." . $extension;
-        //     $file->move('public/image/', $filename);
-        //     $product->image = $filename;
-        // }
-
-        // $product->save();
-
-        return response()->json([
-            'status' => $request->all()
-        ]);
+        return redirect()->route('product.index');
     }
 
     public function deleteBtn($id)

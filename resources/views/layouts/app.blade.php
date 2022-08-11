@@ -26,6 +26,46 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('public/themes/dist/css/adminlte.min.css') }}">
 
+    {{-- back to top --}}
+    <style>
+        #back_to_top {
+            display: inline-block;
+            background-color: #ff9999;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            border-radius: 50%;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            transition: background-color .3s,
+            opacity .5s, visibility .5s;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+            color: #fff;
+        }
+        #back_to_top::after {
+            font-weight: normal;
+            font-style: normal;
+            font-size: 2em;
+            line-height: 50px;
+            color: #fff;
+        }
+        #back_to_top:hover {
+            cursor: pointer;
+            background-color: #ff9999;
+        }
+        #back_to_top:active {
+            background-color: #ff9999;
+        }
+        #back_to_top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+    {{-- end back to top --}}
+
     @yield('style')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed
@@ -44,6 +84,9 @@
         <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__wobble" src="{{ asset('public/assets/icon.png') }}" alt="AdminLTELogo" height="60" width="60">
         </div>
+
+        <!-- Back to top button -->
+        <a id="back_to_top" class="h5"><i class="fas fa-arrow-up mt-3"></i></a>
 
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -375,13 +418,13 @@
         @yield('content')
 
         <!-- Main Footer -->
-        <footer class="main-footer">
+        {{-- <footer class="main-footer">
           <strong>Copyright &copy; 2014-2021 <a href="#">Warung Mitra</a>.</strong>
           All rights reserved.
           <div class="float-right d-none d-sm-inline-block">
             <b>Version</b> 3.1.0
           </div>
-        </footer>
+        </footer> --}}
     </div>
     <!-- ./wrapper -->
 
@@ -398,6 +441,23 @@
     <script src="{{ asset('public/themes/dist/js/adminlte.js') }}"></script>
 
     <script>
+
+        // back to top
+        var btn_back_to_top = $('#back_to_top');
+
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > 300) {
+                btn_back_to_top.addClass('show');
+            } else {
+                btn_back_to_top.removeClass('show');
+            }
+        });
+
+        btn_back_to_top.on('click', function(e) {
+            e.preventDefault();
+            $('html, body').animate({scrollTop:0}, '300');
+        });
+
         function format_rupiah(bilangan) {
             var	number_string = bilangan.toString(),
                 split	= number_string.split(','),

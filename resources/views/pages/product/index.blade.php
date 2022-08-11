@@ -95,9 +95,8 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <a
-                                                        class="dropdown-item btn-edit"
-                                                        href="#"
-                                                        data-id="{{ $item->product_master_id }}">
+                                                        class="dropdown-item"
+                                                        href="{{ route('product.edit', [$item->product_master_id]) }}">
                                                             <i class="fa fa-pencil-alt px-2"></i> Ubah
                                                     </a>
                                                     <a
@@ -481,9 +480,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="detail_parameter" class="row">
-
-                                    </div>
+                                    <div id="detail_parameter"></div>
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <div class="form-group">
@@ -1403,10 +1400,22 @@
                         '</div>' +
                         '<div class="col-lg-3 col-md-3 col-sm-12 col-12">' +
                             '<div class="form-group">' +
+                                '<label for="detail_minimal_grosir" class="font-weight-light">Minimal Grosir</label>' +
+                                '<input type="text" name="detail_minimal_grosir" id="detail_minimal_grosir" class="form-control" value="' + value.minimal_grosir + '" readonly>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="col-lg-3 col-md-3 col-sm-12 col-12">' +
+                            '<div class="form-group">' +
+                                '<label for="detail_harga_grosir" class="font-weight-light">Harga Grosir</label>' +
+                                '<input type="text" name="detail_harga_grosir" id="detail_harga_grosir" class="form-control" value="' + value.harga_grosir + '" readonly>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="col-lg-3 col-md-3 col-sm-12 col-12">' +
+                            '<div class="form-group">' +
                                 '<label for="detail_product_master" class="font-weight-light">Stok</label>' +
                                 '<input type="text" name="detail_product_master" id="detail_product_master" class="form-control" value="' + value.stock + '" readonly>' +
                             '</div>' +
-                        '</div></div>';
+                        '</div></div><hr>';
                     })
                     $('#detail_parameter').append(val_parameter);
 
