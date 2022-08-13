@@ -4,126 +4,49 @@
   <meta charset="UTF-8">
   <title>Warung Mitra</title>
   <style>
-        @media print {
-            .page-break { display: block; page-break-before: always; }
-        }
-        #invoice-POS {
-            padding: 2mm;
-            margin: 0 auto;
-            width: 80mm;
-            background: #FFF;
-        }
-        #invoice-POS ::selection {
-            background: #f31544;
-            color: #FFF;
-        }
-        #invoice-POS ::moz-selection {
-            background: #f31544;
-            color: #FFF;
-        }
-        #invoice-POS h1 {
-            font-size: 1.5em;
-            color: #222;
-        }
-        #invoice-POS h2 {
-            font-size: .9em;
-        }
-        #invoice-POS h3 {
-            font-size: 1.2em;
-            font-weight: 300;
-            line-height: 2em;
-        }
-        #invoice-POS p {
-            font-size: .7em;
-            color: #666;
-            line-height: 1.2em;
-        }
-        #invoice-POS #top, #invoice-POS #mid, #invoice-POS #bot {
-            /* Targets all id with 'col-' */
-            border-bottom: 1px solid #EEE;
-        }
-        #invoice-POS #top {
-            min-height: 100px;
-        }
-        #invoice-POS #mid {
-            min-height: 80px;
-        }
-        #invoice-POS #bot {
-            min-height: 50px;
-        }
-        #invoice-POS .info {
-            display: block;
-            margin-left: 0;
-        }
-        #invoice-POS .title {
-            float: right;
-        }
-        #invoice-POS .title p {
-            text-align: right;
-        }
-        #invoice-POS table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        #invoice-POS .tabletitle {
-            font-size: 0.8em;
-        }
-        #invoice-POS .service {
-            border-bottom: 1px solid #EEE;
-        }
-        #invoice-POS .item {
-            width: 24mm;
-        }
-        #invoice-POS .itemtext {
-            font-size: 0.8em;
-        }
-        #invoice-POS #legalcopy {
-            margin-top: 5mm;
-        }
-    </style>
+    * {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+  </style>
 </head>
-<body translate="no" >
-    <div id="invoice-POS">
-
-        <div id="mid">
-            <div class="info">
-                <h2 style="text-align: center;">{{ $shop->name }}</h2>
-                <p>
-                    Alamat : {{ $shop->address }}</br>
-                    Kode : {{ $invoice->code }}
-                </p>
-            </div>
+<body translate="no">
+    <div style="width: 200px;">
+        <div class="info">
+            <h2 style="text-align: center;">{{ $shop->name }}</h2>
+            <p style="text-align: center;">
+                {{ $shop->address }}</br>
+            </p>
+            Kode : {{ $invoice->code }}
         </div>
 
         <div id="bot">
             <div id="table">
                 <table>
-                    <tr class="tabletitle">
-                        <td class="item"><h2>Item</h2></td>
-                        <td class="Hours" style="text-align: center;"><h2>Qty</h2></td>
-                        <td class="Rate" style="text-align: right;"><h2>Sub Total</h2></td>
+                    <tr>
+                        <td><h4>Item</h4></td>
+                        <td style="text-align: center;"><h4>Qty</h4></td>
+                        <td style="text-align: center;"><h4>Total</h4></td>
                     </tr>
 
                     @foreach ($product_outs as $item)
                         <tr class="service">
-                            <td class="tableitem"><p class="itemtext">{{ $item->product->product_name }}</p></td>
-                            <td class="tableitem" style="text-align: center;"><p class="itemtext">{{ $item->quantity }}</p></td>
-                            <td class="tableitem" style="text-align: right;"><p class="itemtext">{{ rupiah($item->sub_total) }}</p></td>
+                            <td style="font-size: 12px;">{{ $item->product->product_name }}</td>
+                            <td style="text-align: center;">{{ $item->quantity }}</td>
+                            <td style="text-align: right;">{{ rupiah($item->sub_total) }}</td>
                         </tr>
                     @endforeach
 
-                    <tr class="tabletitle">
+                    <tr>
                         <td></td>
-                        <td class="Rate" style="text-align: right;"><h2>Total</h2></td>
-                        <td class="payment" style="text-align: right;"><h2>{{ rupiah($invoice->total_amount) }}</h2></td>
+                        <td>Total</td>
+                        <td style="font-weight: bold; font-size: 25px;">{{ rupiah($invoice->total_amount) }}</td>
                     </tr>
 
                 </table>
             </div><!--End Table-->
 
-            <div id="legalcopy">
-                <p class="legal"><strong>Terimakasih Telah Berbelanja!</strong> Jangan lupa berkunjung kembali
-                </p>
+            <div>
+                <p style="text-align: center; font-size: 12px;"><strong>Terimakasih Telah Berbelanja!</strong> Jangan lupa berkunjung kembali</p>
             </div>
 
         </div><!--End InvoiceBot-->

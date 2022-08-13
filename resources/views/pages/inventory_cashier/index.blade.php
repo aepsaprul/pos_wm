@@ -183,62 +183,6 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid invoice">
-            <div class="row">
-                <div class="col-md-12 col-sm-12 col-12 border border-1">
-                    <h3 class="h3 text-center">Nama Toko</h3>
-                    <p class="text-center">Jl. Pahlawan Tanpa Tanda Jasa No 2 Timur Masjid Agung</p>
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6 col-6">
-                            <span>Kode Nota</span>
-                            <span class="invoice_code"></span>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-6 text-end">
-                            <span class="invoice_date"></span>
-                            <span class="invoice_time"></span>
-                        </div>
-                    </div>
-                    <hr style="border: 2px dashed #000;">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-12 invoice_data">
-                            <table width="100%">
-                                @foreach ($product_outs as $key => $item)
-                                <tr>
-                                    <td>
-                                        @if ($item->product)
-                                            {{ $item->product->product_name }}
-                                        @endif
-                                    </td>
-                                    <td>{{ rupiah($item->quantity) }}</td>
-                                    <td class="text-end">
-                                        @if ($item->product)
-                                            {{ rupiah($item->product->product_price_selling * $item->quantity) }}
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endforeach
-                                <tr class="nego_layout">
-                                    {{-- content in jquery --}}
-                                </tr>
-                                <tr>
-                                    <td class="text-end">Total</td>
-                                    <td>:</td>
-                                    <td class="text-end print_total_price" style="border-top: 1px dashed #000;">{{ rupiah($total_price) }}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <hr style="border: 2px dashed #000;">
-                    <div class="row">
-                        <div class="col-md-12 col-sm-12 col-12 text-center footer">
-                            <span class="text-center">Telp: 081234567890</span><br>
-                            <span class="text-center">Wa: 081234567890</span><br>
-                            <span class="text-center">Email: toko@gmail.com</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 </div>
 

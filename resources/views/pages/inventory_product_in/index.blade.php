@@ -162,9 +162,9 @@
                             required>
                     </div>
                     <div class="mb-3">
-                        <label for="create_margin" class="form-label">Margin</label>
-                        <label for="create_margin_nominal" class="float-right ml-3"><input type="radio" name="create_margin_type" id="create_margin_nominal" value="nominal"> Nominal</label>
-                        <label for="create_margin_percent" class="float-right"><input type="radio" name="create_margin_type" id="create_margin_percent" value="percent"> Persen</label>
+                        <label for="create_margin" class="form-label">Harga Jual</label>
+                        {{-- <label for="create_margin_nominal" class="float-right ml-3"><input type="radio" name="create_margin_type" id="create_margin_nominal" value="nominal"> Nominal</label>
+                        <label for="create_margin_percent" class="float-right"><input type="radio" name="create_margin_type" id="create_margin_percent" value="percent"> Persen</label> --}}
                         <input
                             type="text"
                             class="form-control form-control-sm"
@@ -235,9 +235,9 @@
                             required>
                     </div>
                     <div class="mb-3">
-                        <label for="edit_margin" class="form-label">Margin</label>
-                        <label for="edit_margin_nominal" class="float-right ml-3"><input type="radio" name="edit_margin_type" id="edit_margin_nominal" value="nominal"> Nominal</label>
-                        <label for="edit_margin_percent" class="float-right"><input type="radio" name="edit_margin_type" id="edit_margin_percent" value="percent"> Persen</label>
+                        <label for="edit_margin" class="form-label">Harga Jual</label>
+                        {{-- <label for="edit_margin_nominal" class="float-right ml-3"><input type="radio" name="edit_margin_type" id="edit_margin_nominal" value="nominal"> Nominal</label>
+                        <label for="edit_margin_percent" class="float-right"><input type="radio" name="edit_margin_type" id="edit_margin_percent" value="percent"> Persen</label> --}}
                         <input
                             type="text"
                             class="form-control form-control-sm"

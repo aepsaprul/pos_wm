@@ -6,6 +6,8 @@ use App\Models\InventoryInvoice;
 use App\Models\InventoryProductIn;
 use App\Models\InventoryProductOut;
 use App\Models\Product;
+use App\Models\ProductShop;
+use App\Models\ReceiveProduct;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,8 +48,6 @@ class InventoryCashierController extends Controller
 
     public function productOutSave(Request $request)
     {
-
-
         // update stock
         $product_in_stock = InventoryProductIn::where('product_id', $request->product_id)
             ->whereNotNull('stock')
@@ -121,9 +121,6 @@ class InventoryCashierController extends Controller
                 'status' => "false"
             ]);
         }
-
-
-
     }
 
     public function delete($id)
@@ -162,6 +159,30 @@ class InventoryCashierController extends Controller
         $inventory_product_out = InventoryProductOut::where('user_id', Auth::user()->id)->where('invoice_id', null)->update(['invoice_id' => $invoice->id]);
 
         $inventory_product_out_query = InventoryProductOut::where('invoice_id', $invoice->id)->get();
+
+        $shop = Shop::where('id', Auth::user()->employee->shop_id)->where('jenis', 'internal')->first();
+
+        if ($shop) {
+            foreach ($inventory_product_out_query as $key => $value) {
+                $product = Product::where('id', $value->product_id)->first();
+
+                $receive_product = new ReceiveProduct;
+                $receive_product->user_id = Auth::user()->id;
+                $receive_product->shop_id = Auth::user()->employee->shop_id;
+                $receive_product->product_id = $value->product_id;
+                $receive_product->price = $product->product_price_selling;
+                $receive_product->quantity = $value->quantity;
+                $receive_product->sub_total = $value->quantity * $product->product_price_selling;
+                $receive_product->stock = $value->quantity;
+                $receive_product->date = date('Y-m-d H:i:s');
+                $receive_product->save();
+
+                ProductShop::updateOrCreate(
+                    ['product_id' => $value->product_id],
+                    ['stock' => DB::raw('stock + ' . $value->quantity), 'shop_id' => Auth::user()->employee->shop_id]
+                );
+            }
+        }
 
         return response()->json([
             'invoice_id' => $invoice->id,
