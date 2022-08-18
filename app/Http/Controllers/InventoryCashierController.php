@@ -160,7 +160,7 @@ class InventoryCashierController extends Controller
 
         $inventory_product_out_query = InventoryProductOut::where('invoice_id', $invoice->id)->get();
 
-        $shop = Shop::where('id', Auth::user()->employee->shop_id)->where('jenis', 'internal')->first();
+        $shop = Shop::where('id', Auth::user()->employee->shop_id)->first();
 
         if ($shop) {
             foreach ($inventory_product_out_query as $key => $value) {
@@ -168,7 +168,7 @@ class InventoryCashierController extends Controller
 
                 $receive_product = new ReceiveProduct;
                 $receive_product->user_id = Auth::user()->id;
-                $receive_product->shop_id = Auth::user()->employee->shop_id;
+                $receive_product->shop_id = $request->shop_id;
                 $receive_product->product_id = $value->product_id;
                 $receive_product->price = $product->product_price_selling;
                 $receive_product->quantity = $value->quantity;
@@ -179,7 +179,7 @@ class InventoryCashierController extends Controller
 
                 ProductShop::updateOrCreate(
                     ['product_id' => $value->product_id],
-                    ['stock' => DB::raw('stock + ' . $value->quantity), 'shop_id' => Auth::user()->employee->shop_id]
+                    ['stock' => DB::raw('stock + ' . $value->quantity), 'shop_id' => $request->shop_id]
                 );
             }
         }

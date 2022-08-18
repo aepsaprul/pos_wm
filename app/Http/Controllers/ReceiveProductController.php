@@ -15,7 +15,7 @@ class ReceiveProductController extends Controller
     public function index()
     {
         if (Auth::user()->employee) {
-            $receive_product = ReceiveProduct::where('shop_id', Auth::user()->employee->shop_id)->get();
+            $receive_product = ReceiveProduct::where('shop_id', Auth::user()->employee->shop_id)->orderBy('id', 'desc')->get();
             return view('pages.receive_product.index', ['receive_products' => $receive_product]);
         } else {
             return view('page_403');

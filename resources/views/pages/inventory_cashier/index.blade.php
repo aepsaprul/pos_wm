@@ -375,6 +375,7 @@
                     total_amount: $('#total_price').val(),
                     promo: $('#promo').val(),
                     discount: $('#discount').val(),
+                    shop_id: $('#shop_id').val(),
                     _token: CSRF_TOKEN
                 }
 

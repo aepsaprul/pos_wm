@@ -43,7 +43,9 @@
                                     <select name="opsi" id="opsi" class="form-control form-control-sm">
                                         <option value="">--Pilih Opsi--</option>
                                         @foreach ($product_shops as $item)
-                                            <option value="{{ $item->product->id }}">{{ $item->product->product_name }}</option>
+                                            @if ($item->product)
+                                                <option value="{{ $item->product->id }}">{{ $item->product->product_name }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
