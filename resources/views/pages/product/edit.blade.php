@@ -112,11 +112,12 @@
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-12 col-12 mb-3">
                                             <label class="font-weight-light">HPP</label>
-                                            <input type="text" name="parameter_hpp[]" class="form-control" value="{{ $item->product_price }}" autocomplete="off">
+                                            <input type="text" name="parameter_hpp[]" class="form-control price_{{ $item->id }}" value="{{ $item->product_price }}" autocomplete="off">
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-12 col-12 mb-3">
                                             <label class="font-weight-light">Harga Jual</label>
-                                            <input type="text" name="parameter_harga_jual[]" class="form-control" value="{{ $item->product_price_selling }}" autocomplete="off">
+                                            <input type="text" id="parameter_harga_jual" name="parameter_harga_jual[]" class="form-control price_selling_{{ $item->id }}" data-id="{{ $item->id }}" value="{{ $item->product_price_selling }}" autocomplete="off">
+                                            <small id="error_parameter_harga_jual_{{ $item->id }}" class="form-text text-danger"></small>
                                         </div>
                                         <div class="col-lg-3 col-md-3 col-sm-12 col-12 mb-3">
                                             <label class="font-weight-light">Minimal Grosir</label>
@@ -251,6 +252,21 @@ $(document).ready(function() {
     $('.select_edit_category').select2({
         theme: 'bootstrap4'
     });
+
+    $(document).on('keyup change', '#parameter_harga_jual', function () {
+        let id = $(this).attr('data-id');
+        let price = parseInt($('.price_' + id).val());
+        let price_selling = parseInt($('.price_selling_' + id).val());
+
+        if (price_selling <= price || !price_selling) {
+            $('.btn-edit-save').prop('disabled', true);
+            $('#error_parameter_harga_jual_' + id).empty();
+            $('#error_parameter_harga_jual_' + id).append('harga jual tidak boleh kurang dari HPP');
+        } else {
+            $('.btn-edit-save').prop('disabled', false);
+            $('#error_parameter_harga_jual_' + id).empty();
+        }
+    })
 
     // modal create parameter in edit
     $(document).on('click', '.btn-edit-paramater-plus', function (e) {

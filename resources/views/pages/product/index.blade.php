@@ -47,11 +47,8 @@
                                 <thead class="bg-info">
                                     <tr>
                                         <th class="text-center text-light">No</th>
-                                        {{-- <th class="text-center text-light">Kode</th> --}}
                                         <th class="text-center text-light">Nama</th>
                                         <th class="text-center text-light">Kategori</th>
-                                        {{-- <th class="text-center text-light">HPP</th>
-                                        <th class="text-center text-light">Harga Jual</th> --}}
                                         <th class="text-center text-light">Stok</th>
                                         <th class="text-center text-light">Barcode</th>
                                         <th class="text-center text-light">Aksi</th>
@@ -61,7 +58,6 @@
                                     @foreach ($products as $key => $item)
                                     <tr>
                                         <td class="text-center">{{ $key + 1 }}</td>
-                                        {{-- <td>{{ $item->productMaster->code }}</td> --}}
                                         <td>
                                             <a href="#" class="btn-detail" data-id="{{ $item->product_master_id }}">{{ $item->productMaster->name }}</a>
                                         </td>
@@ -70,8 +66,6 @@
                                                 {{ $item->productMaster->productCategory->category_name }}
                                             @endif
                                         </td>
-                                        {{-- <td class="text-right">{{ rupiah($item->product_price) }}</td>
-                                        <td class="text-right">{{ rupiah($item->product_price_selling) }}</td> --}}
                                         <td class="text-center">{{ $item->total_stock }}</td>
                                         <td class="text-center">
                                             @php
@@ -284,11 +278,6 @@
                                         <input type="file" id="edit_image" name="edit_image" class="form-control" >
                                         <small id="error_edit_image" class="form-text text-danger"></small>
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label for="product_code" class="font-weight-light">Kode Produk</label>
-                                        <input type="text" id="product_code" name="product_code" class="form-control" readonly>
-                                        <small id="error_product_code" class="form-text text-danger"></small>
-                                    </div> --}}
                                     <div class="form-group">
                                         <label for="edit_video" class="font-weight-light">edit_Video</label>
                                         <input type="text" id="edit_video" name="edit_video" class="form-control" maxlength="30" >
@@ -322,20 +311,6 @@
                                             <button type="button" class="btn btn-outline-success btn-edit-paramater-plus"><i class="fas fa-plus"></i></button>
                                         </div>
                                     </div>
-                                        {{-- <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                <label for="product_price">HPP</label>
-                                                <input type="text" id="product_price" name="product_price" class="form-control" maxlength="16" >
-                                                <small id="error_product_price" class="form-text text-danger"></small>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                            <div class="form-group">
-                                                <label for="product_price_selling">Harga Jual</label>
-                                                <input type="text" id="product_price_selling" name="product_price_selling" class="form-control">
-                                                <small id="error_product_price_selling" class="form-text text-danger"></small>
-                                            </div>
-                                        </div> --}}
                                     <div id="edit_form_parameter" class="edit_form_parameter"></div>
                                     <div class="row">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
