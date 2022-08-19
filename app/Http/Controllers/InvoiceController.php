@@ -14,7 +14,7 @@ class InvoiceController extends Controller
     public function index()
     {
         if (Auth::user()->employee) {
-            $invoice = Invoice::where('shop_id', Auth::user()->employee->shop_id)->limit('900')->get();
+            $invoice = Invoice::where('shop_id', Auth::user()->employee->shop_id)->limit('900')->orderBy('id', 'desc')->get();
             return view('pages.invoice.index', ['invoices' => $invoice]);
         } else {
             return view('page_403');

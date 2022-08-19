@@ -12,7 +12,7 @@ class SalesController extends Controller
 {
     public function index()
     {
-        $invoice = Invoice::where('shop_id', Auth::user()->employee->shop_id)->get();
+        $invoice = Invoice::where('shop_id', Auth::user()->employee->shop_id)->orderBy('id', 'desc')->get();
         return view('pages.sales.index', ['invoices' => $invoice]);
     }
 

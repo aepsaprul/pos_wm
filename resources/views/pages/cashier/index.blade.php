@@ -77,7 +77,7 @@
                                             <div class="form-group">
                                                 <label for="pay">Bayar</label>
                                                 <input type="text" class="form-control form-control-sm" id="pay" name="pay">
-                                                <small class="form-text text-muted">tekan ENTER untuk melihat kembalian</small>
+                                                {{-- <small class="form-text text-muted">tekan ENTER untuk melihat kembalian</small> --}}
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -487,8 +487,7 @@
             });
         });
 
-        $('#pay').on('keypress change', function(event) {
-            if (event.keyCode === 13) {
+        $('#pay').on('keyup', function(event) {
                 var pay = $('#pay').val();
                 var pay_int = pay.replace(/\./g,'');
                 var total_price = $('#total_price').val();
@@ -502,8 +501,6 @@
                     var calculate = pay_int - total_price;
                     $('#change').val(format_rupiah(calculate));
                 }
-
-            }
         });
 
         var bidRupiah = document.getElementById("bid");
