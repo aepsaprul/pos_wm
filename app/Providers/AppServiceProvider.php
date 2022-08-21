@@ -36,14 +36,14 @@ class AppServiceProvider extends ServiceProvider
         {
             if (Auth::check()) {
                 $current_nav_button = NavigasiButton::whereHas('navigasiAccess', function ($query) {
-                    $query->where('karyawan_id', Auth::user()->master_karyawan_id);
+                    $query->where('karyawan_id', Auth::user()->employee_id);
                 })
                 ->select('main_id')
                 ->groupBy('main_id')
                 ->get();
 
                 $current_nav_button_sub = NavigasiButton::whereHas('navigasiAccess', function ($query) {
-                    $query->where('karyawan_id', Auth::user()->master_karyawan_id);
+                    $query->where('karyawan_id', Auth::user()->employee_id);
                 })
                 ->select('sub_id')
                 ->groupBy('sub_id')
@@ -75,8 +75,6 @@ class AppServiceProvider extends ServiceProvider
                             ->get();
                         $count_notif_transaction = count($current_notif_transaction);
                     }
-
-
                 } else {
                     $current_cart = null;
                     $count_cart = null;
@@ -85,8 +83,6 @@ class AppServiceProvider extends ServiceProvider
                     $current_notif_transaction = null;
                     $count_notif_transaction = null;
                 }
-
-
 
                 //...with this variable
                 $view->with('current_nav_button', $current_nav_button);

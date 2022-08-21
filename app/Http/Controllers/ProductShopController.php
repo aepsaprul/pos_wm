@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NavigasiAccess;
 use App\Models\Product;
 use App\Models\ProductShop;
 use Illuminate\Http\Request;
@@ -14,7 +15,21 @@ class ProductShopController extends Controller
         if (Auth::user()->employee) {
             $product_shop = ProductShop::where('shop_id', Auth::user()->employee->shop->id)->orderBy('id', 'desc')->get();
 
-            return view('pages.product_shop.index', ['product_shops' => $product_shop]);
+            $navigasi = NavigasiAccess::with('navigasiButton')
+                ->whereHas('navigasiButton.navigasiSub', function ($query) {
+                    $query->where('aktif', 'customer');
+                })
+                ->where('karyawan_id', Auth::user()->master_karyawan_id)->get();
+
+            $data_navigasi = [];
+            foreach ($navigasi as $key => $value) {
+                $data_navigasi[] = $value->navigasiButton->title;
+            }
+
+            return view('pages.product_shop.index', [
+                'product_shops' => $product_shop,
+                'data_navigasi' => $data_navigasi
+            ]);
         } else {
             return view('page_403');
         }

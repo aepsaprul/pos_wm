@@ -29,6 +29,10 @@
                         <div class="card-body">
                             <form action="{{ route('employee.akses_store') }}" method="post">
                                 @csrf
+
+                                {{-- karyawan id --}}
+                                <input type="hidden" name="karyawan_id" id="karyawan_id" value="{{ $employee->id }}">
+
                                 <table class="table table-bordered" style="width:100%">
                                     <thead>
                                         <tr>
