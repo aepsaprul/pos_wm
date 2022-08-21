@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NavigasiButton;
+use App\Models\NavigasiMain;
+use App\Models\NavigasiSub;
 use App\Models\NavMain;
 use App\Models\NavSub;
 use App\Models\NavSubUser;
@@ -13,29 +16,34 @@ class NavController extends Controller
 {
     public function index()
     {
-        $nav_main = NavMain::get();
-        $nav_sub = NavSub::orderBy('nav_main_id', 'asc')->get();
+        $nav_main = NavigasiMain::get();
+        $nav_sub = NavigasiSub::orderBy('main_id', 'asc')->get();
+        $nav_tombol = NavigasiButton::orderBy('main_id', 'asc')->get();
 
-        return view('pages.navigasi.index', ['nav_mains' => $nav_main, 'nav_subs' => $nav_sub]);
+        return view('pages.navigasi.index', [
+            'nav_mains' => $nav_main,
+            'nav_subs' => $nav_sub,
+            'nav_tombols' => $nav_tombol
+        ]);
     }
 
     public function mainStore(Request $request)
     {
-        $nav_main = new NavMain;
+        $nav_main = new NavigasiMain;
         $nav_main->title = $request->title;
         $nav_main->link = $request->link;
         $nav_main->icon = $request->icon;
-        $nav_main->request = $request->data_request;
+        $nav_main->aktif = $request->aktif;
         $nav_main->save();
 
         return response()->json([
-            'status' => 'Data menu utama berhasil ditambah'
+            'status' => 'true'
         ]);
     }
 
     public function subCreate()
     {
-        $nav_main = NavMain::get();
+        $nav_main = NavigasiMain::get();
 
         return response()->json([
             'nav_mains' => $nav_main
@@ -44,10 +52,11 @@ class NavController extends Controller
 
     public function subStore(Request $request)
     {
-        $nav_sub = new NavSub;
+        $nav_sub = new NavigasiSub;
         $nav_sub->title = $request->title;
         $nav_sub->link = $request->link;
-        $nav_sub->nav_main_id = $request->nav_main_id;
+        $nav_sub->main_id = $request->main_id;
+        $nav_sub->aktif = $request->aktif;
         $nav_sub->save();
 
         return response()->json([
@@ -55,75 +64,141 @@ class NavController extends Controller
         ]);
     }
 
+    public function tombolCreate()
+    {
+        $nav_main = NavigasiMain::get();
+        $nav_sub = NavigasiSub::get();
+
+        return response()->json([
+            'nav_mains' => $nav_main,
+            'nav_subs' => $nav_sub
+        ]);
+    }
+
+    public function tombolStore(Request $request)
+    {
+        $nav_tombol = new NavigasiButton;
+        $nav_tombol->title = $request->title;
+        $nav_tombol->link = $request->link;
+        $nav_tombol->sub_id = $request->sub_id;
+        $nav_tombol->main_id = $request->main_id;
+        $nav_tombol->save();
+
+        return response()->json([
+            'status' => 'Data menu tombol berhasil ditambah'
+        ]);
+    }
+
     public function mainEdit($id)
     {
-        $nav_main = NavMain::find($id);
+        $nav_main = NavigasiMain::find($id);
 
         return response()->json([
             'id' => $nav_main->id,
             'title' => $nav_main->title,
             'link' => $nav_main->link,
             'icon' => $nav_main->icon,
-            'data_request' => $nav_main->request
+            'aktif' => $nav_main->aktif
         ]);
     }
 
     public function subEdit($id)
     {
-        $nav_sub = NavSub::find($id);
-        $nav_main = NavMain::get();
+        $nav_sub = NavigasiSub::find($id);
+        $nav_main = NavigasiMain::get();
 
         return response()->json([
             'id' => $nav_sub->id,
             'title' => $nav_sub->title,
             'link' => $nav_sub->link,
-            'nav_main_id' => $nav_sub->nav_main_id,
+            'main_id' => $nav_sub->main_id,
+            'aktif' => $nav_sub->aktif,
             'nav_mains' => $nav_main
+        ]);
+    }
+
+    public function tombolEdit($id)
+    {
+        $nav_tombol = NavigasiButton::find($id);
+        $nav_main = NavigasiMain::get();
+        $nav_sub = NavigasiSub::get();
+
+        return response()->json([
+            'id' => $nav_tombol->id,
+            'title' => $nav_tombol->title,
+            'link' => $nav_tombol->link,
+            'sub_id' => $nav_tombol->sub_id,
+            'main_id' => $nav_tombol->main_id,
+            'nav_mains' => $nav_main,
+            'nav_subs' => $nav_sub
         ]);
     }
 
     public function mainUpdate(Request $request)
     {
-        $nav_main = NavMain::find($request->id);
+        $nav_main = NavigasiMain::find($request->id);
         $nav_main->title = $request->title;
         $nav_main->link = $request->link;
         $nav_main->icon = $request->icon;
-        $nav_main->request = $request->data_request;
+        $nav_main->aktif = $request->aktif;
         $nav_main->save();
 
         return response()->json([
-            'id' => $nav_main->id,
-            'status' => 'Data menu utama berhasil diperbaharui',
-            'title' => $nav_main->title,
-            'link' => $nav_main->link,
-            'icon' => $nav_main->icon,
-            'data_request' => $nav_main->request
+            'id' => $request->id,
+            'status' => 'true',
+            'title' => $request->title,
+            'link' => $request->link,
+            'icon' => $request->icon,
+            'aktif' => $request->aktif
         ]);
     }
 
     public function subUpdate(Request $request)
     {
-        $nav_sub = NavSub::find($request->id);
+        $nav_sub = NavigasiSub::find($request->id);
         $nav_sub->title = $request->title;
         $nav_sub->link = $request->link;
-        $nav_sub->nav_main_id = $request->nav_main_id;
+        $nav_sub->main_id = $request->main_id;
+        $nav_sub->aktif = $request->aktif;
         $nav_sub->save();
 
-        $nav_main = NavMain::find($request->nav_main_id);
-
+        $nav_main = NavigasiMain::find($request->main_id);
 
         return response()->json([
             'id' => $request->id,
             'status' => 'Data menu sub berhasil diperbaharui',
             'title' => $request->title,
             'link' => $request->link,
-            'nav_main_title' => $nav_main->title
+            'main_title' => $nav_main->title,
+            'aktif' => $request->aktif
+        ]);
+    }
+
+    public function tombolUpdate(Request $request)
+    {
+        $nav_tombol = NavigasiButton::find($request->id);
+        $nav_tombol->title = $request->title;
+        $nav_tombol->link = $request->link;
+        $nav_tombol->sub_id = $request->sub_id;
+        $nav_tombol->main_id = $request->main_id;
+        $nav_tombol->save();
+
+        $nav_main = NavigasiMain::find($request->main_id);
+        $nav_sub = NavigasiSub::find($request->sub_id);
+
+        return response()->json([
+            'id' => $request->id,
+            'status' => 'Data menu tombol berhasil diperbaharui',
+            'title' => $request->title,
+            'link' => $request->link,
+            'main_title' => $nav_main->title,
+            'sub_title' => $nav_sub->title
         ]);
     }
 
     public function mainDeleteBtn($id)
     {
-        $nav_main = NavMain::find($id);
+        $nav_main = NavigasiMain::find($id);
 
         return response()->json([
             'id' => $nav_main->id,
@@ -133,17 +208,14 @@ class NavController extends Controller
 
     public function mainDelete(Request $request)
     {
-        $nav_main = NavMain::find($request->id);
+        $nav_main = NavigasiMain::find($request->id);
 
-        $nav_sub = NavSub::where('nav_main_id', $request->id)->first();
+        $nav_sub = NavigasiSub::where('main_id', $request->id)->first();
 
         if ($nav_sub) {
             $status = "false";
         } else {
             $nav_main->delete();
-
-            $roles_nav_main = RolesNavMain::where('nav_main_id', $nav_main->id);
-            $roles_nav_main->delete();
 
             $status = "true";
         }
@@ -156,7 +228,7 @@ class NavController extends Controller
 
     public function subDeleteBtn($id)
     {
-        $nav_sub = NavSub::find($id);
+        $nav_sub = NavigasiSub::find($id);
 
         return response()->json([
             'id' => $nav_sub->id,
@@ -166,11 +238,28 @@ class NavController extends Controller
 
     public function subDelete(Request $request)
     {
-        $nav_sub = NavSub::find($request->id);
+        $nav_sub = NavigasiSub::find($request->id);
         $nav_sub->delete();
 
-        $roles_nav_sub = RolesNavSub::where('nav_sub_id', $nav_sub->id);
-        $roles_nav_sub->delete();
+        return response()->json([
+            'status' => 'Data berhasil dihapus'
+        ]);
+    }
+
+    public function tombolDeleteBtn($id)
+    {
+        $nav_tombol = NavigasiButton::find($id);
+
+        return response()->json([
+            'id' => $nav_tombol->id,
+            'title' => $nav_tombol->title
+        ]);
+    }
+
+    public function tombolDelete(Request $request)
+    {
+        $nav_tombol = NavigasiButton::find($request->id);
+        $nav_tombol->delete();
 
         return response()->json([
             'status' => 'Data berhasil dihapus'

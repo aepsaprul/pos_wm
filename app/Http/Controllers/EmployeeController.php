@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\NavigasiAccess;
+use App\Models\NavigasiButton;
+use App\Models\NavigasiMain;
+use App\Models\NavigasiSub;
 use App\Models\Position;
 use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
@@ -127,5 +132,61 @@ class EmployeeController extends Controller
         return response()->json([
             'status' => 'Data berhasil dihapus'
         ]);
+    }
+
+    public function akses($id) {
+        $employee = Employee::find($id);
+
+        $nav_access = NavigasiAccess::where('karyawan_id', $id)->get();
+
+        $nav_button = NavigasiButton::get();
+        $nav_sub = NavigasiSub::get();
+        $nav_main = NavigasiMain::with(['navigasiSub', 'navigasiSub.navigasiButton', 'navigasiButton'])
+            ->get();
+
+        $button = NavigasiButton::with('navigasiSub')
+            ->select(DB::raw('count(sub_id) as total'), DB::raw('count(main_id) as mainid'), 'sub_id')
+            ->groupBy('sub_id')
+            ->get();
+
+        $total_main = NavigasiButton::with('navigasiSub')
+            ->select(DB::raw('count(main_id) as total_main'), 'main_id')
+            ->groupBy('main_id')
+            ->get();
+
+        return view('pages.employee.akses', [
+            'employee' => $employee,
+            'nav_access' => $nav_access,
+            'nav_buttons' => $nav_button,
+            'buttons' => $button,
+            'total_main' => $total_main,
+            'nav_subs' => $nav_sub,
+            'nav_mains' => $nav_main
+        ]);
+    }
+
+    public function aksesStore(Request $request)
+    {
+        $nav_access = NavigasiAccess::where('karyawan_id', $request->karyawan_id);
+
+        if ($nav_access) {
+            $nav_access->delete();
+
+            foreach ($request->button_check as $key => $value) {
+                $nav_access = new NavigasiAccess;
+                $nav_access->karyawan_id = $request->karyawan_id;
+                $nav_access->button_id = $value;
+                $nav_access->save();
+            }
+        } else {
+            foreach ($request->button_check as $key => $value) {
+                $nav_access = new NavigasiAccess;
+                $nav_access->karyawan_id = $request->karyawan_id;
+                $nav_access->button_id = $value;
+                $nav_access->save();
+            }
+        }
+
+        return redirect()->route('employee.index')->with('sukses', 'Data berhasil disimpan');
     }
 }

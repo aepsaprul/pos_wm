@@ -71,6 +71,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('master/employee/update', [EmployeeController::class, 'update'])->name('employee.update');
         Route::get('master/employee/{id}/delete_btn', [EmployeeController::class, 'deleteBtn'])->name('employee.delete_btn');
         Route::post('master/employee/delete', [EmployeeController::class, 'delete'])->name('employee.delete');
+        Route::get('master/employee/{id}/akses', [EmployeeController::class, 'akses'])->name('employee.akses');
+        Route::post('master/employee/akses_store', [EmployeeController::class, 'aksesStore'])->name('employee.akses_store');
 
         // position
         Route::get('master/position', [PositionController::class, 'index'])->name('position.index');
@@ -97,6 +99,14 @@ Route::middleware(['auth'])->group(function () {
             Route::post('master/nav/sub_update', [NavController::class, 'subUpdate'])->name('nav.sub_update');
             Route::get('master/nav/{id}/sub_delete_btn', [NavController::class, 'subDeleteBtn'])->name('nav.sub_delete_btn');
             Route::post('master/nav/sub_delete', [NavController::class, 'subDelete'])->name('nav.sub_delete');
+
+            // navigasi tombol
+            Route::get('master/nav/tombol_create', [NavController::class, 'tombolCreate'])->name('nav.tombol_create');
+            Route::post('master/nav/tombol_store', [NavController::class, 'tombolStore'])->name('nav.tombol_store');
+            Route::get('master/nav/{id}/tombol_edit', [NavController::class, 'tombolEdit'])->name('nav.tombol_edit');
+            Route::post('master/nav/tombol_update', [NavController::class, 'tombolUpdate'])->name('nav.tombol_update');
+            Route::get('master/nav/{id}/tombol_delete_btn', [NavController::class, 'tombolDeleteBtn'])->name('nav.tombol_delete_btn');
+            Route::post('master/nav/tombol_delete', [NavController::class, 'tombolDelete'])->name('nav.tombol_delete');
 
         // roles
         Route::get('master/roles', [RolesController::class, 'index'])->name('roles.index');

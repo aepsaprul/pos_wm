@@ -84,6 +84,11 @@
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <a
+                                                        class="dropdown-item"
+                                                        href="{{ route('employee.akses', [$item->id]) }}">
+                                                            <i class="fa fa-lock px-2"></i> Akses
+                                                    </a>
+                                                    <a
                                                         class="dropdown-item btn-view"
                                                         href="#"
                                                         data-id="{{ $item->id }}">

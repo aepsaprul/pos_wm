@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Cart;
 use App\Models\NavAccess;
+use App\Models\NavigasiButton;
 use App\Models\NavMain;
 use App\Models\Notif;
 use Illuminate\Pagination\Paginator;
@@ -34,8 +35,19 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('*', function ($view)
         {
             if (Auth::check()) {
-                $current_nav_main = NavMain::whereHas('navAccess' , function ($query) { $query->where('user_id', Auth::user()->employee_id)->where('tampil', 'y'); })->orderBy('hirarki', 'asc')->get();
-                $current_menu = NavAccess::whereHas('navSub' , function ($query) { $query->where('link', '!=', '#'); })->where('user_id', Auth::user()->employee_id)->where('tampil', 'y')->get();
+                $current_nav_button = NavigasiButton::whereHas('navigasiAccess', function ($query) {
+                    $query->where('karyawan_id', Auth::user()->master_karyawan_id);
+                })
+                ->select('main_id')
+                ->groupBy('main_id')
+                ->get();
+
+                $current_nav_button_sub = NavigasiButton::whereHas('navigasiAccess', function ($query) {
+                    $query->where('karyawan_id', Auth::user()->master_karyawan_id);
+                })
+                ->select('sub_id')
+                ->groupBy('sub_id')
+                ->get();
 
                 if (Auth::user()->employee != null) {
                     $current_cart = Cart::where('shop_id', Auth::user()->employee->shop_id)->get();
@@ -77,8 +89,8 @@ class AppServiceProvider extends ServiceProvider
 
 
                 //...with this variable
-                $view->with('current_nav_mains', $current_nav_main);
-                $view->with('current_menus', $current_menu);
+                $view->with('current_nav_button', $current_nav_button);
+                $view->with('current_nav_button_sub', $current_nav_button_sub);
                 $view->with('current_carts', $current_cart);
                 $view->with('current_count_carts', $count_cart);
                 $view->with('current_notifs', $current_notif);
@@ -86,8 +98,8 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('current_notif_transactions', $current_notif_transaction);
                 $view->with('current_count_notif_transactions', $count_notif_transaction);
             }else {
-                $view->with('current_nav_mains', null);
-                $view->with('current_menus', null);
+                $view->with('current_nav_button', null);
+                $view->with('current_nav_button_sub', null);
                 $view->with('current_carts', null);
                 $view->with('current_count_carts', null);
                 $view->with('current_notifs', null);

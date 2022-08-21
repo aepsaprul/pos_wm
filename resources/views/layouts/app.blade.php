@@ -227,7 +227,7 @@
                 </div>
 
                 <!-- Sidebar Menu -->
-                <nav class="mt-2 pb-3">
+                {{-- <nav class="mt-2 pb-3">
                     <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
                         @if (Auth::user()->employee_id == null)
                             <li class="nav-item">
@@ -408,6 +408,37 @@
                                 @endif
                             @endforeach
                         @endif
+                    </ul>
+                </nav> --}}
+
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+                        @foreach ($current_nav_button as $item)
+                            @if ($item->navigasiMain->link == '#')
+                                <li class="nav-item {{ request()->is(''.$item->navigasiMain->aktif.'/*') ? 'menu-open' : '' }}">
+                                    <a href="#" class="nav-link {{ request()->is(''.$item->navigasiMain->aktif.'/*') ? 'active' : '' }} text-capitalize">
+                                        <i class="nav-icon {{ $item->navigasiMain->icon }} text-center mr-2" style="width: 30px;"></i> <p>{{ $item->navigasiMain->title }}<i class="right fas fa-angle-left"></i></p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        @foreach ($current_nav_button_sub as $item_sub)
+                                            @if ($item_sub->navigasiSub->link != '#' && $item_sub->navigasiSub->main_id == $item->navigasiMain->id)
+                                                <li class="nav-item">
+                                                    <a href="{{ route($item_sub->navigasiSub->link) }}" class="nav-link {{ request()->is([''.$item_sub->navigasiSub->aktif.'', ''.$item_sub->navigasiSub->aktif.'/*']) ? 'active' : '' }} text-capitalize">
+                                                        <i class="fas fa-angle-right nav-icon"></i> <p>{{ $item_sub->navigasiSub->title }}</p>
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @else
+                                <li class="nav-item">
+                                    <a href="{{ route($item->navigasiMain->link) }}" class="nav-link {{ request()->is([''.$item->navigasiMain->aktif.'', ''.$item->navigasiMain->aktif.'/*']) ? 'active' : '' }} text-capitalize">
+                                        <i class="nav-icon {{ $item->navigasiMain->icon }} text-center mr-2" style="width: 30px;"></i> <p>{{ $item->navigasiMain->title }}</p>
+                                    </a>
+                                </li>
+                            @endif
+                        @endforeach
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
