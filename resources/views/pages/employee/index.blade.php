@@ -83,11 +83,11 @@
                                                             <i class="fa fa-cog"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right">
-                                                    <a
+                                                    {{-- <a
                                                         class="dropdown-item"
                                                         href="{{ route('employee.akses', [$item->id]) }}">
                                                             <i class="fa fa-lock px-2"></i> Akses
-                                                    </a>
+                                                    </a> --}}
                                                     <a
                                                         class="dropdown-item btn-view"
                                                         href="#"

@@ -100,7 +100,7 @@
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <a
                                                             class="dropdown-item"
-                                                            href="{{ route('user.access', [$item->id]) }}">
+                                                            href="{{ route('user.akses', [$item->id]) }}">
                                                                 <i class="fa fa-key px-2"></i> Akses
                                                         </a>
                                                         <a

@@ -13,7 +13,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="d-flex justify-content-between">
                         <h5 class="m-0 text-uppercase">Hak Akses <b>{{ $employee->full_name }}</b>  </h5>
-                        <a href="{{ route('employee.index') }}" class="btn btn-danger btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
+                        <a href="{{ route('user.index') }}" class="btn btn-danger btn-sm"><i class="fas fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('employee.akses_store') }}" method="post">
+                            <form action="{{ route('user.akses_store') }}" method="post">
                                 @csrf
 
                                 {{-- karyawan id --}}

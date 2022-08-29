@@ -129,6 +129,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('master/user/{id}/access', [UserController::class, 'access'])->name('user.access');
         Route::put('master/user/{id}/access_save', [UserController::class, 'accessSave'])->name('user.access_save');
         Route::post('master/user/sync', [UserController::class, 'sync'])->name('user.sync');
+        Route::get('master/user/{id}/akses', [UserController::class, 'akses'])->name('user.akses');
+        Route::post('master/user/akses_store', [UserController::class, 'aksesStore'])->name('user.akses_store');
 
         // product category
         Route::get('master/product_category', [ProductCategoryController::class, 'index'])->name('product_category.index');
