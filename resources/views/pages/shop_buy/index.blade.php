@@ -59,7 +59,7 @@
                                                     @endif
                                                     <div class="py-1 px-3">
                                                         <h6 class="mb-0 text-center">
-                                                            <small class="brand-text font-weight-bold">{{ substr($item->product_name, 0, 20) }}</small>
+                                                            <small class="font-weight-bold">{{ substr($item->product_name, 0, 20) }}</small>
                                                         </h6>
                                                         <h6 class="mt-0 text-center">
                                                             <small>Rp. {{ rupiah($item->product_price_selling) }}</small>
