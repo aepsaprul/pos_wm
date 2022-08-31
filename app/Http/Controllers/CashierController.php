@@ -167,7 +167,6 @@ class CashierController extends Controller
                 ->first();
 
                 if ($promo) {
-                    # code...
                     $discount = $product->product_price_selling * ($promo->promo->discount_percent / 100);
                     $promo_harga = $product->product_price_selling - $discount;
                 }
@@ -179,7 +178,6 @@ class CashierController extends Controller
                 $sales->quantity = $request->quantity;
 
                 if ($promo) {
-                    # code...
                     if ($request->quantity >= $promo->promo->minimum_order_qty) {
                         $sales->sub_total = 0;
                         $sales->promo_harga = $promo_harga;
@@ -188,13 +186,11 @@ class CashierController extends Controller
                         $sales->sub_total = $request->sub_total;
                     }
                 } else {
-                    # code...
                     $sales->sub_total = $request->sub_total;
                 }
 
 
                 if ($promo) {
-                    # code...
                     $sales->promo_id = $promo->id;
                 }
                 $sales->save();

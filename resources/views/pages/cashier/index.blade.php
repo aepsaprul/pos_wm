@@ -382,32 +382,38 @@
                 sub_total: final_price
             }
 
-            $.ajax({
-                url: "{{ URL::route('cashier.sales_save') }}",
-                type: 'POST',
-                data: formData,
-                beforeSend: function() {
-                    $('.btn-cart-spinner').removeClass("d-none");
-                    $('.btn-cart-save').addClass("d-none");
-                },
-                success: function(response) {
-                    if (response.status == "true") {
-                        setTimeout(() => {
-                            window.location.reload(1);
-                        }, 100);
-                    } else {
-                        alert('stok barang tidak cukup');
-                        setTimeout(() => {
-                            $('.btn-cart-spinner').addClass("d-none");
-                            $('.btn-cart-save').removeClass("d-none");
-                        }, 100);
+            if (product_id == "") {
+                alert("Nama produk harus diisi");
+            } else {
+                $.ajax({
+                    url: "{{ URL::route('cashier.sales_save') }}",
+                    type: 'POST',
+                    data: formData,
+                    beforeSend: function() {
+                        $('.btn-cart-spinner').removeClass("d-none");
+                        $('.btn-cart-save').addClass("d-none");
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        if (response.status == "true") {
+                            setTimeout(() => {
+                                window.location.reload(1);
+                            }, 100);
+                        } else {
+                            alert('stok barang tidak cukup');
+                            setTimeout(() => {
+                                $('.btn-cart-spinner').addClass("d-none");
+                                $('.btn-cart-save').removeClass("d-none");
+                            }, 100);
+                        }
+                    },
+                    error: function(xhr, status, error){
+                        var errorMessage = xhr.status + ': ' + error
+                        alert('Error - ' + errorMessage);
                     }
-                },
-                error: function(xhr, status, error){
-                    var errorMessage = xhr.status + ': ' + error
-                    alert('Error - ' + errorMessage);
-                }
-            });
+                });
+            }
+
         });
 
         $('#quantity').on('keyup change', function() {
