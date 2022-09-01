@@ -20,7 +20,7 @@ class ShopBuyController extends Controller
     public function index()
     {
         if (Auth::user()->employee) {
-            $product = Product::where('stock', '>', 10)->paginate(60);
+            $product = Product::orderBy('id', 'desc')->paginate(60);
             return view('pages.shop_buy.index', ['products' => $product]);
         } else {
             return view('page_403');
