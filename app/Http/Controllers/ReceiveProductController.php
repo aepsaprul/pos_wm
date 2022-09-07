@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\NavigasiAccess;
 use App\Models\Product;
 use App\Models\ProductShop;
 use App\Models\ReceiveProduct;
@@ -16,7 +17,22 @@ class ReceiveProductController extends Controller
     {
         if (Auth::user()->employee) {
             $receive_product = ReceiveProduct::where('shop_id', Auth::user()->employee->shop_id)->orderBy('id', 'desc')->get();
-            return view('pages.receive_product.index', ['receive_products' => $receive_product]);
+
+            $navigasi = NavigasiAccess::with('navigasiButton')
+                ->whereHas('navigasiButton.navigasiSub', function ($query) {
+                    $query->where('aktif', 'shop_transaction/received_product');
+                })
+                ->where('karyawan_id', Auth::user()->employee_id)->get();
+
+            $data_navigasi = [];
+            foreach ($navigasi as $key => $value) {
+                $data_navigasi[] = $value->navigasiButton->title;
+            }
+
+            return view('pages.receive_product.index', [
+                'receive_products' => $receive_product,
+                'data_navigasi' => $data_navigasi
+            ]);
         } else {
             return view('page_403');
         }

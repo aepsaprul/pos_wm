@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CreditPayment;
 use App\Models\Invoice;
+use App\Models\NavigasiAccess;
 use App\Models\Sales;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,22 @@ class InvoiceController extends Controller
     {
         if (Auth::user()->employee) {
             $invoice = Invoice::where('shop_id', Auth::user()->employee->shop_id)->limit('900')->orderBy('id', 'desc')->get();
-            return view('pages.invoice.index', ['invoices' => $invoice]);
+
+            $navigasi = NavigasiAccess::with('navigasiButton')
+                ->whereHas('navigasiButton.navigasiSub', function ($query) {
+                    $query->where('aktif', 'shop_transaction/invoice');
+                })
+                ->where('karyawan_id', Auth::user()->employee_id)->get();
+
+            $data_navigasi = [];
+            foreach ($navigasi as $key => $value) {
+                $data_navigasi[] = $value->navigasiButton->title;
+            }
+
+            return view('pages.invoice.index', [
+                'invoices' => $invoice,
+                'data_navigasi' => $data_navigasi
+            ]);
         } else {
             return view('page_403');
         }

@@ -69,12 +69,14 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                <a
-                                                    class="text-danger btn-delete"
-                                                    href="#"
-                                                    data-id="{{ $item->id }}">
-                                                        <i class="fa fa-trash px-2"></i>
-                                                </a>
+                                                @if (in_array("hapus", $data_navigasi))
+                                                    <a
+                                                        class="text-danger btn-delete"
+                                                        href="#"
+                                                        data-id="{{ $item->id }}">
+                                                            <i class="fa fa-trash px-2"></i>
+                                                    </a>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

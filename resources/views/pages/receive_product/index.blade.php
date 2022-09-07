@@ -37,11 +37,13 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">
-                            <button id="button-create" type="button" class="btn bg-gradient-primary btn-sm pl-3 pr-3">
-                                <i class="fa fa-plus"></i> Tambah
-                            </button>
-                        </div>
+                        @if (in_array("tambah", $data_navigasi))
+                            <div class="card-header">
+                                <button id="button-create" type="button" class="btn bg-gradient-primary btn-sm pl-3 pr-3">
+                                    <i class="fa fa-plus"></i> Tambah
+                                </button>
+                            </div>
+                        @endif
                         <div class="card-body">
                             <table id="datatable" class="table table-striped table-bordered" style="width:100%">
                                 <thead class="bg-info">
@@ -94,26 +96,32 @@
                                             <td class="text-center">{{ date('d-m-Y', strtotime($item->date)) }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group">
-                                                    <a
-                                                        class="dropdown-toggle"
-                                                        data-toggle="dropdown"
-                                                        aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                            <i class="fa fa-cog"></i>
-                                                    </a>
+                                                    @if (in_array("ubah", $data_navigasi) || in_array("hapus", $data_navigasi))
+                                                        <a
+                                                            class="dropdown-toggle"
+                                                            data-toggle="dropdown"
+                                                            aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                                <i class="fa fa-cog"></i>
+                                                        </a>
+                                                    @endif
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a
-                                                            class="dropdown-item btn-edit"
-                                                            href="#"
-                                                            data-id="{{ $item->id }}">
-                                                                <i class="fa fa-pencil-alt px-2"></i> Ubah
-                                                        </a>
-                                                        <a
-                                                            class="dropdown-item btn-delete"
-                                                            href="#"
-                                                            data-id="{{ $item->id }}">
-                                                                <i class="fa fa-trash px-2"></i> Hapus
-                                                        </a>
+                                                        @if (in_array("ubah", $data_navigasi))
+                                                            <a
+                                                                class="dropdown-item btn-edit"
+                                                                href="#"
+                                                                data-id="{{ $item->id }}">
+                                                                    <i class="fa fa-pencil-alt px-2"></i> Ubah
+                                                            </a>
+                                                        @endif
+                                                        @if (in_array("hapus", $data_navigasi))
+                                                            <a
+                                                                class="dropdown-item btn-delete"
+                                                                href="#"
+                                                                data-id="{{ $item->id }}">
+                                                                    <i class="fa fa-trash px-2"></i> Hapus
+                                                            </a>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>

@@ -32,10 +32,9 @@
                                                 <select name="product_manual" id="product_manual" class="form-control form-control-sm product_manual_select2" style="width: 100%;">
                                                     <option value="">--Pilih Produk--</option>
                                                     @foreach ($product_manuals as $item)
-                                                    @if ($item->product)
-
-                                                    <option value="{{ $item->product->id }}">{{ $item->product->product_code }} - {{ $item->product->productMaster->name }} - {{ $item->product->product_name }}</option>
-                                                    @endif
+                                                        @if ($item->product)
+                                                            <option value="{{ $item->product->id }}">{{ $item->product->product_code }} - {{ $item->product->productMaster->name }} - {{ $item->product->product_name }}</option>
+                                                        @endif
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -549,26 +548,6 @@
                 $('#total_price').val(nego);
             }
         });
-
-        // $('#customer_id').on('change', function() {
-        //     var total_price = $('#total_price').val();
-        //     var before_discount = $('#before_discount').val();
-        //     var discount = before_discount * 0.05;
-        //     if ($(this).val() != "") {
-        //         var discount_total = before_discount - discount;
-        //         var discount_total_rp = format_rupiah(discount_total);
-
-        //         $('.total_price_show').text(discount_total_rp);
-        //         $('#total_price').val(discount_total);
-        //         $('#discount').val(discount);
-        //     } else {
-        //         var discount_total = parseInt(total_price) + parseInt(discount);
-        //         var discount_total_rp = format_rupiah(discount_total);
-
-        //         $('.total_price_show').text(discount_total_rp);
-        //         $('#total_price').val(before_discount);
-        //     }
-        // });
 
         $('.btn-print').on('click', function() {
             if ($('#total_price').val() == 0) {

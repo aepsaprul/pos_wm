@@ -17,9 +17,9 @@ class ProductShopController extends Controller
 
             $navigasi = NavigasiAccess::with('navigasiButton')
                 ->whereHas('navigasiButton.navigasiSub', function ($query) {
-                    $query->where('aktif', 'customer');
+                    $query->where('aktif', 'product_shop');
                 })
-                ->where('karyawan_id', Auth::user()->master_karyawan_id)->get();
+                ->where('karyawan_id', Auth::user()->employee_id)->get();
 
             $data_navigasi = [];
             foreach ($navigasi as $key => $value) {
