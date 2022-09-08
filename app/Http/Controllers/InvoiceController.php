@@ -14,8 +14,13 @@ class InvoiceController extends Controller
 {
     public function index()
     {
+        $tanggal_sekarang = date("2022-09-05");
+
         if (Auth::user()->employee) {
             $invoice = Invoice::where('shop_id', Auth::user()->employee->shop_id)->limit('900')->orderBy('id', 'desc')->get();
+            $invoice_hari_ini = Invoice::select(DB::raw('SUM(total_amount) AS total_hari_ini'))
+                ->where('created_at', 'like', '%' . $tanggal_sekarang . '%')
+                ->first();
 
             $navigasi = NavigasiAccess::with('navigasiButton')
                 ->whereHas('navigasiButton.navigasiSub', function ($query) {
@@ -30,7 +35,8 @@ class InvoiceController extends Controller
 
             return view('pages.invoice.index', [
                 'invoices' => $invoice,
-                'data_navigasi' => $data_navigasi
+                'data_navigasi' => $data_navigasi,
+                'total_hari_ini' => $invoice_hari_ini->total_hari_ini
             ]);
         } else {
             return view('page_403');

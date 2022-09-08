@@ -82,6 +82,8 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{-- total hari ini --}}
+                            <p class="mt-5 text-capitalize">total penjualan hari ini <span class="font-weight-bold h3">Rp {{ rupiah($total_hari_ini) }}</span></p>
                         </div>
                     </div>
                 </div>
