@@ -14,7 +14,7 @@ class InvoiceController extends Controller
 {
     public function index()
     {
-        $tanggal_sekarang = date("2022-09-05");
+        $tanggal_sekarang = date("Y-m-d");
 
         if (Auth::user()->employee) {
             $invoice = Invoice::where('shop_id', Auth::user()->employee->shop_id)->limit('900')->orderBy('id', 'desc')->get();
