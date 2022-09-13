@@ -118,7 +118,7 @@ class InvoiceController extends Controller
 
     public function penjualanHariIni()
     {
-        $hari_ini = date("2022-09-12");
+        $hari_ini = date("Y-m-d");
         $invoice = Invoice::where('created_at', 'like', '%' . $hari_ini . '%')->get();
         $invoice_hari_ini = Invoice::select(DB::raw('SUM(total_amount) AS total_hari_ini'))
                 ->where('created_at', 'like', '%' . $hari_ini . '%')
