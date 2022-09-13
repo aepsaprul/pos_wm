@@ -115,4 +115,18 @@ class InvoiceController extends Controller
             'status' => $debt
         ]);
     }
+
+    public function penjualanHariIni()
+    {
+        $hari_ini = date("2022-09-12");
+        $invoice = Invoice::where('created_at', 'like', '%' . $hari_ini . '%')->get();
+        $invoice_hari_ini = Invoice::select(DB::raw('SUM(total_amount) AS total_hari_ini'))
+                ->where('created_at', 'like', '%' . $hari_ini . '%')
+                ->first();
+
+        return view('pages.invoice.penjualanHariIni', [
+            'invoices' => $invoice,
+            'total_hari_ini' => $invoice_hari_ini->total_hari_ini
+        ]);
+    }
 }

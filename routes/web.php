@@ -296,6 +296,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('shop_transaction/invoice/delete', [InvoiceController::class, 'delete'])->name('invoice.delete');
         Route::get('shop_transaction/{id}/bayar', [InvoiceController::class, 'bayar'])->name('invoice.bayar');
         Route::post('shop_transaction/invoice/bayar_save', [InvoiceController::class, 'bayarSave'])->name('invoice.bayar_save');
+        Route::get('shop_transaction/penjualan_hari_ini', [InvoiceController::class, 'penjualanHariIni'])->name('invoice.penjualan_hari_ini');
 
     // customer
     Route::get('customer', [CustomerController::class, 'index'])->name('customer.index');
