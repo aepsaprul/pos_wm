@@ -119,10 +119,18 @@ class InvoiceController extends Controller
     public function penjualanHariIni()
     {
         $hari_ini = date("Y-m-d");
-        $invoice = Invoice::where('created_at', 'like', '%' . $hari_ini . '%')->get();
-        $invoice_hari_ini = Invoice::select(DB::raw('SUM(total_amount) AS total_hari_ini'))
-                ->where('created_at', 'like', '%' . $hari_ini . '%')
-                ->first();
+
+        if (Auth::user()->employee) {
+          $invoice = Invoice::where('shop_id', Auth::user()->employee->shop_id)->where('created_at', 'like', '%' . $hari_ini . '%')->get();
+          $invoice_hari_ini = Invoice::select(DB::raw('SUM(total_amount) AS total_hari_ini'))
+            ->where('created_at', 'like', '%' . $hari_ini . '%')
+            ->first();
+        } else {
+          $invoice = Invoice::where('created_at', 'like', '%' . $hari_ini . '%')->get();
+          $invoice_hari_ini = Invoice::select(DB::raw('SUM(total_amount) AS total_hari_ini'))
+            ->where('created_at', 'like', '%' . $hari_ini . '%')
+            ->first();
+        }
 
         return view('pages.invoice.penjualanHariIni', [
             'invoices' => $invoice,
