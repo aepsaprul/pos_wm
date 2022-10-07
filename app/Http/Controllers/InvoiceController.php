@@ -123,6 +123,7 @@ class InvoiceController extends Controller
         if (Auth::user()->employee) {
           $invoice = Invoice::where('shop_id', Auth::user()->employee->shop_id)->where('created_at', 'like', '%' . $hari_ini . '%')->get();
           $invoice_hari_ini = Invoice::select(DB::raw('SUM(total_amount) AS total_hari_ini'))
+            ->where('shop_id', Auth::user()->employee->shop_id)
             ->where('created_at', 'like', '%' . $hari_ini . '%')
             ->first();
         } else {
