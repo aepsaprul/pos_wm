@@ -6,6 +6,7 @@ use App\Models\InventoryInvoice;
 use App\Models\InventoryProductOut;
 use App\Models\Notif;
 use App\Models\Shop;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -69,11 +70,15 @@ class InventoryInvoiceController extends Controller
         $invoice = InventoryInvoice::find($id);
         $product_outs = InventoryProductOut::where('invoice_id', $id)->get();
 
-        return view('pages.inventory_invoice.print', [
-            'shop' => $shop,
-            'invoice' => $invoice,
-            'product_outs' => $product_outs
-        ]);
+        // return view('pages.inventory_invoice.print', [
+        //     'shop' => $shop,
+        //     'invoice' => $invoice,
+        //     'product_outs' => $product_outs
+        // ]);
+
+        $pdf = Pdf::loadView('pages.inventory_invoice.print', ['shop' => $shop, 'invoice' => $invoice, 'product_outs' => $product_outs]);
+
+        return $pdf->stream();
     }
 
     public function unpaid($id)
