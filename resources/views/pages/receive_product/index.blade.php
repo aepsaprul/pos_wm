@@ -73,7 +73,7 @@
                                             </td>
                                             <td>
                                                 @if ($item->product)
-                                                    {{ $item->product->product_name }}
+                                                  {{ $item->product->productMaster->name }} - {{ $item->product->product_name }}
                                                 @else
                                                     <span class="text-danger">Product Tidak Ada</span>
                                                 @endif

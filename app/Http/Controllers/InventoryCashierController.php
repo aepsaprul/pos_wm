@@ -177,10 +177,25 @@ class InventoryCashierController extends Controller
                 $receive_product->date = date('Y-m-d H:i:s');
                 $receive_product->save();
 
-                ProductShop::updateOrCreate(
-                    ['product_id' => $value->product_id],
-                    ['stock' => DB::raw('stock + ' . $value->quantity), 'shop_id' => $request->shop_id]
-                );
+                // ProductShop::updateOrCreate(
+                //   ['product_id' => $value->product_id],
+                //   ['stock' => DB::raw('stock + ' . $value->quantity), 'shop_id' => $request->shop_id]
+                // );
+
+                $product_shop = ProductShop::where('shop_id', $request->shop_id)
+                ->where('product_id', $value->product_id)
+                ->first();
+                
+                if ($product_shop) {
+                  $product_shop->stock = $product_shop->stock + $value->quantity;
+                  $product_shop->save();
+                } else {
+                  $product_shop_create = new ProductShop;
+                  $product_shop_create->shop_id = $request->shop_id;
+                  $product_shop_create->product_id = $value->product_id;
+                  $product_shop_create->stock = $value->quantity;
+                  $product_shop_create->save();
+                }
             }
         }
 
