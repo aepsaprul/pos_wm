@@ -67,6 +67,10 @@
                                             @else
                                                 Kode Produk Kosong
                                             @endif
+
+                                            @if (Auth::user()->role == "admin")
+                                              - {{ $item->shop->name }}
+                                            @endif
                                         </td>
                                         <td class="product_{{ $item->id }}">
                                             @if ($item->product)
@@ -89,7 +93,7 @@
                                                 Harga Jual Produk Kosong
                                             @endif
                                         </td>
-                                        <td class="text-center">
+                                        <td class="stock_{{ $item->id }} text-center">
                                             @if ($item->stock == null)
                                                 0
                                             @else
@@ -196,13 +200,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="edit_product_id" class="form-label">Nama Produk</label>
-                        <select name="edit_product_id" id="edit_product_id" class="form-control form-control-sm select_product_edit" required>
-
-                        </select>
-                        <div class="mt-2">
-                            <span class="edit_product_id_error text-danger"></span>
-                        </div>
+                      <label for="edit_product_id" class="form-label">Nama Produk</label>
+                      <select name="edit_product_id" id="edit_product_id" class="form-control form-control-sm select_product_edit" required></select>
+                      <div class="mt-2">
+                        <span class="edit_product_id_error text-danger"></span>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="edit_stock">Stok</label>
+                      <input type="text" name="edit_stock" id="edit_stock" class="form-control">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -369,13 +375,14 @@
                 type: 'GET',
                 data: formData,
                 success: function(response) {
-                    $('#edit_id').val(response.id);
+                    $('#edit_id').val(response.product_shop.id);
+                    $('#edit_stock').val(response.product_shop.stock)
 
                     var value = "<option value=\"\">--Pilih Produk--</option>";
                     $.each(response.products, function(index, item) {
                         value += "<option value=\"" + item.id + "\"";
                         // sesuai produk yg terpilih
-                        if (item.id == response.product_id) {
+                        if (item.id == response.product_shop.product_id) {
                             value += "selected";
                         }
                         value += ">" + item.product_name + "</option>";
@@ -402,6 +409,7 @@
             var formData = {
                 id: $('#edit_id').val(),
                 product_id: $('#edit_product_id').val(),
+                stock: $('#edit_stock').val(),
                 _token: CSRF_TOKEN
             }
 
@@ -419,9 +427,9 @@
                     } else {
                         $('.code_' + $('#edit_id').val()).empty();
                         $('.product_' + $('#edit_id').val()).empty();
-                        $('.category_' + $('#edit_id').val()).empty();
                         $('.price_' + $('#edit_id').val()).empty();
                         $('.price_selling_' + $('#edit_id').val()).empty();
+                        $('.stock_' + $('#edit_id').val()).empty();
 
                         Toast.fire({
                             icon: 'success',
@@ -430,12 +438,14 @@
 
                         $('.code_' + response.id).append(response.code);
                         $('.product_' + response.id).append(response.product_name);
-                        $('.category_' + response.id).append(response.category_name);
                         $('.price_' + response.id).append(format_rupiah(response.price));
                         $('.price_selling_' + response.id).append(format_rupiah(response.price_selling));
+                        $('.stock_' + response.id).append(response.stock);
 
                         setTimeout(() => {
-                            $('.modal-edit').modal('hide');
+                          $('.modal-edit').modal('hide');
+                          $('.btn-edit-spinner').css("display", "none");
+                          $('.btn-edit-save').css("display", "block");
                         }, 1000);
                     }
                 },
