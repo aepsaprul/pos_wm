@@ -70,15 +70,15 @@ class InventoryInvoiceController extends Controller
         $invoice = InventoryInvoice::find($id);
         $product_outs = InventoryProductOut::where('invoice_id', $id)->get();
 
-        // return view('pages.inventory_invoice.print', [
-        //     'shop' => $shop,
-        //     'invoice' => $invoice,
-        //     'product_outs' => $product_outs
-        // ]);
+        return view('pages.inventory_invoice.print', [
+            'shop' => $shop,
+            'invoice' => $invoice,
+            'product_outs' => $product_outs
+        ]);
 
-        $pdf = Pdf::loadView('pages.inventory_invoice.print', ['shop' => $shop, 'invoice' => $invoice, 'product_outs' => $product_outs]);
+        // $pdf = Pdf::loadView('pages.inventory_invoice.print', ['shop' => $shop, 'invoice' => $invoice, 'product_outs' => $product_outs]);
 
-        return $pdf->stream();
+        // return $pdf->stream();
     }
 
     public function unpaid($id)

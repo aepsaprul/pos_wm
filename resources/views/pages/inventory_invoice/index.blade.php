@@ -112,7 +112,7 @@
                                                         <div class="dropdown-menu dropdown-menu-right">
                                                             <a
                                                                 class="dropdown-item btn-print"
-                                                                href="{{ route('inventory_invoice.print', [$item->id]) }}"
+                                                                href="http://localhost/pos_wm_print/public/inventory_invoice/{{ $item->id }}/show"
                                                                 target="_blank">
                                                                     <i class="fa fa-print px-2"></i> Print
                                                             </a>
