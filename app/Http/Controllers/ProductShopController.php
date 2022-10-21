@@ -142,10 +142,10 @@ class ProductShopController extends Controller
 
   public function excel(Request $request)
   {
-    $startDate = $request->filter_start_date . " 00:00:00";
-    $endDate = $request->filter_end_date . " 23:59:00";
+    // $startDate = $request->filter_start_date . " 00:00:00";
+    // $endDate = $request->filter_end_date . " 23:59:00";
     $shop_id = $request->filter_shop_id;
 
-    return Excel::download(new ExportProductShop($startDate, $endDate, $shop_id), 'produk_toko.xlsx');
+    return Excel::download(new ExportProductShop($shop_id), 'produk_toko.xlsx');
   }
 }

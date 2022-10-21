@@ -50,7 +50,7 @@
                             <form action="{{ route('product_shop.excel') }}" method="POST">
                               @csrf
                               <div class="row">
-                                <div class="col-3">
+                                <div class="col-6">
                                   <select name="filter_shop_id" id="filter_shop_id" class="form-control form-control-sm">
                                     <option value="">-- Pilih Toko --</option>
                                     @foreach ($shops as $item)
@@ -58,13 +58,13 @@
                                     @endforeach
                                   </select>
                                 </div>
-                                <div class="col-3">
+                                {{-- <div class="col-3">
                                   <input type="date" name="filter_start_date" id="filter_start_date" class="form-control form-control-sm" value="{{ date('Y-m-' . '01') }}" required>
                                 </div>
                                 <div class="col-3">
                                   <input type="date" name="filter_end_date" id="filter_end_date" class="form-control form-control-sm" value="{{ date('Y-m-d') }}" required>
-                                </div>
-                                <div class="col-3">
+                                </div> --}}
+                                <div class="col-6">
                                   <button type="submit" class="btn btn-primary btn-sm btn-block">Excel</button>
                                 </div>
                               </div>

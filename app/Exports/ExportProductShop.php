@@ -9,10 +9,8 @@ use Maatwebsite\Excel\Concerns\FromView;
 
 class ExportProductShop implements FromView
 {
-  public function __construct($startDate, $endDate, $shop_id)
+  public function __construct($shop_id)
   {
-      $this->startDate = $startDate;
-      $this->endDate = $endDate;
       $this->shop_id = $shop_id;
   }
 
@@ -20,13 +18,11 @@ class ExportProductShop implements FromView
   {
       if ($this->shop_id == "") {
           return view('pages.product_shop.template_excel', [
-              'product_shops' => ProductShop::whereBetween('created_at', [$this->startDate, $this->endDate])
-              ->get()
+              'product_shops' => ProductShop::get()
           ]);
       } else {
           return view('pages.product_shop.template_excel', [
-              'product_shops' => ProductShop::whereBetween('created_at', [$this->startDate, $this->endDate])
-              ->where('shop_id', $this->shop_id)
+              'product_shops' => ProductShop::where('shop_id', $this->shop_id)
               ->get()
           ]);
       }
