@@ -255,6 +255,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('product_shop/{id}/edit', [ProductShopController::class, 'edit'])->name('product_shop.edit');
     Route::get('product_shop/{id}/delete_btn', [ProductShopController::class, 'deleteBtn'])->name('product_shop.delete_btn');
     Route::post('product_shop/delete', [ProductShopController::class, 'delete'])->name('product_shop.delete');
+    Route::post('product_shop/excel', [ProductShopController::class, 'excel'])->name('product_shop.excel');
 
     // Buy
     Route::get('shop_buy', [ShopBuyController::class, 'index'])->name('shop_buy.index');

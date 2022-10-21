@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExportProductShop;
 use App\Models\NavigasiAccess;
 use App\Models\Product;
 use App\Models\ProductShop;
+use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductShopController extends Controller
 {
@@ -22,6 +25,8 @@ class ProductShopController extends Controller
       return view('page_403');
     }
 
+    $shop = Shop::get();
+
     $navigasi = NavigasiAccess::with('navigasiButton')
       ->whereHas('navigasiButton.navigasiSub', function ($query) {
         $query->where('aktif', 'product_shop');
@@ -35,6 +40,7 @@ class ProductShopController extends Controller
 
     return view('pages.product_shop.index', [
       'product_shops' => $product_shop,
+      'shops' => $shop,
       'data_navigasi' => $data_navigasi
     ]);
   }
@@ -132,5 +138,14 @@ class ProductShopController extends Controller
     return response()->json([
       'status' => 'Data berhasil dihapus'
     ]);
+  }
+
+  public function excel(Request $request)
+  {
+    $startDate = $request->filter_start_date . " 00:00:00";
+    $endDate = $request->filter_end_date . " 23:59:00";
+    $shop_id = $request->filter_shop_id;
+
+    return Excel::download(new ExportProductShop($startDate, $endDate, $shop_id), 'produk_toko.xlsx');
   }
 }

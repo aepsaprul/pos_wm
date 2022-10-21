@@ -37,105 +37,133 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        @if (in_array("tambah", $data_navigasi))
-                            <div class="card-header">
-                                <button id="button-create" type="button" class="btn bg-gradient-primary btn-sm pl-3 pr-3">
-                                    <i class="fa fa-plus"></i> Tambah
-                                </button>
-                            </div>
-                        @endif
-                        <div class="card-body">
-                            <table id="datatable" class="table table-striped table-bordered" style="width:100%">
-                                <thead class="bg-info">
-                                    <tr>
-                                        <th class="text-center text-light">No</th>
-                                        <th class="text-center text-light">Kode</th>
-                                        <th class="text-center text-light">Nama</th>
-                                        <th class="text-center text-light">Kategori</th>
-                                        <th class="text-center text-light">Harga Jual</th>
-                                        <th class="text-center text-light">Stok</th>
-                                        <th class="text-center text-light">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($product_shops as $key => $item)
-                                    <tr>
-                                        <td class="text-center">{{ $key + 1 }}</td>
-                                        <td class="code_{{ $item->id }}">
-                                            @if ($item->product)
-                                                {{ $item->product->product_code }}
-                                            @else
-                                                Kode Produk Kosong
-                                            @endif
-
-                                            @if (Auth::user()->role == "admin")
-                                              - {{ $item->shop->name }}
-                                            @endif
-                                        </td>
-                                        <td class="product_{{ $item->id }}">
-                                            @if ($item->product)
-                                                {{ $item->product->productMaster->name }} - {{ $item->product->product_name }}
-                                            @else
-                                                Produk Kosong
-                                            @endif
-                                        </td>
-                                        <td class="category_{{ $item->id }}">
-                                            @if ($item->product)
-                                                {{ $item->product->productMaster->productCategory->category_name }}
-                                            @else
-                                                Kategori Kosong
-                                            @endif
-                                        </td>
-                                        <td class="price_selling_{{ $item->id }} text-end">
-                                            @if ($item->product)
-                                                {{ rupiah($item->product->product_price_selling) }}
-                                            @else
-                                                Harga Jual Produk Kosong
-                                            @endif
-                                        </td>
-                                        <td class="stock_{{ $item->id }} text-center">
-                                            @if ($item->stock == null)
-                                                0
-                                            @else
-                                                {{ $item->stock }}
-                                            @endif
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="btn-group">
-                                                @if (in_array("ubah", $data_navigasi) || in_array("hapus", $data_navigasi))
-                                                    <a
-                                                        class="dropdown-toggle"
-                                                        data-toggle="dropdown"
-                                                        aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                                <i class="fa fa-cog"></i>
-                                                    </a>
-                                                @endif
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    @if (in_array("ubah", $data_navigasi))
-                                                        <a
-                                                            class="dropdown-item btn-edit"
-                                                            href="#"
-                                                            data-id="{{ $item->id }}">
-                                                                <i class="fa fa-pencil-alt px-2"></i> Ubah
-                                                        </a>
-                                                    @endif
-                                                    @if (in_array("hapus", $data_navigasi))
-                                                        <a
-                                                            class="dropdown-item btn-delete"
-                                                            href="#"
-                                                            data-id="{{ $item->id }}">
-                                                                <i class="fa fa-trash px-2"></i> Hapus
-                                                        </a>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                      <div class="card-header">
+                        <div class="d-flex justify-content-between">
+                          <div>
+                          @if (in_array("tambah", $data_navigasi))
+                            <button id="button-create" type="button" class="btn bg-gradient-primary btn-sm pl-3 pr-3">
+                              <i class="fa fa-plus"></i> Tambah
+                            </button>
+                          @endif
+                          </div>
+                          <div class="card-tools">
+                            <form action="{{ route('product_shop.excel') }}" method="POST">
+                              @csrf
+                              <div class="row">
+                                <div class="col-3">
+                                  <select name="filter_shop_id" id="filter_shop_id" class="form-control form-control-sm">
+                                    <option value="">-- Pilih Toko --</option>
+                                    @foreach ($shops as $item)
+                                      <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
-                                </tbody>
-                            </table>
+                                  </select>
+                                </div>
+                                <div class="col-3">
+                                  <input type="date" name="filter_start_date" id="filter_start_date" class="form-control form-control-sm" value="{{ date('Y-m-' . '01') }}" required>
+                                </div>
+                                <div class="col-3">
+                                  <input type="date" name="filter_end_date" id="filter_end_date" class="form-control form-control-sm" value="{{ date('Y-m-d') }}" required>
+                                </div>
+                                <div class="col-3">
+                                  <button type="submit" class="btn btn-primary btn-sm btn-block">Excel</button>
+                                </div>
+                              </div>
+                            </form>                           
+                          </div>
                         </div>
+                      </div>
+                      <div class="card-body">
+                          <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+                              <thead class="bg-info">
+                                <tr>
+                                  <th class="text-center text-light">No</th>
+                                  <th class="text-center text-light">Kode</th>
+                                  <th class="text-center text-light">Nama</th>
+                                  <th class="text-center text-light">Kategori</th>
+                                  <th class="text-center text-light">Harga Jual</th>
+                                  <th class="text-center text-light">Stok</th>
+                                  <th class="text-center text-light">Aksi</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                  @foreach ($product_shops as $key => $item)
+                                  <tr>
+                                      <td class="text-center">{{ $key + 1 }}</td>
+                                      <td class="code_{{ $item->id }}">
+                                          @if ($item->product)
+                                              {{ $item->product->product_code }}
+                                          @else
+                                              Kode Produk Kosong
+                                          @endif
+
+                                          @if (Auth::user()->role == "admin")
+                                            - {{ $item->shop->name }}
+                                          @endif
+                                      </td>
+                                      <td class="product_{{ $item->id }}">
+                                          @if ($item->product)
+                                              {{ $item->product->productMaster->name }} - {{ $item->product->product_name }}
+                                          @else
+                                              Produk Kosong
+                                          @endif
+                                      </td>
+                                      <td class="category_{{ $item->id }}">
+                                          @if ($item->product)
+                                              {{ $item->product->productMaster->productCategory->category_name }}
+                                          @else
+                                              Kategori Kosong
+                                          @endif
+                                      </td>
+                                      <td class="price_selling_{{ $item->id }} text-end">
+                                          @if ($item->product)
+                                              {{ rupiah($item->product->product_price_selling) }}
+                                          @else
+                                              Harga Jual Produk Kosong
+                                          @endif
+                                      </td>
+                                      <td class="stock_{{ $item->id }} text-center">
+                                          @if ($item->stock == null)
+                                              0
+                                          @else
+                                              {{ $item->stock }}
+                                          @endif
+                                      </td>
+                                      <td class="text-center">
+                                          <div class="btn-group">
+                                              @if (in_array("ubah", $data_navigasi) || in_array("hapus", $data_navigasi))
+                                                  <a
+                                                      class="dropdown-toggle"
+                                                      data-toggle="dropdown"
+                                                      aria-haspopup="true"
+                                                      aria-expanded="false">
+                                                              <i class="fa fa-cog"></i>
+                                                  </a>
+                                              @endif
+                                              <div class="dropdown-menu dropdown-menu-right">
+                                                  @if (in_array("ubah", $data_navigasi))
+                                                      <a
+                                                          class="dropdown-item btn-edit"
+                                                          href="#"
+                                                          data-id="{{ $item->id }}">
+                                                              <i class="fa fa-pencil-alt px-2"></i> Ubah
+                                                      </a>
+                                                  @endif
+                                                  @if (in_array("hapus", $data_navigasi))
+                                                      <a
+                                                          class="dropdown-item btn-delete"
+                                                          href="#"
+                                                          data-id="{{ $item->id }}">
+                                                              <i class="fa fa-trash px-2"></i> Hapus
+                                                      </a>
+                                                  @endif
+                                              </div>
+                                          </div>
+                                      </td>
+                                  </tr>
+                                  @endforeach
+                              </tbody>
+                          </table>
+                      </div>
                     </div>
                 </div>
             </div>
