@@ -136,8 +136,16 @@
                                     @foreach ($transaksi_kasir as $key => $item)
                                         <tr>
                                             <td class="text-center">{{ $key + 1 }}</td>
-                                            <td>{{ $item->user->name }}</td>
-                                            <td>{{ $item->shop->name }}</td>
+                                            <td>
+                                              @if ($item->user)
+                                                {{ $item->user->name }}                                                
+                                              @endif
+                                            </td>
+                                            <td>
+                                              @if ($item->shop)
+                                                {{ $item->shop->name }}                                                  
+                                              @endif
+                                            </td>
                                             <td class="text-center">{{ $item->total_transaksi }}</td>
                                         </tr>
                                     @endforeach
