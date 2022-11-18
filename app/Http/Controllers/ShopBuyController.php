@@ -8,6 +8,8 @@ use App\Models\InventoryProductIn;
 use App\Models\InventoryProductOut;
 use App\Models\Notif;
 use App\Models\Product;
+use App\Models\ProductCategory;
+use App\Models\ProductMaster;
 use App\Models\ProductShop;
 use App\Models\ReceiveProduct;
 use Illuminate\Http\Request;
@@ -21,7 +23,9 @@ class ShopBuyController extends Controller
     {
         if (Auth::user()->employee) {
             $product = Product::orderBy('id', 'desc')->paginate(60);
-            return view('pages.shop_buy.index', ['products' => $product]);
+            $kategori = ProductCategory::get();
+
+            return view('pages.shop_buy.index', ['products' => $product, 'kategoris' => $kategori]);
         } else {
             return view('page_403');
         }
@@ -351,4 +355,14 @@ class ShopBuyController extends Controller
 
         return view('pages.shop_buy.invoice_print', ['invoices' => $invoice]);
     }
+
+  public function kategori($id)
+  {
+    $product = Product::with('productMaster')->whereHas('productMaster', function ($query) use ($id) {
+        $query->where('product_category_id', $id);
+      })->orderBy('id', 'desc')->paginate(60);
+    $kategori = ProductCategory::get();
+
+    return view('pages.shop_buy.kategori', ['products' => $product, 'kategoris' => $kategori]);
+  }
 }

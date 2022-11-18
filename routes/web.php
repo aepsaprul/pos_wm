@@ -269,6 +269,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('shop_buy/cart/finish', [ShopBuyController::class, 'cartFinish'])->name('shop_buy.cart.finish');
     Route::get('shop_buy/cart/{kode}/invoice', [ShopBuyController::class, 'cartInvoice'])->name('shop_buy.cart.invoice');
     Route::get('shop_buy/cart/{kode}/invoice_print', [ShopBuyController::class, 'cartInvoicePrint'])->name('shop_buy.cart.invoice_print');
+    Route::get('shop_buy/{id}/kategori', [ShopBuyController::class, 'kategori'])->name('shop_buy.kategori');
 
     // transaction buy
     Route::get('transaction', [TransactionController::class, 'index'])->name('transaction.index');
