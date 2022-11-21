@@ -109,7 +109,9 @@
                                       </td>
                                       <td class="category_{{ $item->id }}">
                                           @if ($item->product)
-                                              {{ $item->product->productMaster->productCategory->category_name }}
+                                            @if ($item->product->productMaster->productCategory)
+                                              {{ $item->product->productMaster->productCategory->category_name }}                                                
+                                            @endif
                                           @else
                                               Kategori Kosong
                                           @endif

@@ -63,7 +63,9 @@
                                         </td>
                                         <td>
                                             @if ($item->productMaster)
-                                                {{ $item->productMaster->productCategory->category_name }}
+                                              @if ($item->productMaster->productCategory)
+                                                {{ $item->productMaster->productCategory->category_name }}                                                
+                                              @endif
                                             @endif
                                         </td>
                                         <td class="text-center">{{ $item->total_stock }}</td>
