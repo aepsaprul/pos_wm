@@ -65,7 +65,8 @@
                             <!-- /.col -->
                             <div class="col-sm-4 invoice-col">
                                 Invoice <b>{{ $invoices->code }}</b><br>
-                                Batas Waktu Bayar: <b>{{ tgl_indo(date('Y-m-d', strtotime("+1 day", strtotime(date("Y-m-d"))))) }}</b>
+                                Tempo Bayar: <b>{{ $invoices->tanggal_tempo }}</b><br>
+                                Waktu Pengiriman: <br><b>{{ $invoices->waktu_pengiriman }}</b>
                             </div>
                             <!-- /.col -->
                         </div>

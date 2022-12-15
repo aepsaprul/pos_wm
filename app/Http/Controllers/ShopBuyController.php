@@ -229,6 +229,8 @@ class ShopBuyController extends Controller
         $invoice->shop_id = $request->shop_id;
         $invoice->code = $invoice_code;
         $invoice->payment_methods = $request->payment_methods;
+        $invoice->tanggal_tempo = $request->tanggal_tempo;
+        $invoice->waktu_pengiriman = $request->waktu_pengiriman;
         $invoice->save();
 
         $cart = Cart::where('shop_id', $request->shop_id)->get();

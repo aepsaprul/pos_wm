@@ -143,11 +143,19 @@
                     <input type="hidden" name="id" id="id">
 
                     <div class="mb-3">
-                        <select name="metode_bayar" id="metode_bayar" class="form-control">
-                            <option value="cod">COD (Cash On Delivery)</option>
-                            <option value="bca">Transfer Bank BCA</option>
-                            <option value="mandiri">Transfer Bank Mandiri</option>
-                        </select>
+                      <select name="metode_bayar" id="metode_bayar" class="form-control">
+                        <option value="cod">COD (Cash On Delivery)</option>
+                        <option value="bca">Transfer Bank BCA</option>
+                        <option value="mandiri">Transfer Bank Mandiri</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="tanggal_tempo">Tanggal Tempo</label>
+                      <input type="date" name="tanggal_tempo" id="tanggal_tempo" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="waktu_pengiriman">Waktu Pengiriman</label>
+                      <input type="datetime-local" name="waktu_pengiriman" id="waktu_pengiriman" class="form-control" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -371,7 +379,9 @@
             let formData = {
                 shop_id: $('#id').val(),
                 total_price: $('.total_price_text').text().replace(/\./g,''),
-                payment_methods: $("#metode_bayar").val()
+                payment_methods: $("#metode_bayar").val(),
+                tanggal_tempo: $("#tanggal_tempo").val(),
+                waktu_pengiriman: $("#waktu_pengiriman").val()
             }
 
             $.ajax({
