@@ -22,6 +22,7 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\ShopBuyController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ShopTransaksiController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
@@ -343,4 +344,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('angsuran/bayar_angsuran/{id}/create_angsuran_ke', [AngsuranController::class, 'bayarAngsuranCreateAngsuranKe'])->name('angsuran.bayar_angsuran.create_angsuran_ke');
         Route::post('angsuran/bayar_angsuran/store', [AngsuranController::class, 'bayarAngsuranStore'])->name('angsuran.bayar_angsuran.store');
         Route::post('angsuran/bayar_angsuran/delete', [AngsuranController::class, 'bayarAngsuranDelete'])->name('angsuran.bayar_angsuran.delete');
+  
+    // shop transaksi
+    Route::get('shop/transaksi', [ShopTransaksiController::class, 'index'])->name('shop.transaksi');
 });

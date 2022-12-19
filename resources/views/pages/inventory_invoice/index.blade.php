@@ -45,7 +45,7 @@
                             </div>
                         @endif
                         <div class="card-body">
-                            <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+                            <table id="datatable" class="table table-striped table-bordered" style="width:100%; font-size: 14px;">
                                 <thead class="bg-info">
                                     <tr>
                                         <th class="text-center text-light">No</th>
@@ -56,7 +56,8 @@
                                         <th class="text-center text-light">Total</th>
                                         <th class="text-center text-light">Qty</th>
                                         <th class="text-center text-light">Metode Bayar</th>
-                                        <th class="text-center text-light">Status</th>
+                                        <th class="text-center text-light">Status Bayar</th>
+                                        <th class="text-center text-light">Status Transaksi</th>
                                         @if (Auth::user()->employee_id != null)
                                             <th class="text-center text-light">Aksi</th>
                                         @endif
@@ -99,6 +100,7 @@
                                                     <button type="button" class="btn text-capitalize rounded bg-gradient-default px-3 btn-paid" data-id="{{ $item->id }}" style="width: 120px;">{{ $item->status }}</button>
                                                 @endif
                                             </td>
+                                            <td class="text-center"><span class="text-uppercase">{{ $item->status_transaksi }}</span></td>
                                             @if (Auth::user()->employee_id != null)
                                                 <td class="text-center">
                                                     <div class="btn-group">
