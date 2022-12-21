@@ -196,6 +196,7 @@ class UserController extends Controller
         $nav_button = NavigasiButton::get();
         $nav_sub = NavigasiSub::get();
         $nav_main = NavigasiMain::with(['navigasiSub', 'navigasiSub.navigasiButton', 'navigasiButton'])
+            ->orderBy('hirarki', 'asc')
             ->get();
 
         $button = NavigasiButton::with('navigasiSub')

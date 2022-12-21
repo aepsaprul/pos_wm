@@ -38,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
                 $current_nav_button = NavigasiButton::whereHas('navigasiAccess', function ($query) {
                     $query->where('karyawan_id', Auth::user()->employee_id);
                 })
+                ->join('navigasi_mains', 'navigasi_buttons.main_id', '=', 'navigasi_mains.id')
+                ->orderBy('navigasi_mains.hirarki', 'asc')
                 ->select('main_id')
                 ->groupBy('main_id')
                 ->get();

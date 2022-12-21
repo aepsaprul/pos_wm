@@ -100,7 +100,13 @@
                                                     <button type="button" class="btn text-capitalize rounded bg-gradient-default px-3 btn-paid" data-id="{{ $item->id }}" style="width: 120px;">{{ $item->status }}</button>
                                                 @endif
                                             </td>
-                                            <td class="text-center"><span class="text-uppercase">{{ $item->status_transaksi }}</span></td>
+                                            <td class="text-center">
+                                              <a href="#" class="text-uppercase" id="status_transaksi" data-id="{{ $item->id }}">
+                                                @if ($item->statusTransaksi)
+                                                  {{ $item->statusTransaksi->nama }}
+                                                @endif
+                                              </span>
+                                            </td>
                                             @if (Auth::user()->employee_id != null)
                                                 <td class="text-center">
                                                     <div class="btn-group">
@@ -221,6 +227,45 @@
             </form>
         </div>
     </div>
+</div>
+
+{{-- modal status transaksi  --}}
+<div class="modal fade modal-status" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <form id="form_status">
+        <div class="modal-header">
+          <h5 class="modal-title">Status Transaksi</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal">
+              <span aria-hidden="true">x</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="invoice_id" id="invoice_id">
+          <div class="mb-1 row d-flex justify-content-center">
+            <div class="col-2">
+              <button id="btn-transaksi" data-id="1" class="btn btn-primary">DIPROSES</button>
+            </div>
+            <div class="col-2">
+              <button id="btn-transaksi" data-id="2" class="btn btn-primary">DIKEMAS</button>
+            </div>
+            <div class="col-2">
+              <button id="btn-transaksi" data-id="3" class="btn btn-primary">DIKIRIM</button>
+            </div>
+            <div class="col-2">
+              <button id="btn-transaksi" data-id="4" class="btn btn-primary">SELESAI</button>
+            </div>
+            <div class="col-2">
+              <button id="btn-transaksi" data-id="5" class="btn btn-primary">BATAL</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 @endsection
@@ -417,6 +462,39 @@
                     alert('Error - ' + errorMessage);
                 }
             });
+        })
+
+        // status transaksi
+        $(document).on('click', '#status_transaksi', function (e) {
+          e.preventDefault();
+          let id = $(this).attr('data-id');
+          $('#invoice_id').val(id);
+          $('.modal-status').modal('show');
+        })
+
+        $(document).on('click', '#btn-transaksi', function (e) {
+          e.preventDefault();
+
+          let formData = {
+            id: $('#invoice_id').val(),
+            status_id: $(this).attr('data-id'),
+            _token: CSRF_TOKEN
+          }
+          
+          $.ajax({
+            url: "{{ URL::route('inventory_invoice.status_transaksi') }}",
+            type: "post",
+            data: formData,
+            success: function (response) {
+              Toast.fire({
+                icon: 'success',
+                title: 'Status berhasil diperbaharui.'
+              });
+              setTimeout(() => {
+                window.location.reload(1);
+              }, 1000);
+            }
+          })
         })
     } );
 </script>

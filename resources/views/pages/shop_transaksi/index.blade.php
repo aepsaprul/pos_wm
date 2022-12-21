@@ -47,7 +47,7 @@
                                     <td><a href="{{ route('shop_buy.cart.invoice', [$item->code]) }}" target="_blank">{{ $item->code }}</a></td>
                                     <td class="text-center">{{ $item->created_at }}</td>
                                     <td>{{ $item->payment_methods }}</td>
-                                    <td class="text-center">{{ $item->statusTransaksi->nama }}</td>
+                                    <td class="text-center text-uppercase">{{ $item->statusTransaksi->nama }}</td>
                                   </tr>
                                 @endforeach
                               </tbody>

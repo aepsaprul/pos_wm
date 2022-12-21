@@ -194,6 +194,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('inventory_transaction/inventory_invoice/{id}/print', [InventoryInvoiceController::class, 'print'])->name('inventory_invoice.print');
         Route::get('inventory_transaction/inventory_invoice/{id}/unpaid', [InventoryInvoiceController::class, 'unpaid'])->name('inventory_invoice.unpaid');
         Route::get('inventory_transaction/inventory_invoice/{id}/cancel', [InventoryInvoiceController::class, 'cancel'])->name('inventory_invoice.cancel');
+        Route::post('inventory_transaction/inventory_invoice/status_transaksi', [InventoryInvoiceController::class, 'statusTransaksi'])->name('inventory_invoice.status_transaksi');
 
         // inventory cashier
         Route::get('inventory_cashier', [InventoryCashierController::class, 'index'])->name('inventory_cashier.index');

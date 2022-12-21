@@ -6,6 +6,7 @@ use App\Models\InventoryInvoice;
 use App\Models\InventoryProductOut;
 use App\Models\Notif;
 use App\Models\Shop;
+use App\Models\StatusTransaksi;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,9 @@ class InventoryInvoiceController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        return view('pages.inventory_invoice.index', ['invoices' => $invoice]);
+        $status_transaksi = StatusTransaksi::get();
+
+        return view('pages.inventory_invoice.index', ['invoices' => $invoice, 'status_transaksi' => $status_transaksi]);
     }
 
     public function show($id)
@@ -113,5 +116,16 @@ class InventoryInvoiceController extends Controller
         return response()->json([
             'status' => 200
         ]);
+    }
+
+    public function statusTransaksi(Request $request)
+    {
+      $transaksi = InventoryInvoice::find($request->id);
+      $transaksi->status_transaksi = $request->status_id;
+      $transaksi->save();
+
+      return response()->json([
+        'status' => 200
+      ]);
     }
 }
