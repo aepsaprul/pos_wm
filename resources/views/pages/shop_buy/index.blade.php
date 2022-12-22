@@ -81,9 +81,9 @@
                                                 <div id="overlay_{{ $item->id }}" class="overlay d-none"><i class="fas fa-3x fa-sync-alt fa-spin"></i></div>
                                                 <a href="#" class="text-secondary product" data-id="{{ $item->id }}">
                                                     @if (file_exists("public/image/" . $item->productMaster->image))
-                                                        <img src="{{ asset('public/image/' . $item->productMaster->image) }}" alt="" style="width: 100%;">
+                                                      <img src="{{ asset('public/image/' . $item->productMaster->image) }}" alt="" width="100%" height="180px;" style="object-fit: cover;">
                                                     @else
-                                                        <img src="{{ asset('public/assets/image_not_found.jpg') }}" alt="" style="width: 100%;">
+                                                      <img src="{{ asset('public/assets/image_not_found.jpg') }}" alt="" width="100%" height="180px;" style="object-fit: cover;">
                                                     @endif
                                                     <div class="py-1 px-3">
                                                         <h6 class="mb-0 text-center">
