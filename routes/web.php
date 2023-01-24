@@ -261,6 +261,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Buy
     Route::get('shop_buy', [ShopBuyController::class, 'index'])->name('shop_buy.index');
+    Route::get('shop_buy/data_produk', [ShopBuyController::class, 'dataProduk'])->name('shop_buy.dataProduk');
     Route::get('shop_buy/{id}/detail', [ShopBuyController::class, 'detail'])->name('shop_buy.detail');
     Route::post('shop_buy/search', [ShopBuyController::class, 'search'])->name('shop_buy.search');
     Route::get('shop_buy/cart', [ShopBuyController::class, 'cart'])->name('shop_buy.cart');
@@ -348,4 +349,6 @@ Route::middleware(['auth'])->group(function () {
   
     // shop transaksi
     Route::get('shop/transaksi', [ShopTransaksiController::class, 'index'])->name('shop.transaksi');
+    Route::get('shop/transaksi/dataTransaksi', [ShopTransaksiController::class, 'dataTransaksi'])->name('shop.transaksi.dataTransaksi');
+    Route::post('shop/transaksi/dataSearch', [ShopTransaksiController::class, 'dataSearch'])->name('shop.transaksi.dataSearch');
 });

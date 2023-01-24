@@ -224,7 +224,7 @@
                                 invoice_val += "" +
                                     "<tr";
                                     if (index % 2 == 1) {
-                                       invoice_val += " class=\"tabel_active\"";
+                                      invoice_val += " class=\"tabel_active\"";
                                     }
                                     invoice_val += ">" +
                                         "<td class=\"text-center\">" + (index + 1) + "</td>" +

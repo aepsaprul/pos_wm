@@ -41,9 +41,9 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-between quantity buttons_added">
-                                                    <button type="button" id="minus_{{ $item->id }}" class="minus btn btn-outline-primary rounded-0" data-id="{{ $item->id }}" data-value="minus" style="font-size: 10px;" {{ $item->qty < 2 ? 'disabled' : '' }}><i class="fas fa-minus"></i></button>
-                                                    <input type="text" id="qty_{{ $item->id }}" step="1" min="1" max="30" name="quantity" data-id="{{ $item->id }}" value="{{ $item->qty }}" title="Qty" class="form-control rounded-0 text-center qty text" size="4" onkeyup="if(this.value<0){this.value= this.value * -1}" />
-                                                    <button type="button" class="plus btn btn-outline-primary rounded-0" data-id="{{ $item->id }}" data-value="plus" style="font-size: 10px;"><i class="fas fa-plus"></i></button>
+                                                    {{-- <button type="button" id="minus_{{ $item->id }}" class="minus btn btn-outline-primary rounded-0" data-id="{{ $item->id }}" data-value="minus" style="font-size: 10px;" {{ $item->qty < 2 ? 'disabled' : '' }}><i class="fas fa-minus"></i></button> --}}
+                                                    <input type="text" id="qty_{{ $item->id }}" step="1" min="1" max="30" name="quantity" data-id="{{ $item->id }}" value="{{ $item->qty }}" title="Qty" class="form-control rounded-0 text-center qty text" size="4" onkeyup="if(this.value<0){this.value= this.value * -1}" readonly />
+                                                    {{-- <button type="button" class="plus btn btn-outline-primary rounded-0" data-id="{{ $item->id }}" data-value="plus" style="font-size: 10px;"><i class="fas fa-plus"></i></button> --}}
                                                 </div>
                                             </td>
                                             <td><a href="#" class="btn_delete text-danger" data-id="{{ $item->id }}"><i class="fas fa-trash-alt"></i></a></td>
