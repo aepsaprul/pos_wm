@@ -150,7 +150,7 @@
                       </select>
                     </div>
                     <div class="mb-3">
-                      <label for="tanggal_tempo">Tanggal Tempo</label>
+                      <label for="tanggal_tempo">Tanggal Bayar</label>
                       <input type="date" name="tanggal_tempo" id="tanggal_tempo" class="form-control" required>
                     </div>
                     <div class="mb-3">

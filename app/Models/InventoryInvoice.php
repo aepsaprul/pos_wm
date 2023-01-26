@@ -30,10 +30,6 @@ class InventoryInvoice extends Model
       return Carbon::parse($this->attributes['waktu_pengiriman'])->translatedFormat('l, d F Y - H:i');
     }
 
-    public function getTanggalTempoAttribute() {
-      return Carbon::parse($this->attributes['tanggal_tempo'])->translatedFormat('l, d F Y');
-    }
-
     public function getCreatedAtAttribute() {
       return Carbon::parse($this->attributes['created_at'])->translatedFormat('d-m-Y');
     }

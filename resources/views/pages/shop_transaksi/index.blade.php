@@ -101,6 +101,7 @@
                 '<th class="text-center text-light">Tanggal</th>' +
                 '<th class="text-center text-light">Tanggal Bayar</th>' +
                 '<th class="text-center text-light">Metode Bayar</th>' +
+                '<th class="text-center text-light">Jumlah Uang</th>' +
                 '<th class="text-center text-light">Status</th>' +
               '</tr>' +
             '</thead>' +
@@ -112,13 +113,14 @@
                   '<td><a href="' + url + '" target="_blank">' + item.code + '</a></td>' +
                   '<td class="text-center">' + item.created_at + '</td>' +
                   '<td class="text-center">';
-                  if (item.tanggal_bayar == null) {
+                  if (item.tanggal_tempo == null) {
                     data_transaksi += "";
                   } else {
-                    data_transaksi += tanggal(item.tanggal_bayar);
+                    data_transaksi += tanggal(item.tanggal_tempo);
                   }
                   data_transaksi += '</td>' +
                   '<td>' + item.payment_methods + '</td>' +
+                  '<td>' + item.total_amount + '</td>' +
                   '<td class="text-center text-uppercase">' + item.status_transaksi.nama + '</td>' +
                 '</tr>';
               })
@@ -168,6 +170,7 @@
                   '<th class="text-center text-light">Tanggal</th>' +
                   '<th class="text-center text-light">Tanggal Bayar</th>' +
                   '<th class="text-center text-light">Metode Bayar</th>' +
+                  '<th class="text-center text-light">Jumlah Uang</th>' +
                   '<th class="text-center text-light">Status</th>' +
                 '</tr>' +
               '</thead>' +
@@ -179,13 +182,14 @@
                     '<td><a href="' + url + '" target="_blank">' + item.code + '</a></td>' +
                     '<td class="text-center">' + item.created_at + '</td>' +
                     '<td class="text-center">';
-                    if (item.tanggal_bayar == null) {
+                    if (item.tanggal_tempo == null) {
                       data_transaksi += "";
                     } else {
-                      data_transaksi += tanggal(item.tanggal_bayar);
+                      data_transaksi += tanggal(item.tanggal_tempo);
                     }
                     data_transaksi += '</td>' +
                     '<td>' + item.payment_methods + '</td>' +
+                    '<td>' + item.total_amount + '</td>' +
                     '<td class="text-center text-uppercase">' + item.status_transaksi.nama + '</td>' +
                   '</tr>';
                 })
