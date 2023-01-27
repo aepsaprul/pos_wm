@@ -36,14 +36,12 @@ class ShopTransaksiController extends Controller
 
     $transaksi = InventoryInvoice::with('statusTransaksi')
       ->where('user_id', Auth::user()->id)
-      ->where('status_transaksi', '4')
       ->whereBetween('updated_at', [$start_date, $end_date])
       ->orderBy('id', 'desc')
       ->get();
 
     $total_belanja = InventoryInvoice::select(DB::raw("SUM(total_amount) as total_amount_"))
       ->where('user_id', Auth::user()->id)
-      ->where('status_transaksi', '4')
       ->whereBetween('updated_at', [$start_date, $end_date])
       ->first();
 

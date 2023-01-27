@@ -132,7 +132,7 @@
                                 @else
                                     <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
                                         <ul>
-                                            <li>Transfer Via Bank Mandiri, 434-0071-439 a.n Endro prasetyo,se</li>
+                                            <li>Transfer Via Bank BRI, 0106-0100-0956-568 a.n Endro prasetyo,se</li>
                                         </ul>
                                     </p>
 

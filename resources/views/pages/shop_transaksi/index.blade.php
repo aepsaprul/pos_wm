@@ -92,7 +92,6 @@
         type: "get",
         success: function (response) {
           console.log(response);
-          let url = '{{ route("shop_buy.cart.invoice", ":id") }}';
           let data_transaksi = '' +
           '<table id="data_transaksi" class="table table-striped table-bordered" style="width:100%">' +
             '<thead class="bg-info">' +
@@ -107,6 +106,7 @@
             '</thead>' +
             '<tbody>';
               $.each(response.transaksi, function (index, item) {
+                let url = '{{ route("shop_buy.cart.invoice", ":id") }}';
                 url = url.replace(':id', item.code );
                 data_transaksi += '' +
                 '<tr>' +
@@ -200,7 +200,9 @@
             $('.data-transaksi').append(data_transaksi);
 
             // total belanja
-            $('.value-total-belanja').append(format_rupiah(response.total_belanja.total_amount_));
+            if (response.total_belanja.total_amount_ != null) {
+              $('.value-total-belanja').append(format_rupiah(response.total_belanja.total_amount_));              
+            }
 
             $("#data_transaksi").DataTable({
               "responsive": true,
