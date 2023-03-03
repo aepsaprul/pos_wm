@@ -29,38 +29,27 @@
                             <div class="col-12">
                                 <h4>
                                     <img src="{{ asset('public/assets/icon.png') }}" alt="icon wm" style="max-width: 50px;"> Warung Mitra.
-                                    <small class="float-right">Date: {{ tgl_indo(date('Y-m-d')) }}</small>
+                                    <small class="float-right">Tanggal: {{ tgl_indo(date('Y-m-d')) }}</small>
                                 </h4>
                             </div>
                             <!-- /.col -->
                         </div>
                         <!-- info row -->
                         <div class="row invoice-info">
-                            <div class="col-sm-4 invoice-col">
-                                From
-                                <address>
-                                    <strong>Warung Mitra</strong><br>
-                                    Jl Nusantara No. 20<br>
-                                    Cilacap Utara<br>
-                                    Telepon: (804) 123-5432<br>
-                                    Email: info@gmail.com
-                                </address>
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-sm-4 invoice-col">
+                            <div class="col-sm-6 invoice-col">
                                 To
                                 <address>
-                                    <strong>{{ Auth::user()->employee->shop->name }}</strong><br>
-                                    {{ Auth::user()->employee->shop->address }} <br>
-                                    Telepon : {{ Auth::user()->employee->shop->contact }} <br>
-                                    Email: {{ Auth::user()->employee->shop->email }}
+                                    <strong>{{ Auth::user()->employee->shop->name }}</strong>,
+                                    {{ Auth::user()->employee->shop->address }},
+                                    {{ Auth::user()->employee->shop->contact }},
+                                    {{ Auth::user()->employee->shop->email }}
                                 </address>
                             </div>
                             <!-- /.col -->
-                            <div class="col-sm-4 invoice-col">
-                                Invoice <b>{{ $invoices->code }}</b><br>
-                                Tempo Bayar: <b>{{ $invoices->tanggal_tempo }}</b><br>
-                                Waktu Pengiriman: <br><b>{{ $invoices->waktu_pengiriman }}</b>
+                            <div class="col-sm-6 invoice-col">
+                                Invoice <b>{{ $invoices->code }}</b>,
+                                Tempo Bayar: <b>{{ $invoices->tanggal_tempo }}</b>,
+                                Waktu Pengiriman: <b>{{ $invoices->waktu_pengiriman }}</b>
                             </div>
                             <!-- /.col -->
                         </div>
@@ -109,7 +98,7 @@
                                         </ul>
                                     </p>
 
-                                    <p class="lead">Setelah Pembayaran:</p>
+                                    {{-- <p class="lead">Setelah Pembayaran:</p>
 
                                     <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
                                         <ol>
@@ -122,7 +111,7 @@
 
                                     Nama: _____<br>
                                     Kode Invoice: _____<br>
-                                    Nominal Transfer: _____
+                                    Nominal Transfer: _____ --}}
                                 @else
                                     <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
                                         <ul>
@@ -130,7 +119,7 @@
                                         </ul>
                                     </p>
 
-                                    <p class="lead">Setelah Pembayaran:</p>
+                                    {{-- <p class="lead">Setelah Pembayaran:</p>
 
                                     <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
                                         <ol>
@@ -143,7 +132,7 @@
 
                                     Nama: _____<br>
                                     Kode Invoice: _____<br>
-                                    Nominal Transfer: _____
+                                    Nominal Transfer: _____ --}}
                                 @endif
                             </div>
                             <!-- /.col -->

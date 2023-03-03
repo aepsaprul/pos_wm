@@ -119,7 +119,7 @@
                                         value="{{ $total_price }}">
                                     <div class="card-title">
                                         <div class="row">
-                                            <div class="col-4">
+                                            <div class="col-3">
                                                 <div class="form-group">
                                                     <label for="customer_id">Customer</label>
                                                     <select name="customer_id" id="customer_id" class="form-control form-control-sm select_customer" style="width: 100%;" autofocus>
@@ -130,7 +130,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-4">
+                                            <div class="col-3">
                                                 <div class="form-group">
                                                     <label for="pay_method">Metode Bayar</label>
                                                     <select name="pay_method" id="pay_method" class="form-control form-control-sm">
@@ -141,7 +141,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-4">
+                                            <div class="col-3">
                                                 <div class="form-group">
                                                     <label for="credit">Jumlah Angsuran</label>
                                                     <select name="credit" id="credit" class="form-control form-control-sm" style="width: 100%;" autofocus>
@@ -153,10 +153,16 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="col-3">
+                                              <div class="form-group">
+                                                  <label for="biaya_layanan">Biaya Layanan</label>
+                                                  <input type="text" name="biaya_layanan" id="biaya_layanan" class="form-control form-control-sm">
+                                              </div>
+                                          </div>
                                         </div>
                                     </div>
                                     <div class="card-tools">
-                                        Rp. <span class="total_price_show font-weight-bold" style="font-size: 30px">{{ rupiah($total_price) }}</span>
+                                        Rp. <span id="total_belanja" class="total_price_show font-weight-bold" style="font-size: 30px">{{ rupiah($total_price) }}</span>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -587,6 +593,18 @@
         $('.btn-reset').on('click', function() {
             window.location.reload(1);
         });
+
+        // biaya layanan
+        $('#biaya_layanan').on('keyup', function () {
+          const val = $(this).val();
+          const total_belanja = $('#total_belanja').text().replace(/\./g, '');
+          let calc = parseInt(val) + parseInt(total_belanja);
+          
+          $('#total_price').val(calc);
+          setTimeout(() => {
+            $('#total_belanja').html(format_rupiah(calc));            
+          }, 1500);
+        })
     });
 </script>
 
