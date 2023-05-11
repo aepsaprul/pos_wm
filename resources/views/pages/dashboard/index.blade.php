@@ -146,7 +146,11 @@
                                                 {{ $item->user->name }}                                                  
                                               @endif
                                             </td>
-                                            <td>{{ $item->shop->name }}</td>
+                                            <td>
+                                              @if ($item->shop)
+                                                {{ $item->shop->name }}                                                  
+                                              @endif
+                                              </td>
                                             <td class="text-center">{{ $item->total_transaksi }}</td>
                                         </tr>
                                     @endforeach
