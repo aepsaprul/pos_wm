@@ -132,6 +132,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('master/user/sync', [UserController::class, 'sync'])->name('user.sync');
         Route::get('master/user/{id}/akses', [UserController::class, 'akses'])->name('user.akses');
         Route::post('master/user/akses_store', [UserController::class, 'aksesStore'])->name('user.akses_store');
+        Route::get('master/user/{id}/ubahPasswordForm', [UserController::class, 'ubahPasswordForm'])->name('user.ubahPasswordForm');
+        Route::post('master/user/ubahPasswordStore', [UserController::class, 'ubahPasswordStore'])->name('user.ubahPasswordStore');
 
         // product category
         Route::get('master/product_category', [ProductCategoryController::class, 'index'])->name('product_category.index');

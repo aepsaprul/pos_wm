@@ -75,7 +75,7 @@ class InventoryInvoiceController extends Controller
 
         return view('pages.inventory_invoice.print', [
             'shop' => $shop,
-            'invoice' => $invoice,
+            'invoices' => $invoice,
             'product_outs' => $product_outs
         ]);
 

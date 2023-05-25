@@ -244,4 +244,23 @@ class UserController extends Controller
 
         return redirect()->route('user.index')->with('sukses', 'Data berhasil disimpan');
     }
+
+    public function ubahPasswordForm($id)
+    {
+    	$user = User::find($id);
+
+    	return response()->json([
+    		'user' => $user
+    	]);
+    }
+    public function ubahPasswordStore(Request $request)
+    {
+    	$employee = User::find($request->id);
+    	$employee->password = Hash::make($request->password);
+    	$employee->save();
+
+    	return response()->json([
+    		'status' => 200
+    	]);
+    }
 }

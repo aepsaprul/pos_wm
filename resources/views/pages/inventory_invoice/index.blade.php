@@ -12,138 +12,138 @@
 @section('content')
 
 <div class="content-wrapper">
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Produk Keluar</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Produk Keluar</li>
-                    </ol>
-                </div>
-            </div>
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Produk Keluar</h1>
         </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Produk Keluar</li>
+          </ol>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        @if (Auth::user()->employee_id != null)
-                            <div class="card-header">
-                                <a
-                                    href="{{ url('inventory_cashier') }}"
-                                    class="btn btn-primary btn-sm text-white pl-3 pr-3"
-                                    title="Tambah">
-                                        <i class="fa fa-plus"></i> Tambah Transaksi
-                                </a>
-                            </div>
-                        @endif
-                        <div class="card-body">
-                            <table id="datatable" class="table table-striped table-bordered" style="width:100%; font-size: 14px;">
-                                <thead class="bg-info">
-                                    <tr>
-                                        <th class="text-center text-light">No</th>
-                                        <th class="text-center text-light">Tanggal</th>
-                                        <th class="text-center text-light">Toko</th>
-                                        <th class="text-center text-light">Nama Kasir</th>
-                                        <th class="text-center text-light">Kode Nota</th>
-                                        <th class="text-center text-light">Total</th>
-                                        <th class="text-center text-light">Qty</th>
-                                        <th class="text-center text-light">Metode Bayar</th>
-                                        <th class="text-center text-light">Status Bayar</th>
-                                        <th class="text-center text-light">Status Transaksi</th>
-                                        @if (Auth::user()->employee_id != null)
-                                            <th class="text-center text-light">Aksi</th>
-                                        @endif
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($invoices as $key => $item)
-                                        <tr>
-                                            <td class="text-center">{{ $key + 1 }}</td>
-                                            <td class="text-center">{{ date('d-m-Y', strtotime($item->date_recorded)) }}</td>
-                                            <td>
-                                                @if ($item->shop)
-                                                    {{ $item->shop->name }}
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($item->user)
-                                                    {{ $item->user->name }}
-                                                @else
-                                                    User Tidak Ada
-                                                @endif
-                                            </td>
-                                            <td class="text-center"><a href="#" class="btn-detail" data-id="{{ $item->id }}">{{ $item->code }}</a></td>
-                                            <td class="text-right">{{ rupiah($item->total_amount) }}</td>
-                                            <td class="text-center">
-                                                @foreach ($item->productOut as $item_product_out)
-                                                    {{ $item_product_out->qty }}
-                                                @endforeach
-                                            </td>
-                                            <td class="text-center"><span class="text-uppercase">{{ $item->payment_methods }}</span></td>
-                                            <td class="text-center">
-                                                @if ($item->status == "unpaid")
-                                                    <button type="button" id="btn-cancel-{{ $item->id }}" class="btn text-capitalize rounded bg-gradient-warning px-3 btn-cancel" data-id="{{ $item->id }}" style="width: 120px;">cancel</button>
-                                                    <button class="btn btn-default btn-unpaid-spinner-{{ $item->id }} d-none" disabled style="width: 120px;">
-                                                        <span class="spinner-grow spinner-grow-sm"></span>
-                                                        Loading..
-                                                    </button>
-                                                    <button type="button" id="btn-unpaid-{{ $item->id }}" class="btn text-capitalize rounded bg-gradient-danger px-3 btn-unpaid" data-id="{{ $item->id }}" style="width: 120px;">{{ $item->status }}</button>
-                                                @else
-                                                    <button type="button" class="btn text-capitalize rounded bg-gradient-default px-3 btn-paid" data-id="{{ $item->id }}" style="width: 120px;">{{ $item->status }}</button>
-                                                @endif
-                                            </td>
-                                            <td class="text-center">
-                                              <a href="#" class="text-uppercase" id="status_transaksi" data-id="{{ $item->id }}">
-                                                @if ($item->statusTransaksi)
-                                                  {{ $item->statusTransaksi->nama }}
-                                                @endif
-                                              </span>
-                                            </td>
-                                            @if (Auth::user()->employee_id != null)
-                                                <td class="text-center">
-                                                    <div class="btn-group">
-                                                        <a
-                                                            class="dropdown-toggle"
-                                                            data-toggle="dropdown"
-                                                            aria-haspopup="true"
-                                                            aria-expanded="false">
-                                                                    <i class="fa fa-cog"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a
-                                                                class="dropdown-item btn-print"
-                                                                href="http://localhost/pos_wm_print/public/inventory_invoice/{{ $item->id }}/show"
-                                                                target="_blank">
-                                                                    <i class="fa fa-print px-2"></i> Print
-                                                            </a>
-                                                            <a
-                                                                class="dropdown-item btn-delete"
-                                                                href="#"
-                                                                data-id="{{ $item->id }}">
-                                                                    <i class="fa fa-trash px-2"></i> Hapus
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            @endif
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            @if (Auth::user()->employee_id != null)
+                <div class="card-header">
+                    <a
+                        href="{{ url('inventory_cashier') }}"
+                        class="btn btn-primary btn-sm text-white pl-3 pr-3"
+                        title="Tambah">
+                            <i class="fa fa-plus"></i> Tambah Transaksi
+                    </a>
                 </div>
+            @endif
+            <div class="card-body">
+              <table id="datatable" class="table table-striped table-bordered" style="width:100%; font-size: 14px;">
+                <thead class="bg-info">
+                  <tr>
+                    <th class="text-center text-light">No</th>
+                    <th class="text-center text-light">Tanggal</th>
+                    <th class="text-center text-light">Toko</th>
+                    <th class="text-center text-light">Nama Kasir</th>
+                    <th class="text-center text-light">Kode Nota</th>
+                    <th class="text-center text-light">Total</th>
+                    <th class="text-center text-light">Qty</th>
+                    <th class="text-center text-light">Metode Bayar</th>
+                    <th class="text-center text-light">Status Bayar</th>
+                    <th class="text-center text-light">Status Transaksi</th>
+                    @if (Auth::user()->employee_id != null)
+                      <th class="text-center text-light">Aksi</th>
+                    @endif
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach ($invoices as $key => $item)
+                    <tr>
+                      <td class="text-center">{{ $key + 1 }}</td>
+                      <td class="text-center">{{ date('d-m-Y', strtotime($item->date_recorded)) }}</td>
+                      <td>
+                          @if ($item->shop)
+                              {{ $item->shop->name }}
+                          @endif
+                      </td>
+                      <td>
+                          @if ($item->user)
+                              {{ $item->user->name }}
+                          @else
+                              User Tidak Ada
+                          @endif
+                      </td>
+                      <td class="text-center"><a href="#" class="btn-detail" data-id="{{ $item->id }}">{{ $item->code }}</a></td>
+                      <td class="text-right">{{ rupiah($item->total_amount) }}</td>
+                      <td class="text-center">
+                          @foreach ($item->productOut as $item_product_out)
+                              {{ $item_product_out->qty }}
+                          @endforeach
+                      </td>
+                      <td class="text-center"><span class="text-uppercase">{{ $item->payment_methods }}</span></td>
+                      <td class="text-center">
+                          @if ($item->status == "unpaid")
+                              <button type="button" id="btn-cancel-{{ $item->id }}" class="btn text-capitalize rounded bg-gradient-warning px-3 btn-cancel" data-id="{{ $item->id }}" style="width: 120px;">cancel</button>
+                              <button class="btn btn-default btn-unpaid-spinner-{{ $item->id }} d-none" disabled style="width: 120px;">
+                                  <span class="spinner-grow spinner-grow-sm"></span>
+                                  Loading..
+                              </button>
+                              <button type="button" id="btn-unpaid-{{ $item->id }}" class="btn text-capitalize rounded bg-gradient-danger px-3 btn-unpaid" data-id="{{ $item->id }}" style="width: 120px;">{{ $item->status }}</button>
+                          @else
+                              <button type="button" class="btn text-capitalize rounded bg-gradient-default px-3 btn-paid" data-id="{{ $item->id }}" style="width: 120px;">{{ $item->status }}</button>
+                          @endif
+                      </td>
+                      <td class="text-center">
+                        <a href="#" class="text-uppercase" id="status_transaksi" data-id="{{ $item->id }}">
+                          @if ($item->statusTransaksi)
+                            {{ $item->statusTransaksi->nama }}
+                          @endif
+                        </span>
+                      </td>
+                      @if (Auth::user()->employee_id != null)
+                          <td class="text-center">
+                              <div class="btn-group">
+                                  <a
+                                      class="dropdown-toggle"
+                                      data-toggle="dropdown"
+                                      aria-haspopup="true"
+                                      aria-expanded="false">
+                                              <i class="fa fa-cog"></i>
+                                  </a>
+                                  <div class="dropdown-menu dropdown-menu-right">
+                                      <a
+                                          class="dropdown-item btn-print"
+                                          href="{{ route('inventory_invoice.print', [$item->id]) }}"
+                                          target="_blank">
+                                              <i class="fa fa-print px-2"></i> Print
+                                      </a>
+                                      <a
+                                          class="dropdown-item btn-delete"
+                                          href="#"
+                                          data-id="{{ $item->id }}">
+                                              <i class="fa fa-trash px-2"></i> Hapus
+                                      </a>
+                                  </div>
+                              </div>
+                          </td>
+                      @endif
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
             </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </div>
 
 {{-- modal delete  --}}

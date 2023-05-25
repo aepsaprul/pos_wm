@@ -104,6 +104,12 @@
                                                                 <i class="fa fa-key px-2"></i> Akses
                                                         </a>
                                                         <a
+                                                            class="dropdown-item btn-ubah"
+                                                            href="#"
+                                                            data-id="{{ $item->id }}">
+                                                                <i class="fa fa-lock px-2"></i> Ubah Password
+                                                        </a>
+                                                        <a
                                                             class="dropdown-item btn-delete"
                                                             href="#"
                                                             data-id="{{ $item->id }}">
@@ -168,6 +174,55 @@
                         Loading..
                     </button>
                     <button type="submit" class="btn btn-primary btn-create-save" style="width: 130px;"><i class="fa fa-save"></i> Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- modal ubah  --}}
+<div class="modal fade modal-ubah" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form_ubah">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ubah Password User</h5>
+                    <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal">
+                            <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                  {{-- id  --}}
+                  <input type="hidden" id="ubah_id" name="ubah_id">
+
+                    <div class="mb-3">
+                        <label for="ubah_employee_id" class="form-label">Nama Karyawan</label>
+                        <input type="text" name="ubah_employee_id" id="ubah_employee_id" class="form-control form-control-sm">
+                    </div>
+                    <div class="mb-3">
+                        <label for="ubah_password" class="form-label">Ubah Password</label>
+                        <input
+                            type="text"
+                            class="form-control form-control-sm"
+                            id="ubah_password"
+                            name="ubah_password"
+                            maxlength="100"
+                            required>
+                        <div class="form-check mt-2">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-ubah-spinner" disabled style="width: 130px; display: none;">
+                        <span class="spinner-grow spinner-grow-sm"></span>
+                        Loading..
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-ubah-save" style="width: 130px;"><i class="fa fa-save"></i> Simpan</button>
                 </div>
             </form>
         </div>
@@ -305,6 +360,65 @@
             });
         });
 
+        // ubah password
+        $('body').on('click', '.btn-ubah', function(e) {
+          e.preventDefault()
+
+          var id = $(this).attr('data-id');
+          var url = '{{ route("user.ubahPasswordForm", ":id") }}';
+          url = url.replace(':id', id );
+
+          var formData = {
+            id: id,
+            _token: CSRF_TOKEN
+          }
+
+          $.ajax({
+            url: url,
+            type: 'GET',
+            data: formData,
+            success: function(response) {
+              $('#ubah_id').val(response.user.id);
+              $('#ubah_employee_id').val(response.user.name);
+              $('.modal-ubah').modal('show');
+            }
+          });
+        });
+
+        $('#form_ubah').submit(function(e) {
+            e.preventDefault();
+
+            var formData = {
+                id: $('#ubah_id').val(),
+                password: $('#ubah_password').val(),
+                _token: CSRF_TOKEN
+            }
+
+            $.ajax({
+                url: "{{ URL::route('user.ubahPasswordStore') }}",
+                type: 'POST',
+                data: formData,
+                beforeSend: function() {
+                    $('.btn-ubah-spinner').css("display", "block");
+                    $('.btn-ubah-save').css("display", "none");
+                },
+                success: function(response) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Data berhasil dihapus.'
+                    });
+                    setTimeout(() => {
+                        window.location.reload(1);
+                    }, 1000);
+                },
+                error: function(xhr, status, error){
+                    var errorMessage = xhr.status + ': ' + xhr.error
+                    alert('Error - ' + errorMessage);
+                }
+            });
+        });
+
+        // delete
         $('body').on('click', '.btn-delete', function(e) {
             e.preventDefault()
 
