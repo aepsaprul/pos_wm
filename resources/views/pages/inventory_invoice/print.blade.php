@@ -70,7 +70,13 @@
                                         @foreach ($invoices->productOut as $item)
                                             <tr>
                                                 <td>{{ $item->quantity }}</td>
-                                                <td>{{ $item->product->product_name }}</td>
+                                                <td>
+                                                    @if ($item->product)
+                                                      {{ $item->product->product_name }}
+                                                    @else
+                                                      produk tidak ada
+                                                    @endif
+                                                </td>
                                                 <td>{{ rupiah($item->sub_total) }}</td>
                                             </tr>
                                         @endforeach
