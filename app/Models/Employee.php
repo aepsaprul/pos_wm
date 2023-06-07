@@ -18,6 +18,6 @@ class Employee extends Model
     }
 
     public function navAccess() {
-        return $this->hasMany(NavAccess::class, 'user_id', 'id');
+        return $this->hasMany(NavigasiAccess::class, 'karyawan_id', 'id');
     }
 }
