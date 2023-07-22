@@ -247,201 +247,200 @@
 <script src="{{ asset('public/themes/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
 <script>
-    $(document).ready(function() {
-        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+  $(document).ready(function() {
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
 
-        var Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000
-        });
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
 
-        $("#datatable").DataTable({
-            'responsive': true
-        });
+    $("#datatable").DataTable({
+      'responsive': true
+    });
 
-        $('#button-create').on('click', function() {
-            $('.modal-create').modal('show');
-        });
+    $('#button-create').on('click', function() {
+      $('.modal-create').modal('show');
+    });
 
-        $(document).on('shown.bs.modal', '.modal-create', function() {
-            $('#create_name').focus();
-        });
+    $(document).on('shown.bs.modal', '.modal-create', function() {
+      $('#create_name').focus();
+    });
 
-        $('#form_create').submit(function(e) {
-            e.preventDefault();
+    $('#form_create').submit(function(e) {
+      e.preventDefault();
 
-            var formData = {
-                name: $('#create_name').val(),
-                contact: $('#create_contact').val(),
-                email: $('#create_email').val(),
-                address: $('#create_address').val(),
-                category: $('#create_category').val(),
-                _token: CSRF_TOKEN
-            }
+      var formData = {
+        name: $('#create_name').val(),
+        contact: $('#create_contact').val(),
+        email: $('#create_email').val(),
+        address: $('#create_address').val(),
+        category: $('#create_category').val()
+      }
 
-            $.ajax({
-                url: "{{ URL::route('shop.store') }} ",
-                type: 'POST',
-                data: formData,
-                beforeSend: function() {
-                    $('.btn-create-spinner').css("display", "block");
-                    $('.btn-create-save').css("display", "none");
-                },
-                success: function(response) {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Data berhasil ditambah.'
-                    });
-                    setTimeout(() => {
-                        window.location.reload(1);
-                    }, 1000);
-                },
-                error: function(xhr, status, error){
-                    var errorMessage = xhr.status + ': ' + xhr.error
-                    alert('Error - ' + errorMessage);
-                }
-            });
-        });
+      $.ajax({
+        url: "{{ URL::route('shop.store') }} ",
+        type: 'POST',
+        data: formData,
+        beforeSend: function() {
+          $('.btn-create-spinner').css("display", "block");
+          $('.btn-create-save').css("display", "none");
+        },
+        success: function(response) {
+          Toast.fire({
+            icon: 'success',
+            title: 'Data berhasil ditambah.'
+          });
+          setTimeout(() => {
+            window.location.reload(1);
+          }, 1000);
+        },
+        error: function(xhr, status, error){
+          var errorMessage = xhr.status + ': ' + xhr.error
+          alert('Error - ' + errorMessage);
+        }
+      });
+    });
 
-        $('body').on('click', '.btn-edit', function(e) {
-            e.preventDefault();
+    $('body').on('click', '.btn-edit', function(e) {
+      e.preventDefault();
 
-            var id = $(this).attr('data-id');
-            var url = '{{ route("shop.edit", ":id") }}';
-            url = url.replace(':id', id );
+      var id = $(this).attr('data-id');
+      var url = '{{ route("shop.edit", ":id") }}';
+      url = url.replace(':id', id );
 
-            var formData = {
-                id: id,
-                _token: CSRF_TOKEN
-            }
+      var formData = {
+        id: id
+      }
 
-            $.ajax({
-                url: url,
-                type: 'GET',
-                data: formData,
-                success: function(response) {
-                    $('#edit_id').val(response.id);
-                    $('#edit_name').val(response.name);
-                    $('#edit_contact').val(response.contact);
-                    $('#edit_email').val(response.email);
-                    $('#edit_address').val(response.address);
+      $.ajax({
+        url: url,
+        type: 'GET',
+        data: formData,
+        success: function(response) {
+          $('#edit_id').val(response.id);
+          $('#edit_name').val(response.name);
+          $('#edit_contact').val(response.contact);
+          $('#edit_email').val(response.email);
+          $('#edit_address').val(response.address);
 
-                    let val_category = "<option value=\"\">--Pilih Kategori--</option>" +
-                    "<option value=\"gudang\"";
-                    if (response.category == "gudang") {
-                        val_category += " selected";
-                    }
-                    val_category += ">Gudang</option>" +
-                    "<option value=\"toko\"";
-                    if (response.category == "toko") {
-                        val_category += " selected";
-                    }
-                    val_category += ">Toko</option>";
-                    $('#edit_category').append(val_category);
+          let val_category = "<option value=\"\">--Pilih Kategori--</option>" +
+          "<option value=\"gudang\"";
+          if (response.category == "gudang") {
+            val_category += " selected";
+          }
+          val_category += ">Gudang</option>" +
+          "<option value=\"toko\"";
+          if (response.category == "toko") {
+            val_category += " selected";
+          }
+          val_category += ">Toko</option>";
+          $('#edit_category').append(val_category);
 
-                    $('.modal-edit').modal('show');
-                }
-            })
-        });
+          $('.modal-edit').modal('show');
+        }
+      })
+    });
 
-        $(document).on('shown.bs.modal', '.modal-edit', function() {
-            $('#edit_name').focus();
-        });
+    $(document).on('shown.bs.modal', '.modal-edit', function() {
+      $('#edit_name').focus();
+    });
 
-        $('#form_edit').submit(function(e) {
-            e.preventDefault();
+    $('#form_edit').submit(function(e) {
+      e.preventDefault();
 
-            var formData = {
-                id: $('#edit_id').val(),
-                name: $('#edit_name').val(),
-                contact: $('#edit_contact').val(),
-                email: $('#edit_email').val(),
-                address: $('#edit_address').val(),
-                category: $('#edit_category').val(),
-                _token: CSRF_TOKEN
-            }
+      var formData = {
+        id: $('#edit_id').val(),
+        name: $('#edit_name').val(),
+        contact: $('#edit_contact').val(),
+        email: $('#edit_email').val(),
+        address: $('#edit_address').val(),
+        category: $('#edit_category').val()
+      }
 
-            $.ajax({
-                url: "{{ URL::route('shop.update') }}",
-                type: 'POST',
-                data: formData,
-                beforeSend: function() {
-                    $('.btn-edit-spinner').css("display", "block");
-                    $('.btn-edit-save').css("display", "none");
-                },
-                success: function(response) {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Data berhasil diperbaharui.'
-                    });
-                    setTimeout(() => {
-                        window.location.reload(1);
-                    }, 1000);
-                },
-                error: function(xhr, status, error){
-                    var errorMessage = xhr.status + ': ' + xhr.error
-                    alert('Error - ' + errorMessage);
-                }
-            });
-        });
+      $.ajax({
+        url: "{{ URL::route('shop.update') }}",
+        type: 'POST',
+        data: formData,
+        beforeSend: function() {
+          $('.btn-edit-spinner').css("display", "block");
+          $('.btn-edit-save').css("display", "none");
+        },
+        success: function(response) {
+          Toast.fire({
+            icon: 'success',
+            title: 'Data berhasil diperbaharui.'
+          });
+          setTimeout(() => {
+            window.location.reload(1);
+          }, 1000);
+        },
+        error: function(xhr, status, error){
+          var errorMessage = xhr.status + ': ' + xhr.error
+          alert('Error - ' + errorMessage);
+        }
+      });
+    });
 
-        $('body').on('click', '.btn-delete', function(e) {
-            e.preventDefault()
+    $('body').on('click', '.btn-delete', function(e) {
+      e.preventDefault()
 
-            var id = $(this).attr('data-id');
-            var url = '{{ route("shop.delete_btn", ":id") }}';
-            url = url.replace(':id', id );
+      var id = $(this).attr('data-id');
+      var url = '{{ route("shop.delete_btn", ":id") }}';
+      url = url.replace(':id', id );
 
-            var formData = {
-                id: id,
-                _token: CSRF_TOKEN
-            }
+      var formData = {
+        id: id
+      }
 
-            $.ajax({
-                url: url,
-                type: 'GET',
-                data: formData,
-                success: function(response) {
-                    $('.delete_title').append(response.name);
-                    $('#delete_id').val(response.id);
-                    $('.modal-delete').modal('show');
-                }
-            });
-        });
+      $.ajax({
+        url: url,
+        type: 'GET',
+        data: formData,
+        success: function(response) {
+          $('.delete_title').append(response.name);
+          $('#delete_id').val(response.id);
+          $('.modal-delete').modal('show');
+        }
+      });
+    });
 
-        $('#form_delete').submit(function(e) {
-            e.preventDefault();
+    $('#form_delete').submit(function(e) {
+      e.preventDefault();
 
-            var formData = {
-                id: $('#delete_id').val(),
-                _token: CSRF_TOKEN
-            }
+      var formData = {
+        id: $('#delete_id').val()
+      }
 
-            $.ajax({
-                url: "{{ URL::route('shop.delete') }}",
-                type: 'POST',
-                data: formData,
-                beforeSend: function() {
-                    $('.btn-delete-spinner').css("display", "block");
-                    $('.btn-delete-yes').css("display", "none");
-                },
-                success: function(response) {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Data berhasil dihapus.'
-                    });
-                    setTimeout(() => {
-                        window.location.reload(1);
-                    }, 1000);
-                },
-                error: function(xhr, status, error){
-                    var errorMessage = xhr.status + ': ' + xhr.error
-                    alert('Error - ' + errorMessage);
-                }
-            });
-        });
-    } );
+      $.ajax({
+        url: "{{ URL::route('shop.delete') }}",
+        type: 'POST',
+        data: formData,
+        beforeSend: function() {
+          $('.btn-delete-spinner').css("display", "block");
+          $('.btn-delete-yes').css("display", "none");
+        },
+        success: function(response) {
+          Toast.fire({
+            icon: 'success',
+            title: 'Data berhasil dihapus.'
+          });
+          setTimeout(() => {
+            window.location.reload(1);
+          }, 1000);
+        },
+        error: function(xhr, status, error){
+          var errorMessage = xhr.status + ': ' + xhr.error
+          alert('Error - ' + errorMessage);
+        }
+      });
+    });
+  });
 </script>
 @endsection

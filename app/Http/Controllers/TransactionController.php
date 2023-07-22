@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
-    public function index()
-    {
-        $transaction = InventoryInvoice::with('productOut')->where('shop_id', Auth::user()->employee->shop_id)
-            ->where('status', "unpaid")
-            ->get();
+  public function index()
+  {
+    $transaction = InventoryInvoice::with('productOut')->where('shop_id', Auth::user()->employee->shop_id)
+      ->where('status', "unpaid")
+      ->get();
 
-        return view('pages.transaction.index', ['transactions' => $transaction]);
-    }
+    return view('pages.transaction.index', ['transactions' => $transaction]);
+  }
 }

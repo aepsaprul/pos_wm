@@ -34,8 +34,12 @@ class ShopBuyController extends Controller
     public function search(Request $request)
     {
         $product = Product::where('product_name', 'like', '%' . $request->search . '%')->paginate(60);
+        $kategori = ProductCategory::get();
 
-        return view('pages.shop_buy.index', ['products' => $product]);
+        return view('pages.shop_buy.index', [
+          'products' => $product,
+          'kategoris' => $kategori
+        ]);
     }
 
     public function detail($id)

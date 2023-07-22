@@ -344,7 +344,7 @@
             $('.btn-spinner').addClass('d-none');
             $('#btn_buy').removeClass('d-none');
             $('.badge').append(response.count_cart);
-            window.location.href = "shop_buy/cart";
+            window.location.href = "{{ URL::route('shop_buy.cart') }}";
           }, 1000);
         },
         error: function(xhr, status, error){

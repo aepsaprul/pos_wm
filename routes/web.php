@@ -197,6 +197,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('inventory_transaction/inventory_invoice/{id}/unpaid', [InventoryInvoiceController::class, 'unpaid'])->name('inventory_invoice.unpaid');
         Route::get('inventory_transaction/inventory_invoice/{id}/cancel', [InventoryInvoiceController::class, 'cancel'])->name('inventory_invoice.cancel');
         Route::post('inventory_transaction/inventory_invoice/status_transaksi', [InventoryInvoiceController::class, 'statusTransaksi'])->name('inventory_invoice.status_transaksi');
+        Route::post('inventory_transaction/inventory_invoice/filterTanggal', [InventoryInvoiceController::class, 'filterTanggal'])->name('inventory_invoice.filterTanggal');
 
         // inventory cashier
         Route::get('inventory_cashier', [InventoryCashierController::class, 'index'])->name('inventory_cashier.index');
