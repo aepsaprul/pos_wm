@@ -378,7 +378,7 @@
                             <span class="spinner-grow spinner-grow-sm"></span>
                               Loading..
                           </button>
-                          <button type="button" id="btn-unpaid-${inv.id}" class="btn text-capitalize rounded bg-gradient-danger px-3 btn-unpaid" data-id="${inv.id}" style="width: 120px;">{{ $item->status }}</button>
+                          <button type="button" id="btn-unpaid-${inv.id}" class="btn text-capitalize rounded bg-gradient-danger px-3 btn-unpaid" data-id="${inv.id}" style="width: 120px;">${item.status}</button>
                         `;
                       } else {
                         val += `<span class="text-capitalize">${inv.status}</span>`;
