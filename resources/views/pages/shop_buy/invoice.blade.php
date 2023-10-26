@@ -50,6 +50,10 @@
                                     {{ Auth::user()->employee->shop->contact }},
                                     {{ Auth::user()->employee->shop->email }}
                                 </address>
+                                <div>
+                                  <div>Pengirim: ....................</div>
+                                  <div class="mt-3">Penerima: ....................</div>
+                                </div>
                             </div>
                             <!-- /.col -->
                             <div class="col-sm-6 invoice-col">
